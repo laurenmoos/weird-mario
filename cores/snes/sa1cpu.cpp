@@ -240,6 +240,7 @@ static void S9xSA1UpdateTimer (void);
 
 void S9xSA1MainLoop (void)
 {
+	fprintf(stderr, "Entering S9xSA1MainLoop\n");
 	if (Memory.FillRAM[0x2200] & 0x60)
 	{
 		SA1.Cycles += 6; // FIXME
