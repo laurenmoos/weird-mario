@@ -354,7 +354,7 @@ void S9xMainLoop (void)
 
 #ifdef CPU_OPCODE_INSTRUMENTATION
 		//fprintf(stderr, "PC = 0x%x\n", Registers.PBPC);
-		write_int(log_shm, Registers.PBPC);
+		write_int(log_shm, Registers.PCw);
 #endif
 		Registers.PCw++;
 		(*Opcodes[Op].S9xOpcode)();
