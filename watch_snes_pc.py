@@ -54,6 +54,7 @@ def step(env, shm):
 
 
 def main():
+    os.environ["RETRO_RUN_ID"] = "1337"
     shm = attach_shm()
     env = setup_env("SuperMarioWorld-Snes")
     while True:
