@@ -184,6 +184,7 @@
   Nintendo Co., Limited and its subsidiary companies.
  ***********************************************************************************/
 
+#define CPU_OPCODE_INSTRUMENTATION 1
 
 #include "snes9x.h"
 #include "memmap.h"
@@ -192,17 +193,49 @@
 #include "apu/apu.h"
 #include "fxemu.h"
 #include "snapshot.h"
+#include <sys/mman.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+
 #ifdef DEBUGGER
 #include "debug.h"
 #include "missing.h"
 #endif
 
-//#define CPU_OPCODE_INSTRUMENTATION
 
 /* Pipe the output to :
  * | grep -B1 EXEC=NMI | grep -v EXEC=NMI | grep EXEC= | sort | uniq -c | sort -nr
  *
  */
+
+
+union PackedInteger {
+	int n;
+	char bytes[4];
+};
+
+void write_int(char *shm, int n) {
+	//fprintf(stderr, "In write_int, shmid: %d, n: 0x%x\n", shmid, n);
+	PackedInteger p;
+	p.n = n;
+	memcpy(shm, p.bytes, 4);
+	return;
+}
+
+char *init_logging(void) {
+	//fprintf(stderr, "Attaching to log_shm\n");
+    char *retro_run_id;
+	if (!(retro_run_id = getenv("RETRO_RUN_ID")))
+    {
+        retro_run_id = "1";
+    };
+    int rid = atoi(retro_run_id);
+	key_t key = ftok("/dev/shm", rid);
+    // shmget returns an identifier in shmid
+    int shmid = shmget(key,1024,0666|IPC_CREAT);
+    char *shm = (char *) shmat(shmid, (void*)0, 0);
+    return shm;
+}
 
 static inline void S9xReschedule (void);
 
@@ -212,6 +245,8 @@ bool8 finishedFrame = false;
 
 void S9xMainLoop (void)
 {
+	//fprintf(stderr, "Entering main loop...\n");
+	char *log_shm = init_logging();
 #ifdef LAGFIX
 	do
 	{
@@ -232,7 +267,7 @@ void S9xMainLoop (void)
 
 				S9xOpcode_NMI();
 #ifdef CPU_OPCODE_INSTRUMENTATION
-            puts("** EXEC=NMI");
+            //puts("** EXEC=NMI");
 #endif
 			}
 		}
@@ -258,7 +293,7 @@ void S9xMainLoop (void)
 		}
 
 	#ifdef DEBUGGER
-		if ((CPU.Flags & BREAK_FLAG) && !(CPU.Flags & SINGLE_STEP_FLAG))
+		if ((CPU.Flags & break_FLAG) && !(CPU.Flags & SINGLE_STEP_FLAG))
 		{
 			for (int Break = 0; Break != 6; Break++)
 			{
@@ -318,7 +353,8 @@ void S9xMainLoop (void)
 		}
 
 #ifdef CPU_OPCODE_INSTRUMENTATION
-      printf("EXEC=%.6X\n",Registers.PBPC);
+		//fprintf(stderr, "PC = 0x%x\n", Registers.PBPC);
+		write_int(log_shm, Registers.PBPC);
 #endif
 		Registers.PCw++;
 		(*Opcodes[Op].S9xOpcode)();
@@ -331,6 +367,7 @@ void S9xMainLoop (void)
 		break;
 #endif
 	}
+
 
 #ifdef LAGFIX
 	if (!finishedFrame)
@@ -355,6 +392,10 @@ void S9xMainLoop (void)
    }
    }while(!finishedFrame);
 #endif
+
+   //fprintf(stderr, "Detaching from log_shm\n");
+   shmdt(log_shm);
+   //fprintf(stderr, "Exiting main loop\n");
 }
 
 static inline void S9xReschedule (void)
