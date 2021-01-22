@@ -338,6 +338,7 @@ void S9xSA1MainLoop (void)
 		}
 
 		Registers.PCw++;
+		fprintf(stderr, "Incrementing PCw from SA1: 0x%x\n", Registers.PCw);
 		(*Opcodes[Op].S9xOpcode)();
 	}
 
