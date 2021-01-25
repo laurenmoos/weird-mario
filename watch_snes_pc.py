@@ -62,12 +62,6 @@ def read_pc(shm):
     return pc
 
 
-def print_pc(shm):
-    pc = read_pc(shm)
-    print(f"PC = 0x{pc:x}")
-    return pc
-
-
 def setup_env(game):
     env = retro.make(game="SuperMarioWorld-Snes")
     _ = env.reset()
@@ -78,8 +72,9 @@ def step(env, shm):
     if len(VISITED) < 3:
         random_poke(env)
     obs, rew, done, info = env.step(env.action_space.sample())
-    pc = print_pc(shm)
+    pc = read_pc(shm)
     info["pc"] = pc
+    print(f"PC = 0x{pc:x}")
     env.render()
     if done:
         env.reset()
