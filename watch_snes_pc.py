@@ -75,9 +75,11 @@ def setup_env(game):
 
 
 def step(env, shm):
-    random_poke(env)
+    if len(VISITED) < 3:
+        random_poke(env)
     obs, rew, done, info = env.step(env.action_space.sample())
     pc = print_pc(shm)
+    info["pc"] = pc
     env.render()
     if done:
         env.reset()
