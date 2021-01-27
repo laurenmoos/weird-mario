@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
 import signal
+import json
+import subprocess as sp
 import time
 import os
 import struct
@@ -8,11 +10,17 @@ import sys
 import retro
 import sysv_ipc as ipc
 import random
+import pyDispel
 
 
 DELAY = 0
 CONTINUE = True
 VISITED = set()
+ROM = "SuperMarioWorld-Snes"
+
+def get_disas_table(rom):
+    rom_path = f"./retro/data/stable/{rom}/rom.sfc"
+    return pyDispel.ingest(rom_path)
 
 
 def signal_handler(sig, frame):
@@ -74,7 +82,6 @@ def step(env, shm):
     obs, rew, done, info = env.step(env.action_space.sample())
     pc = read_pc(shm)
     info["pc"] = pc
-    print(f"PC = 0x{pc:x}")
     env.render()
     if done:
         env.reset()
@@ -83,13 +90,27 @@ def step(env, shm):
 
 def main():
     global VISITED
+    disas = get_disas_table(ROM)
     signal.signal(signal.SIGINT, signal_handler)
     os.environ["RETRO_RUN_ID"] = "1337"
     shm = attach_shm()
-    env = setup_env("SuperMarioWorld-Snes")
+    env = setup_env(ROM)
+    i = 3000
     while CONTINUE:
         pc = step(env, shm)
+        try:
+            dis, _instbytes = disas[pc]
+            print(f"0x{pc:04x}:\t{dis}")
+        except KeyError as e:
+            print("No instruction found at 0x{pc:x}")
+
         VISITED.add(pc)
+        i -= 1
+        if i == 0:
+            print("=== RESETTING ===")
+            env.reset()
+            VISITED = set()
+            i = 3000
     return
 
 
