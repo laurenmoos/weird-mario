@@ -102,7 +102,7 @@ def main():
             dis, _instbytes = disas[pc]
             print(f"0x{pc:04x}:\t{dis}")
         except KeyError as e:
-            print("No instruction found at 0x{pc:x}")
+            print(f"No instruction found at 0x{pc:x}")
 
         VISITED.add(pc)
         i -= 1
