@@ -185,6 +185,7 @@
  ***********************************************************************************/
 
 #define CPU_OPCODE_INSTRUMENTATION 1
+#define VISITED_BUFFER_SIZE 1 << 15
 
 #include "snes9x.h"
 #include "memmap.h"
@@ -208,21 +209,34 @@
  *
  */
 
+typedef unsigned short int Word;
 
-union PackedInteger {
-	int n;
-	char bytes[4];
-};
+unsigned int TOTAL_ITER = 0;
+unsigned int MAX_ITER = 0;
+unsigned int TOTAL_LOOPS = 0;
 
-void write_int(char *shm, int n) {
+
+void write_int(int *shm, int n) {
 	//fprintf(stderr, "In write_int, shmid: %d, n: 0x%x\n", shmid, n);
-	PackedInteger p;
-	p.n = n;
-	memcpy(shm, p.bytes, 4);
+	//memcpy(shm, p.bytes, INT_SIZE);
+	*shm = n;
 	return;
 }
 
-char *init_logging(void) {
+void write_visited(Word *shm, Word *visited, size_t count) {
+	//fprintf(stderr, "entering write_visited, count = %d\n", count);
+	//fprintf(stderr, "shm is at %p; visited is at %p\n", shm, visited);
+	if (count > VISITED_BUFFER_SIZE) {
+		fprintf(stderr, "[in write_visited()] WARNING: count exceeds VISITED_BUFFER_SIZE: 0x%x\n", count);
+	}
+	*shm = (Word) count;
+	int i;
+    memcpy((void *)(shm + sizeof(Word)), (void *) visited, count * sizeof(Word));
+	//fprintf(stderr, "exiting write_visited\n");
+	return;
+}
+
+Word *init_logging(void) {
 	//fprintf(stderr, "Attaching to log_shm\n");
     char *retro_run_id;
 	if (!(retro_run_id = getenv("RETRO_RUN_ID")))
@@ -230,10 +244,18 @@ char *init_logging(void) {
         retro_run_id = "1";
     };
     int rid = atoi(retro_run_id);
+	//fprintf(stderr, "RETRO_RUN_ID = %d\n", rid);
 	key_t key = ftok("/dev/shm", rid);
     // shmget returns an identifier in shmid
-    int shmid = shmget(key,1024,0666|IPC_CREAT);
-    char *shm = (char *) shmat(shmid, (void*)0, 0);
+    int shmid = shmget(key, VISITED_BUFFER_SIZE * sizeof(Word), 0666|IPC_CREAT);
+	//int shmid = shmget(key, VISITED_BUFFER_SIZE * sizeof(int), 0666);
+	//fprintf(stderr, "shmid = 0x%x\n", shmid);
+    Word *shm = (Word *) shmat(shmid, NULL, 0);
+	if (shm == (void *) -1)
+    {
+        fprintf(stderr, "Failed to attach to shared memory! %d\n", errno);
+        exit(errno);
+    }
     return shm;
 }
 
@@ -246,13 +268,22 @@ bool8 finishedFrame = false;
 void S9xMainLoop (void)
 {
 	//fprintf(stderr, "Entering main loop...\n");
-	char *log_shm = init_logging();
+	Word *log_shm = init_logging();
+	size_t addr_count = 0;
+	unsigned int iterations = 0;
+	Word *visited;
+	visited = (Word *) calloc(VISITED_BUFFER_SIZE, sizeof(Word));
+
+	TOTAL_LOOPS++;
+
 #ifdef LAGFIX
 	do
 	{
 #endif
 	for (;;)
 	{
+		iterations++;
+		TOTAL_ITER++;
 		if (CPU.NMILine)
 		{
 			if (Timings.NMITriggerPos <= CPU.Cycles)
@@ -352,10 +383,12 @@ void S9xMainLoop (void)
 				Opcodes = S9xOpcodesSlow;
 		}
 
-#ifdef CPU_OPCODE_INSTRUMENTATION
-		//fprintf(stderr, "PC = 0x%x\n", Registers.PBPC);
-		write_int(log_shm, Registers.PCw);
-#endif
+        /******** Log the address visited. **************/
+        //fprintf(stderr, "<- 0x%04x\n", (Word) Registers.PCw);
+		visited[addr_count] = (Word) Registers.PCw;
+        addr_count++;
+		addr_count %= VISITED_BUFFER_SIZE;
+
 		Registers.PCw++;
 		(*Opcodes[Op].S9xOpcode)();
 
@@ -393,9 +426,15 @@ void S9xMainLoop (void)
    }while(!finishedFrame);
 #endif
 
-   //fprintf(stderr, "Detaching from log_shm\n");
-   shmdt(log_shm);
-   //fprintf(stderr, "Exiting main loop\n");
+    //fprintf(stderr, "Detaching from log_shm\n");
+    //fprintf(stderr, "Exiting main loop\n");
+    //write_int(log_shm, Registers.PCw);
+	write_visited(log_shm, visited, addr_count);
+	addr_count = 0;
+    shmdt(log_shm);
+	if (iterations > MAX_ITER) { MAX_ITER = iterations; }
+    //fprintf(stderr, "Exiting main loop after %d iterations. (Mean: %d, Max: %d)\n", iterations, TOTAL_ITER / TOTAL_LOOPS, MAX_ITER);
+	free(visited);
 }
 
 static inline void S9xReschedule (void)

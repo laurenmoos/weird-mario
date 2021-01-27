@@ -137,3 +137,9 @@ retro/VERSION.txt
 Temporary
 *.mkv
 *.search
+
+# virtual environments
+./*-venv/
+./Dispel/*-venv/
+
+third_party/*
