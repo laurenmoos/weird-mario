@@ -62,6 +62,11 @@ class CMakeBuild(build_ext):
         if not make_exe:
             raise RuntimeError('Could not find Make executable. Is it installed?')
         subprocess.check_call([make_exe, jobs, 'retro'])
+        cwd = os.getcwd()
+        os.chdir(f'{os.path.dirname(__file__)}/Dispel')
+        subprocess.check_call([make_exe])
+        os.chdir(cwd)
+
 
 
 platform_globs = ['*-%s/*' % plat for plat in ['Nes', 'Snes', 'Genesis', 'Atari2600', 'GameBoy', 'Sms', 'GameGear', 'PCEngine', 'GbColor', 'GbAdvance']]
