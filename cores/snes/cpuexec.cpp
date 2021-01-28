@@ -387,6 +387,9 @@ void S9xMainLoop (void)
 
         /******** Log the address visited. **************/
         //fprintf(stderr, "<- 0x%04x\n", (Word) Registers.PCw);
+		if (Registers.PCw >= 1 << 16) {
+			fprintf(stderr, "[!] WARNING! Registers.PCw = 0x{:x}\n", Registers.PCw);
+		}
 		visited[addr_count] = (Word) Registers.PCw;
         addr_count++;
 		addr_count %= VISITED_BUFFER_SIZE;

@@ -13,8 +13,37 @@ import time
 import numpy as np
 import retro
 import pyglet
+import random
 from pyglet import gl
 from pyglet.window import key as keycodes
+
+
+SHOW_TRACE = False
+
+
+def pp_trace(trace):
+    if trace.bytes is None:
+        print(f"0x{trace.addr:04x}: NO INSTRUCTION")
+    else:
+        print(f"0x{trace.addr:04x}\t{trace.inst}")
+
+
+def mem_blocks(env):
+    return [range(p[0], p[0]+len(p[1])) for p in env.data.memory.blocks.items()]
+
+
+def random_address(env):
+    blocks = mem_blocks(env)
+    block = random.choice(blocks)
+    return random.choice(block)
+
+
+def random_poke(env):
+    val = random.randint(0, 256)
+    addr = random_address(env)
+    print(f'[!] Poking 0x{val:02x} to 0x{addr:04x}!')
+    return retro._retro.Memory.assign(env.data.memory, addr, "uint8", val)
+
 
 
 class Interactive(abc.ABC):
@@ -79,6 +108,7 @@ class Interactive(abc.ABC):
         self._max_sim_frames_per_update = 4
 
     def _update(self, dt):
+        global SHOW_TRACE
         # cap the number of frames rendered so we don't just spend forever trying to catch up on frames
         # if rendering is slow
         max_dt = self._max_sim_frames_per_update / self._tps
@@ -103,6 +133,12 @@ class Interactive(abc.ABC):
             if keycodes.ESCAPE in keys_pressed:
                 self._on_close()
 
+            if keycodes.TAB in keys_pressed:
+                random_poke(self._env)
+
+            if keycodes.SPACE in keys_pressed:
+                SHOW_TRACE = not SHOW_TRACE
+
             # assume that for async environments, we just want to repeat keys for as long as they are held
             inputs = keys_pressed
             if self._sync:
@@ -118,6 +154,7 @@ class Interactive(abc.ABC):
 
             if not self._sync or act is not None:
                 obs, rew, done, _info = self._env.step(act)
+                self.show_trace(_info)
                 self._image = self.get_image(obs, self._env)
                 self._episode_returns += rew
                 self._steps += 1
@@ -181,6 +218,18 @@ class Interactive(abc.ABC):
         """
         pass
 
+
+    def show_trace(self, info):
+        if not SHOW_TRACE or self._env.system != 'Snes':
+            return
+        print(f'[+] {len(info["trace"])} instructions executed:')
+        for t in info['trace'][:5]:
+            pp_trace(t)
+        print('...')
+        for t in info['trace'][-5:]:
+            pp_trace(t)
+
+
     def run(self):
         """
         Run the interactive window until the user quits
@@ -242,7 +291,7 @@ class RetroInteractive(Interactive):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument('--game', default='Airstriker-Genesis')
+    parser.add_argument('--game', default='SuperMarioWorld-Snes')
     parser.add_argument('--state', default=retro.State.DEFAULT)
     parser.add_argument('--scenario', default=None)
     parser.add_argument('--record', default=None, nargs='?', const=True)
