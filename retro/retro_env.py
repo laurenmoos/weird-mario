@@ -240,7 +240,8 @@ class RetroEnv(gym.Env):
         ob = self._update_obs()
         rew, done, info = self.compute_step()
         info = dict(info)
-        info['trace'] = [self.disassemble(pc) for pc in self._read_pc_vec()]
+        if self.system == 'Snes':
+            info['trace'] = [self.disassemble(pc) for pc in self._read_pc_vec()]
         return ob, rew, bool(done), info
 
     def reset(self):
