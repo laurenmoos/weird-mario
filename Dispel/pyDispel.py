@@ -4,9 +4,11 @@ import subprocess as sp
 import json
 import sys
 import os
+    
 
-
-DISPEL_PATH = f"{os.path.dirname(__file__)}/dispel.exe"
+DISPEL_PATH = os.getenv("DISPEL_PATH")
+if DISPEL_PATH is None:
+    DISPEL_PATH = "./Dispel/dispel.exe"
 
 
 def disas(rom):
@@ -18,7 +20,7 @@ def disas(rom):
 
 def parse_addr(addr):
     """Should parse address of the format 80/DDA1 as 0x80DDA1."""
-    return int(addr.replace("/", "").replace(":", ""), base=16)
+    return int(addr.split("/")[1].replace(":", ""), base=16)
 
 
 def parse_bytes(hexstring):
