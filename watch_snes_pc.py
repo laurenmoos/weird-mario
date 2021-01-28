@@ -1,14 +1,8 @@
 #! /usr/bin/env python
 
-import signal
-import json
-import subprocess as sp
 import time
-import os
-import struct
 import sys
 import retro
-import sysv_ipc as ipc
 import random
 
 
