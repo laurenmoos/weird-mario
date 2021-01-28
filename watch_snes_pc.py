@@ -113,6 +113,7 @@ def step(env, shm):
     return pc_vec
 
 
+
 def main():
     global VISITED
     disas = get_disas_table(ROM)
@@ -124,13 +125,21 @@ def main():
     while CONTINUE:
         pc_vec = step(env, shm)
         print(f"[+] {len(pc_vec)} instructions executed; {len(set(pc_vec))} unique")
+        for pc in pc_vec:
+            VISITED.add(pc)
+        for pc in pc_vec[:10]:
+            try:
+                dis, _instbytes = disas[pc]
+                print(f"0x{pc:04x}:\t{dis}")
+            except KeyError as e:
+                print(f"No instruction found at 0x{pc:x}")
+        print("...")
         for pc in pc_vec[-10:]:
             try:
                 dis, _instbytes = disas[pc]
                 print(f"0x{pc:04x}:\t{dis}")
             except KeyError as e:
                 print(f"No instruction found at 0x{pc:x}")
-            VISITED.add(pc)
         i -= 1
         if i == 0:
             print("=== RESETTING ===")

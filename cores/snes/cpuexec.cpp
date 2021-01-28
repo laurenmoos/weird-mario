@@ -231,7 +231,7 @@ void write_visited(Word *shm, Word *visited, size_t count) {
 	}
 	*shm = (Word) count;
 	int i;
-    memcpy((void *)(shm + sizeof(Word)), (void *) visited, count * sizeof(Word));
+    memcpy((void *)(shm + 1), (void *) visited, count * sizeof(Word));
 	//fprintf(stderr, "exiting write_visited\n");
 	return;
 }
