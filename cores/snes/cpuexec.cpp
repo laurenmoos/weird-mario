@@ -216,7 +216,7 @@ unsigned int MAX_ITER = 0;
 unsigned int TOTAL_LOOPS = 0;
 
 
-void write_int(int *shm, int n) {
+void write_int(Word *shm, Word n) {
 	//fprintf(stderr, "In write_int, shmid: %d, n: 0x%x\n", shmid, n);
 	//memcpy(shm, p.bytes, INT_SIZE);
 	*shm = n;
@@ -353,8 +353,10 @@ void S9xMainLoop (void)
 		}
 	#endif
 
-		if (CPU.Flags & SCAN_KEYS_FLAG)
+		if (CPU.Flags & SCAN_KEYS_FLAG) {
+			if (!addr_count) write_int(log_shm, 0);
 			break;
+		}
 
 		register uint8				Op;
 		register struct	SOpcodes	*Opcodes;
