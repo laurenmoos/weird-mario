@@ -5,13 +5,25 @@ import gym.spaces
 import json
 import numpy as np
 import os
+import random
+import struct
+from collections import namedtuple
+import sysv_ipc as ipc
 import retro
 import retro.data
+import retro.dispel
 from gym.utils import seeding
 
 gym_version = tuple(int(x) for x in gym.__version__.split('.'))
 
 __all__ = ['RetroEnv']
+
+WORD_SIZE = 2
+
+
+Trace = namedtuple('Trace', ['addr', 'inst', 'bytes'])
+Trace.__repr__ = lambda t : \
+    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes=[{', '.join(f'{b:02x}' for b in t.bytes)}])"
 
 
 class RetroEnv(gym.Env):
@@ -24,7 +36,8 @@ class RetroEnv(gym.Env):
                 'video.frames_per_second': 60.0}
 
     def __init__(self, game, state=retro.State.DEFAULT, scenario=None, info=None, use_restricted_actions=retro.Actions.FILTERED,
-                 record=False, players=1, inttype=retro.data.Integrations.STABLE, obs_type=retro.Observations.IMAGE):
+                 record=False, players=1, inttype=retro.data.Integrations.STABLE, obs_type=retro.Observations.IMAGE,
+                 retro_run_id=None):
         if not hasattr(self, 'spec'):
             self.spec = None
         self._obs_type = obs_type
@@ -35,9 +48,9 @@ class RetroEnv(gym.Env):
         self.statename = state
         self.initial_state = None
         self.players = players
-
         metadata = {}
         rom_path = retro.data.get_romfile_path(game, inttype)
+        self.disas = retro.dispel.ingest(rom_path)
         metadata_path = retro.data.get_file_path(game, 'metadata.json', inttype)
 
         if state == retro.State.NONE:
@@ -80,6 +93,10 @@ class RetroEnv(gym.Env):
             scenario_path = retro.data.get_file_path(game, scenario + '.json', inttype)
 
         self.system = retro.get_romfile_system(rom_path)
+
+        # Set up the shm if we're using the SNES emulator
+        if self.system == 'Snes':
+            self._init_shm(retro_run_id)
 
         # We can't have more than one emulator per process. Before creating an
         # emulator, ensure that unused ones are garbage-collected
@@ -136,6 +153,26 @@ class RetroEnv(gym.Env):
             self._render = self.render
             self._close = self.close
 
+    def _init_shm(self, retro_run_id):
+        ##### Set up the shared memory segment ##################################################
+        # currently only supports Snes
+        # Set the identifier that the SNES C code may use to create a shared memory segment
+        if retro_run_id is None:
+            self.retro_run_id = random.randint(1, 1<<30)
+        else:
+            self.retro_run_id = retro_run_id
+        os.environ['RETRO_RUN_ID'] = f"{self.retro_run_id}"
+        self.shm_key = ipc.ftok("/dev/shm", self.retro_run_id)
+        shm_size = 1 << 15 * 2 # enough to hold 2^15 16-bit words
+        try:
+            self.shm = ipc.SharedMemory(self.shm_key, flags=ipc.IPC_CREX, mode=0o666, size=shm_size)
+        except Exception as e: # FIXME tighten this except up
+            shm = ipc.SharedMemory(self.shm_key, 0, 0)
+            ipc.remove_shared_memory(shm.id)
+            self.shm = ipc.SharedMemory(self.shm_key, flags=ipc.IPC_CREX, mode=0o666, size=shm_size)
+        self.shm.attach()
+        return
+
     def _update_obs(self):
         if self._obs_type == retro.Observations.RAM:
             self.ram = self.get_ram()
@@ -145,6 +182,12 @@ class RetroEnv(gym.Env):
             return self.img
         else:
             raise ValueError('Unrecognized observation type: {}'.format(self._obs_type))
+
+    def _read_pc_vec(self):
+        count = struct.unpack("<H", self.shm.read(WORD_SIZE))[0]
+        buf = self.shm.read((count+1) * WORD_SIZE)
+        addrs = list(struct.unpack(f"<{count+1}H", buf)[1:])
+        return addrs
 
     def action_to_array(self, a):
         actions = []
@@ -172,6 +215,12 @@ class RetroEnv(gym.Env):
             actions.append(ap)
         return actions
 
+    def disassemble(self, addr):
+        if addr not in self.disas:
+            return Trace(addr, None, None)
+        else:
+            return Trace(addr, *self.disas[addr])
+
     def step(self, a):
         if self.img is None and self.ram is None:
             raise RuntimeError('Please call env.reset() before env.step()')
@@ -188,7 +237,9 @@ class RetroEnv(gym.Env):
         self.data.update_ram()
         ob = self._update_obs()
         rew, done, info = self.compute_step()
-        return ob, rew, bool(done), dict(info)
+        info = dict(info)
+        info['trace'] = [self.disassemble(pc) for pc in self._read_pc_vec()]
+        return ob, rew, bool(done), info
 
     def reset(self):
         if self.initial_state:
