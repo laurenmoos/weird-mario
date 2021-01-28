@@ -95,8 +95,7 @@ class RetroEnv(gym.Env):
         self.system = retro.get_romfile_system(rom_path)
 
         # Set up the shm if we're using the SNES emulator
-        if self.system == 'Snes':
-            self._init_shm(retro_run_id)
+        self._init_shm(retro_run_id)
 
         # We can't have more than one emulator per process. Before creating an
         # emulator, ensure that unused ones are garbage-collected
@@ -154,6 +153,9 @@ class RetroEnv(gym.Env):
             self._close = self.close
 
     def _init_shm(self, retro_run_id):
+        if self.system != 'Snes':
+            self.shm = None
+            return
         ##### Set up the shared memory segment ##################################################
         # currently only supports Snes
         # Set the identifier that the SNES C code may use to create a shared memory segment
@@ -349,3 +351,7 @@ class RetroEnv(gym.Env):
         if not path:
             path = os.getcwd()
         self.movie_path = path
+
+    def __del__(self):
+        if self.shm is not None:
+            ipc.remove_shared_memory(self.shm.id)
