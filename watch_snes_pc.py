@@ -124,7 +124,7 @@ def main():
     i = CYCLE_LENGTH
     while CONTINUE:
         pc_vec = step(env, shm)
-        print(f"[+] {len(pc_vec)} instructions executed; {len(set(pc_vec))} unique")
+        print(f"[+] {len(pc_vec)} instructions executed; {len(set(pc_vec))} distinct")
         for pc in pc_vec:
             VISITED.add(pc)
         for pc in pc_vec[:10]:
