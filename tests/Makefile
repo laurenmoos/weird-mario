@@ -67,10 +67,10 @@ RM = /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cmake -E r
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lucca/src/upstream/retro2
+CMAKE_SOURCE_DIR = /home/lucca/src/mine/retro
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lucca/src/upstream/retro2
+CMAKE_BINARY_DIR = /home/lucca/src/mine/retro
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -146,7 +146,7 @@ edit_cache/fast: edit_cache
 # Special rule for the target package
 package: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	cd /home/lucca/src/upstream/retro2 && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackConfig.cmake
+	cd /home/lucca/src/mine/retro && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackConfig.cmake
 .PHONY : package
 
 # Special rule for the target package
@@ -168,7 +168,7 @@ test/fast: test
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	cd /home/lucca/src/upstream/retro2 && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackSourceConfig.cmake /home/lucca/src/upstream/retro2/CPackSourceConfig.cmake
+	cd /home/lucca/src/mine/retro && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackSourceConfig.cmake /home/lucca/src/mine/retro/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -178,14 +178,14 @@ package_source/fast: package_source
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/upstream/retro2/CMakeFiles /home/lucca/src/upstream/retro2/tests//CMakeFiles/progress.marks
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/upstream/retro2/CMakeFiles 0
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/mine/retro/CMakeFiles /home/lucca/src/mine/retro/tests//CMakeFiles/progress.marks
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/mine/retro/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/clean
 .PHONY : clean
 
 # The main clean target
@@ -195,22 +195,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 tests/CMakeFiles/build-tests.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/build-tests.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/build-tests.dir/rule
 .PHONY : tests/CMakeFiles/build-tests.dir/rule
 
 # Convenience name for target.
@@ -220,12 +220,12 @@ build-tests: tests/CMakeFiles/build-tests.dir/rule
 
 # fast build rule for target.
 build-tests/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/build-tests.dir/build.make tests/CMakeFiles/build-tests.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/build-tests.dir/build.make tests/CMakeFiles/build-tests.dir/build
 .PHONY : build-tests/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-emulator.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-emulator.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-emulator.dir/rule
 .PHONY : tests/CMakeFiles/test-emulator.dir/rule
 
 # Convenience name for target.
@@ -235,12 +235,12 @@ test-emulator: tests/CMakeFiles/test-emulator.dir/rule
 
 # fast build rule for target.
 test-emulator/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/build
 .PHONY : test-emulator/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-memory-overlay.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-memory-overlay.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-memory-overlay.dir/rule
 .PHONY : tests/CMakeFiles/test-memory-overlay.dir/rule
 
 # Convenience name for target.
@@ -250,12 +250,12 @@ test-memory-overlay: tests/CMakeFiles/test-memory-overlay.dir/rule
 
 # fast build rule for target.
 test-memory-overlay/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/build
 .PHONY : test-memory-overlay/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-search.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-search.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-search.dir/rule
 .PHONY : tests/CMakeFiles/test-search.dir/rule
 
 # Convenience name for target.
@@ -265,12 +265,12 @@ test-search: tests/CMakeFiles/test-search.dir/rule
 
 # fast build rule for target.
 test-search/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/build
 .PHONY : test-search/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-memory.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-memory.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-memory.dir/rule
 .PHONY : tests/CMakeFiles/test-memory.dir/rule
 
 # Convenience name for target.
@@ -280,12 +280,12 @@ test-memory: tests/CMakeFiles/test-memory.dir/rule
 
 # fast build rule for target.
 test-memory/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/build
 .PHONY : test-memory/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-data.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-data.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-data.dir/rule
 .PHONY : tests/CMakeFiles/test-data.dir/rule
 
 # Convenience name for target.
@@ -295,12 +295,12 @@ test-data: tests/CMakeFiles/test-data.dir/rule
 
 # fast build rule for target.
 test-data/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/build
 .PHONY : test-data/fast
 
 # Convenience name for target.
 tests/CMakeFiles/test-script.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-script.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 tests/CMakeFiles/test-script.dir/rule
 .PHONY : tests/CMakeFiles/test-script.dir/rule
 
 # Convenience name for target.
@@ -310,7 +310,7 @@ test-script: tests/CMakeFiles/test-script.dir/rule
 
 # fast build rule for target.
 test-script/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/build
 .PHONY : test-script/fast
 
 data.o: data.cpp.o
@@ -319,7 +319,7 @@ data.o: data.cpp.o
 
 # target to build an object file
 data.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.o
 .PHONY : data.cpp.o
 
 data.i: data.cpp.i
@@ -328,7 +328,7 @@ data.i: data.cpp.i
 
 # target to preprocess a source file
 data.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.i
 .PHONY : data.cpp.i
 
 data.s: data.cpp.s
@@ -337,7 +337,7 @@ data.s: data.cpp.s
 
 # target to generate assembly for a file
 data.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-data.dir/build.make tests/CMakeFiles/test-data.dir/data.cpp.s
 .PHONY : data.cpp.s
 
 emulator.o: emulator.cpp.o
@@ -346,7 +346,7 @@ emulator.o: emulator.cpp.o
 
 # target to build an object file
 emulator.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.o
 .PHONY : emulator.cpp.o
 
 emulator.i: emulator.cpp.i
@@ -355,7 +355,7 @@ emulator.i: emulator.cpp.i
 
 # target to preprocess a source file
 emulator.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.i
 .PHONY : emulator.cpp.i
 
 emulator.s: emulator.cpp.s
@@ -364,7 +364,7 @@ emulator.s: emulator.cpp.s
 
 # target to generate assembly for a file
 emulator.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-emulator.dir/build.make tests/CMakeFiles/test-emulator.dir/emulator.cpp.s
 .PHONY : emulator.cpp.s
 
 memory-overlay.o: memory-overlay.cpp.o
@@ -373,7 +373,7 @@ memory-overlay.o: memory-overlay.cpp.o
 
 # target to build an object file
 memory-overlay.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.o
 .PHONY : memory-overlay.cpp.o
 
 memory-overlay.i: memory-overlay.cpp.i
@@ -382,7 +382,7 @@ memory-overlay.i: memory-overlay.cpp.i
 
 # target to preprocess a source file
 memory-overlay.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.i
 .PHONY : memory-overlay.cpp.i
 
 memory-overlay.s: memory-overlay.cpp.s
@@ -391,7 +391,7 @@ memory-overlay.s: memory-overlay.cpp.s
 
 # target to generate assembly for a file
 memory-overlay.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory-overlay.dir/build.make tests/CMakeFiles/test-memory-overlay.dir/memory-overlay.cpp.s
 .PHONY : memory-overlay.cpp.s
 
 memory.o: memory.cpp.o
@@ -400,7 +400,7 @@ memory.o: memory.cpp.o
 
 # target to build an object file
 memory.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.o
 .PHONY : memory.cpp.o
 
 memory.i: memory.cpp.i
@@ -409,7 +409,7 @@ memory.i: memory.cpp.i
 
 # target to preprocess a source file
 memory.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.i
 .PHONY : memory.cpp.i
 
 memory.s: memory.cpp.s
@@ -418,7 +418,7 @@ memory.s: memory.cpp.s
 
 # target to generate assembly for a file
 memory.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-memory.dir/build.make tests/CMakeFiles/test-memory.dir/memory.cpp.s
 .PHONY : memory.cpp.s
 
 script.o: script.cpp.o
@@ -427,7 +427,7 @@ script.o: script.cpp.o
 
 # target to build an object file
 script.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.o
 .PHONY : script.cpp.o
 
 script.i: script.cpp.i
@@ -436,7 +436,7 @@ script.i: script.cpp.i
 
 # target to preprocess a source file
 script.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.i
 .PHONY : script.cpp.i
 
 script.s: script.cpp.s
@@ -445,7 +445,7 @@ script.s: script.cpp.s
 
 # target to generate assembly for a file
 script.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-script.dir/build.make tests/CMakeFiles/test-script.dir/script.cpp.s
 .PHONY : script.cpp.s
 
 search.o: search.cpp.o
@@ -454,7 +454,7 @@ search.o: search.cpp.o
 
 # target to build an object file
 search.cpp.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.o
 .PHONY : search.cpp.o
 
 search.i: search.cpp.i
@@ -463,7 +463,7 @@ search.i: search.cpp.i
 
 # target to preprocess a source file
 search.cpp.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.i
 .PHONY : search.cpp.i
 
 search.s: search.cpp.s
@@ -472,7 +472,7 @@ search.s: search.cpp.s
 
 # target to generate assembly for a file
 search.cpp.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f tests/CMakeFiles/test-search.dir/build.make tests/CMakeFiles/test-search.dir/search.cpp.s
 .PHONY : search.cpp.s
 
 # Help Target
@@ -526,6 +526,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

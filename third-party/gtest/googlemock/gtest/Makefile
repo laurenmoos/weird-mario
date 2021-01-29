@@ -67,10 +67,10 @@ RM = /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cmake -E r
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/lucca/src/upstream/retro2
+CMAKE_SOURCE_DIR = /home/lucca/src/mine/retro
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/lucca/src/upstream/retro2
+CMAKE_BINARY_DIR = /home/lucca/src/mine/retro
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -89,7 +89,7 @@ rebuild_cache/fast: rebuild_cache
 # Special rule for the target package
 package: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool..."
-	cd /home/lucca/src/upstream/retro2 && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackConfig.cmake
+	cd /home/lucca/src/mine/retro && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackConfig.cmake
 .PHONY : package
 
 # Special rule for the target package
@@ -111,7 +111,7 @@ test/fast: test
 # Special rule for the target package_source
 package_source:
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Run CPack packaging tool for source..."
-	cd /home/lucca/src/upstream/retro2 && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackSourceConfig.cmake /home/lucca/src/upstream/retro2/CPackSourceConfig.cmake
+	cd /home/lucca/src/mine/retro && /home/lucca/anaconda3/lib/python3.8/site-packages/cmake/data/bin/cpack --config ./CPackSourceConfig.cmake /home/lucca/src/mine/retro/CPackSourceConfig.cmake
 .PHONY : package_source
 
 # Special rule for the target package_source
@@ -178,14 +178,14 @@ install/local/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/upstream/retro2/CMakeFiles /home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest//CMakeFiles/progress.marks
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/upstream/retro2/CMakeFiles 0
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/mine/retro/CMakeFiles /home/lucca/src/mine/retro/third-party/gtest/googlemock/gtest//CMakeFiles/progress.marks
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/lucca/src/mine/retro/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/clean
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/clean
 .PHONY : clean
 
 # The main clean target
@@ -195,22 +195,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/preinstall
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/preinstall
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/rule
 .PHONY : third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/rule
 
 # Convenience name for target.
@@ -220,12 +220,12 @@ gtest: third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/rule
 
 # fast build rule for target.
 gtest/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build
 .PHONY : gtest/fast
 
 # Convenience name for target.
 third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/rule:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/rule
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/rule
 .PHONY : third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/rule
 
 # Convenience name for target.
@@ -235,7 +235,7 @@ gtest_main: third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/rule
 
 # fast build rule for target.
 gtest_main/fast:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build
 .PHONY : gtest_main/fast
 
 src/gtest-all.o: src/gtest-all.cc.o
@@ -244,7 +244,7 @@ src/gtest-all.o: src/gtest-all.cc.o
 
 # target to build an object file
 src/gtest-all.cc.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.o
 .PHONY : src/gtest-all.cc.o
 
 src/gtest-all.i: src/gtest-all.cc.i
@@ -253,7 +253,7 @@ src/gtest-all.i: src/gtest-all.cc.i
 
 # target to preprocess a source file
 src/gtest-all.cc.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.i
 .PHONY : src/gtest-all.cc.i
 
 src/gtest-all.s: src/gtest-all.cc.s
@@ -262,7 +262,7 @@ src/gtest-all.s: src/gtest-all.cc.s
 
 # target to generate assembly for a file
 src/gtest-all.cc.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest.dir/src/gtest-all.cc.s
 .PHONY : src/gtest-all.cc.s
 
 src/gtest_main.o: src/gtest_main.cc.o
@@ -271,7 +271,7 @@ src/gtest_main.o: src/gtest_main.cc.o
 
 # target to build an object file
 src/gtest_main.cc.o:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.o
 .PHONY : src/gtest_main.cc.o
 
 src/gtest_main.i: src/gtest_main.cc.i
@@ -280,7 +280,7 @@ src/gtest_main.i: src/gtest_main.cc.i
 
 # target to preprocess a source file
 src/gtest_main.cc.i:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.i
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.i
 .PHONY : src/gtest_main.cc.i
 
 src/gtest_main.s: src/gtest_main.cc.s
@@ -289,7 +289,7 @@ src/gtest_main.s: src/gtest_main.cc.s
 
 # target to generate assembly for a file
 src/gtest_main.cc.s:
-	cd /home/lucca/src/upstream/retro2 && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.s
+	cd /home/lucca/src/mine/retro && $(MAKE) $(MAKESILENT) -f third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/build.make third-party/gtest/googlemock/gtest/CMakeFiles/gtest_main.dir/src/gtest_main.cc.s
 .PHONY : src/gtest_main.cc.s
 
 # Help Target
@@ -326,6 +326,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/lucca/src/upstream/retro2 && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/lucca/src/mine/retro && $(CMAKE_COMMAND) -S$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

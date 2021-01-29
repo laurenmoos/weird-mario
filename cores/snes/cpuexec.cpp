@@ -197,6 +197,7 @@
 #include <sys/mman.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <assert.h>
 
 #ifdef DEBUGGER
 #include "debug.h"
@@ -256,6 +257,7 @@ Word *init_logging(void) {
         fprintf(stderr, "Failed to attach to shared memory! %d\n", errno);
         exit(errno);
     }
+	*shm = 0;
     return shm;
 }
 
@@ -354,7 +356,6 @@ void S9xMainLoop (void)
 	#endif
 
 		if (CPU.Flags & SCAN_KEYS_FLAG) {
-			if (!addr_count) write_int(log_shm, 0);
 			break;
 		}
 
@@ -386,10 +387,11 @@ void S9xMainLoop (void)
 		}
 
         /******** Log the address visited. **************/
-        //fprintf(stderr, "<- 0x%04x\n", (Word) Registers.PCw);
 		if (Registers.PCw >= 1 << 16) {
 			fprintf(stderr, "[!] WARNING! Registers.PCw = 0x{:x}\n", Registers.PCw);
 		}
+        assert((Registers.PCw & 0xFFFF) == Registers.PCw);
+
 		visited[addr_count] = (Word) Registers.PCw;
         addr_count++;
 		addr_count %= VISITED_BUFFER_SIZE;

@@ -46,8 +46,7 @@ def pp_trace(trace):
     if trace.bytes is None:
         print(f"0x{trace.addr:04x}: NO INSTRUCTION")
     else:
-        h = ', '.join(f'{b:02x}' for b in trace.bytes)
-        print(f"0x{trace.addr:04x}\t{trace.inst}\t[{h}]")
+        print(f"0x{trace.addr:04x}\t{trace.inst}")
 
 def main():
     env = setup_env(ROM)
