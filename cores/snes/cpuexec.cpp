@@ -185,7 +185,7 @@
  ***********************************************************************************/
 
 #define CPU_OPCODE_INSTRUMENTATION 1
-#define VISITED_BUFFER_SIZE 1 << 15
+#define VISITED_BUFFER_SIZE (1 << 15)
 
 #include "snes9x.h"
 #include "memmap.h"
@@ -217,40 +217,25 @@ unsigned int MAX_ITER = 0;
 unsigned int TOTAL_LOOPS = 0;
 
 
-void write_int(Word *shm, Word n) {
-	//fprintf(stderr, "In write_int, shmid: %d, n: 0x%x\n", shmid, n);
-	//memcpy(shm, p.bytes, INT_SIZE);
-	*shm = n;
-	return;
-}
-
 void write_visited(Word *shm, Word *visited, size_t count) {
-	//fprintf(stderr, "entering write_visited, count = %d\n", count);
-	//fprintf(stderr, "shm is at %p; visited is at %p\n", shm, visited);
-	if (count > VISITED_BUFFER_SIZE) {
+	if (count > (VISITED_BUFFER_SIZE - 1)) {
 		fprintf(stderr, "[in write_visited()] WARNING: count exceeds VISITED_BUFFER_SIZE: 0x%x\n", count);
+		count = VISITED_BUFFER_SIZE - 1;
 	}
 	*shm = (Word) count;
-	int i;
     memcpy((void *)(shm + 1), (void *) visited, count * sizeof(Word));
-	//fprintf(stderr, "exiting write_visited\n");
 	return;
 }
 
 Word *init_logging(void) {
-	//fprintf(stderr, "Attaching to log_shm\n");
     char *retro_run_id;
-	if (!(retro_run_id = getenv("RETRO_RUN_ID")))
+	int rid = 1;
+	if ((retro_run_id = getenv("RETRO_RUN_ID")))
     {
-        retro_run_id = "1";
+        rid = atoi(retro_run_id);
     };
-    int rid = atoi(retro_run_id);
-	//fprintf(stderr, "RETRO_RUN_ID = %d\n", rid);
 	key_t key = ftok("/dev/shm", rid);
-    // shmget returns an identifier in shmid
     int shmid = shmget(key, VISITED_BUFFER_SIZE * sizeof(Word), 0666|IPC_CREAT);
-	//int shmid = shmget(key, VISITED_BUFFER_SIZE * sizeof(int), 0666);
-	//fprintf(stderr, "shmid = 0x%x\n", shmid);
     Word *shm = (Word *) shmat(shmid, NULL, 0);
 	if (shm == (void *) -1)
     {
