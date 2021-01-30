@@ -223,11 +223,15 @@ void write_visited(Word *shm, Word *visited, size_t count) {
 		count = VISITED_BUFFER_SIZE - 1;
 	}
 	*shm = (Word) count;
+	//int i;
+	//for (i=0; i<count; i++) {
+	//	*(shm + i + 1) = visited[i];
+	//}
     memcpy((void *)(shm + 1), (void *) visited, count * sizeof(Word));
 	return;
 }
 
-Word *init_logging(void) {
+Word *init_tracing_shm(void) {
     char *retro_run_id;
 	int rid = 1;
 	if ((retro_run_id = getenv("RETRO_RUN_ID")))
@@ -242,7 +246,7 @@ Word *init_logging(void) {
         fprintf(stderr, "Failed to attach to shared memory! %d\n", errno);
         exit(errno);
     }
-	*shm = 0;
+	memset((void *) shm, 0, (VISITED_BUFFER_SIZE * sizeof(Word)));
     return shm;
 }
 
@@ -255,7 +259,7 @@ bool8 finishedFrame = false;
 void S9xMainLoop (void)
 {
 	//fprintf(stderr, "Entering main loop...\n");
-	Word *log_shm = init_logging();
+	Word *trace_shm = init_tracing_shm();
 	size_t addr_count = 0;
 	unsigned int iterations = 0;
 	Word *visited;
@@ -378,6 +382,9 @@ void S9xMainLoop (void)
         assert((Registers.PCw & 0xFFFF) == Registers.PCw);
 
 		visited[addr_count] = (Word) Registers.PCw;
+		//if (visited[addr_count] == 0x2020) {
+		//	fprintf(stderr, "[!] 0x%04x at visited[%d], Registers.PCw @ %p\n", visited[addr_count], addr_count, &(Registers.PCw));
+		//}
         addr_count++;
 		addr_count %= VISITED_BUFFER_SIZE;
 
@@ -418,12 +425,12 @@ void S9xMainLoop (void)
    }while(!finishedFrame);
 #endif
 
-    //fprintf(stderr, "Detaching from log_shm\n");
+    //fprintf(stderr, "Detaching from trace_shm\n");
     //fprintf(stderr, "Exiting main loop\n");
-    //write_int(log_shm, Registers.PCw);
-	write_visited(log_shm, visited, addr_count);
+    //write_int(trace_shm, Registers.PCw);
+	write_visited(trace_shm, visited, addr_count);
 	addr_count = 0;
-    shmdt(log_shm);
+    shmdt(trace_shm);
 	if (iterations > MAX_ITER) { MAX_ITER = iterations; }
     //fprintf(stderr, "Exiting main loop after %d iterations. (Mean: %d, Max: %d)\n", iterations, TOTAL_ITER / TOTAL_LOOPS, MAX_ITER);
 	free(visited);

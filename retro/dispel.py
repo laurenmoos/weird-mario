@@ -22,7 +22,7 @@ def parse_addr(addr):
 
 def parse_bytes(hexstring):
     """Parse hexidecimal bytes."""
-    return list(bytes.fromhex(hexstring.strip()))
+    return bytes.fromhex(hexstring.strip())
 
 
 def parse_line(line):
