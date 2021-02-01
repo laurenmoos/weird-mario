@@ -22,8 +22,10 @@ WORD_SIZE = 2
 
 
 Trace = namedtuple('Trace', ['addr', 'inst', 'bytes'])
+#Trace.__repr__ = lambda t : \
+#    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes={bytes.hex(t.bytes, ' ')})"
 Trace.__repr__ = lambda t : \
-    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes={bytes.hex(t.bytes, ' ')})"
+    f"0x{t.addr:04x}:    {bytes.hex(t.bytes, ' ') if t.bytes is not None else '':<15}{t.inst}"
 
 
 class RetroEnv(gym.Env):

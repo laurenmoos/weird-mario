@@ -41,13 +41,6 @@ def step(env):
         env.reset()
     return info
 
-
-def pp_trace(trace):
-    if trace.bytes is None:
-        print(f"0x{trace.addr:04x}: NO INSTRUCTION")
-    else:
-        print(f"0x{trace.addr:04x}\t{trace.inst}")
-
 def main():
     env = setup_env(ROM)
     i = CYCLE_LENGTH
@@ -55,10 +48,10 @@ def main():
         info = step(env)
         print(f"[+] {len(info['trace'])} instructions executed; {len(set(t.addr for t in info['trace']))} distinct")
         for t in info['trace'][:10]:
-            pp_trace(t)
+            print(t)
         print("...")
         for pc in info['trace'][-10:]:
-            pp_trace(t)
+            print(t)
         i -= 1
         if i == 0:
             print("=== RESETTING ===")
