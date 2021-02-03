@@ -8,19 +8,34 @@ if DISPEL_PATH is None:
     DISPEL_PATH = f"{os.path.dirname(__file__)}/../Dispel/dispel.exe"
 
 
+def has_smc_header(rom):
+    with open(rom, "rb") as f:
+        hd = f.read(0x200)
+    return not any(hd[4:])
+
 def disas(rom):
     """Runs the dispel.exe binary on the rom path provided, and returns
     the output as a list of strings."""
-    bank = 0
-    p = sp.Popen([DISPEL_PATH, '-b', f'{bank}', rom], stdout=sp.PIPE)
-    return [r.decode('utf-8') for r in p.stdout.readlines()]
-
+    args = ['-x', '-a'] # 8-bit mode
+    if has_smc_header(rom):
+        print("SMC header detected")
+        args.append('-n')
+    else:
+        print("No SMC header detected")
+    out = []
+    for flag in ['-i', '-s']:
+        cmd = [DISPEL_PATH, *args, flag, rom]
+        #skip_smc_header = '-n' if has_smc_header(rom) else ''
+        p = sp.Popen(cmd, stderr=sp.PIPE, stdout=sp.PIPE)
+        out += [r.decode('utf-8') for r in p.stdout.readlines()]
+    return out
 
 def parse_addr(addr):
     """Drop the bank number. We're assuming bank 0. Should parse address of the format 80/DDA1 as 0xDDA1."""
     # FIXME: Not entirely sure we're entitled to assume that the bank is always 0.
     # We might need to refine this assumption later.
-    return int(addr.split("/")[1].replace(":", ""), base=16)
+    bank, addr = (int(x, base=16) for x in addr.replace(':','').split('/'))
+    return bank, addr
 
 
 def parse_bytes(hexstring):
@@ -36,17 +51,17 @@ def parse_line(line):
         inst = "INVALID"
     else:
         r_addr, r_ibytes, inst = parts
-    addr = parse_addr(r_addr)
+    bank, addr = parse_addr(r_addr)
     ibytes = parse_bytes(r_ibytes)
-    return addr, ibytes, inst
+    return bank, addr, ibytes, inst
 
 
 def build_table(rows):
     """Build a lookup table mapping addresses to instructions."""
     table = dict()
     for row in rows:
-        addr, ibytes, inst = parse_line(row)
-        table[addr] = (inst, ibytes)
+        bank, addr, ibytes, inst = parse_line(row)
+        table[(bank, addr)] = (inst, ibytes)
     return table
 
 

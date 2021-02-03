@@ -242,6 +242,8 @@ static inline int32 memory_speed (uint32 address)
 inline uint8 S9xGetByte (uint32 Address)
 {
 	int		block = (Address & 0xffffff) >> MEMMAP_SHIFT;
+//    fprintf(stderr, "-> S9xGetByte(0x%x); block = 0x%x\n", Address, block);
+
 	uint8	*GetAddress = Memory.Map[block];
 	int32	speed = memory_speed(Address);
 	uint8	byte;

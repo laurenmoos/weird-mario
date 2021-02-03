@@ -185,7 +185,6 @@
  ***********************************************************************************/
 
 
-#ifdef DEBUGGER
 
 #ifndef _MISSING_H_
 #define _MISSING_H_
@@ -263,4 +262,3 @@ extern struct Missing	missing;
 
 #endif
 
-#endif

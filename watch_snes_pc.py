@@ -4,8 +4,10 @@ import time
 import sys
 import retro
 import random
+import os
 
-
+POKES='POKES' in os.environ
+DISALL='DISALL' in os.environ
 CYCLE_LENGTH = 500
 CONTINUE = True
 ROM = "SuperMarioWorld-Snes"
@@ -34,9 +36,9 @@ def setup_env(game):
 
 
 def step(env):
-    random_poke(env)
+    if POKES:
+        random_poke(env)
     obs, rew, done, info = env.step(env.action_space.sample())
-    env.render()
     if done:
         env.reset()
     return info
@@ -47,11 +49,16 @@ def main():
     while CONTINUE:
         info = step(env)
         print(f"[+] {len(info['trace'])} instructions executed; {len(set(t.addr for t in info['trace']))} distinct")
-        for t in info['trace'][:10]:
-            print(t)
-        print("...")
-        for pc in info['trace'][-10:]:
-            print(t)
+        if DISALL:
+            for t in info['trace']:
+                print(t)
+        else:
+            for t in info['trace'][:10]:
+                print(t)
+            print("...")
+            for pc in info['trace'][-10:]:
+                print(t)
+        env.render()
         i -= 1
         if i == 0:
             print("=== RESETTING ===")

@@ -18,14 +18,14 @@ gym_version = tuple(int(x) for x in gym.__version__.split('.'))
 
 __all__ = ['RetroEnv']
 
-WORD_SIZE = 2
+MSG_FMT = struct.Struct("<HBsssss")
 
 
-Trace = namedtuple('Trace', ['addr', 'inst', 'bytes'])
+Trace = namedtuple('Trace', ['bank', 'addr', 'inst', 'bytes'])
 #Trace.__repr__ = lambda t : \
 #    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes={bytes.hex(t.bytes, ' ')})"
 Trace.__repr__ = lambda t : \
-    f"0x{t.addr:04x}:    {bytes.hex(t.bytes, ' ') if t.bytes is not None else '':<15}{t.inst}"
+    f"{t.bank:02x}/{t.addr:04x}:    {bytes.hex(t.bytes, ' ') if t.bytes is not None else '':<15}{t.inst}"
 
 
 class RetroEnv(gym.Env):
@@ -43,6 +43,7 @@ class RetroEnv(gym.Env):
         if not hasattr(self, 'spec'):
             self.spec = None
         self._obs_type = obs_type
+        self.shm = None
         self.img = None
         self.ram = None
         self.viewer = None
@@ -187,11 +188,13 @@ class RetroEnv(gym.Env):
         else:
             raise ValueError('Unrecognized observation type: {}'.format(self._obs_type))
 
-    def _read_pc_vec(self):
-        count = struct.unpack("<H", self.shm.read(WORD_SIZE))[0]
+    def _read_snes_shm(self):
+        WORD_SIZE = 8
+        count = struct.unpack(f"<Q", self.shm.read(WORD_SIZE))[0]
         buf = self.shm.read((count+1) * WORD_SIZE)
-        addrs = list(struct.unpack(f"<{count+1}H", buf)[1:])
-        return addrs
+        g = MSG_FMT.iter_unpack(buf)
+        _ = next(g)
+        return ((addr | bank << 16, b''.join(bytecode)) for (addr, bank, *bytecode) in g)
 
     def action_to_array(self, a):
         actions = []
@@ -219,11 +222,18 @@ class RetroEnv(gym.Env):
             actions.append(ap)
         return actions
 
-    def disassemble(self, addr):
-        if addr not in self.disas:
-            return Trace(addr, None, None)
+    def disassemble(self, address, bytecode=None):
+        bank = address >> 16 #(0x0F & (address >> 16)) | 0x80
+        addr = address & 0xFFFF
+        if bytecode is None:
+            #print(f"disassemble(0x{address:x}); bank = {bank:x} addr = {addr:x}")
+            if (bank, addr) not in self.disas:
+                return Trace(bank, addr, None, None)
+            else:
+                return Trace(bank, addr, *self.disas[(bank, addr)])
         else:
-            return Trace(addr, *self.disas[addr])
+            # run dispel
+            return Trace(bank, addr, None, bytecode)
 
     def step(self, a):
         if self.img is None and self.ram is None:
@@ -243,7 +253,7 @@ class RetroEnv(gym.Env):
         rew, done, info = self.compute_step()
         info = dict(info)
         if self.system == 'Snes':
-            info['trace'] = [self.disassemble(pc) for pc in self._read_pc_vec()]
+            info['trace'] = [self.disassemble(pc, inst) for (pc, inst) in self._read_snes_shm()]
         return ob, rew, bool(done), info
 
     def reset(self):
