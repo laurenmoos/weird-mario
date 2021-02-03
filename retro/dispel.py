@@ -11,12 +11,15 @@ if DISPEL_PATH is None:
 def disas(rom):
     """Runs the dispel.exe binary on the rom path provided, and returns
     the output as a list of strings."""
-    p = sp.Popen([DISPEL_PATH, rom], stdout=sp.PIPE)
+    bank = 0
+    p = sp.Popen([DISPEL_PATH, '-b', f'{bank}', rom], stdout=sp.PIPE)
     return [r.decode('utf-8') for r in p.stdout.readlines()]
 
 
 def parse_addr(addr):
-    """Should parse address of the format 80/DDA1 as 0x80DDA1."""
+    """Drop the bank number. We're assuming bank 0. Should parse address of the format 80/DDA1 as 0xDDA1."""
+    # FIXME: Not entirely sure we're entitled to assume that the bank is always 0.
+    # We might need to refine this assumption later.
     return int(addr.split("/")[1].replace(":", ""), base=16)
 
 

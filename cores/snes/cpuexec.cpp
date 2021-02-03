@@ -351,6 +351,7 @@ void S9xMainLoop (void)
 		register uint8				Op;
 		register struct	SOpcodes	*Opcodes;
 
+		assert(CPU.PCBase);
 		if (CPU.PCBase)
 		{
 			Op = CPU.PCBase[Registers.PCw];
@@ -376,10 +377,11 @@ void S9xMainLoop (void)
 		}
 
         /******** Log the address visited. **************/
+        //fprintf(stderr, "Registers.PBPC = 0x%x; Registers.PCw = 0x%04x\n", Registers.PBPC, Registers.PCw);
 		if (Registers.PCw >= 1 << 16) {
 			fprintf(stderr, "[!] WARNING! Registers.PCw = 0x{:x}\n", Registers.PCw);
 		}
-        assert((Registers.PCw & 0xFFFF) == Registers.PCw);
+		assert((Registers.PBPC & 0xFF0000) == 0);
 
 		visited[addr_count] = (Word) Registers.PCw;
 		//if (visited[addr_count] == 0x2020) {
