@@ -221,16 +221,14 @@ class RetroEnv(gym.Env):
             actions.append(ap)
         return actions
 
-    def disassemble(self, address, flag=None, bytecode=None):
+    def disassemble(self, address, offset=None, bytecode=None):
         bank = address >> 16 #(0x0F & (address >> 16)) | 0x80
         addr = address & 0xFFFF
         if (bank, addr) in self.disas:
             trace = self.disas[(bank, addr)]
-            if (trace.bytes[0] != bytecode[0]):
-                print(f"Disagreement: {trace.bytes} != {bytecode}")
             return trace
         else:
-            trace = retro.dispel.disas_code(code=bytecode, addr=address)[0]
+            trace = retro.dispel.disas_code(code=bytecode[:offset], addr=address)[0]
             self.disas[(bank, addr)] = trace
             return trace
 

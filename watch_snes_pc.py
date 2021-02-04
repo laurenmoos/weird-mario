@@ -57,10 +57,10 @@ def main():
             else:
                 for t in info['trace'][:10]:
                     #print(retro.dispel.disas_code(code=t[2], addr=t[0])[0])
-                    print(env.disassemble(address=t[0], bytecode=t[2]))
+                    print(env.disassemble(address=t[0], offset=t[1], bytecode=t[2]))
                 print("...")
                 for t in info['trace'][-10:]:
-                    print(env.disassemble(address=t[0], bytecode=t[2]))
+                    print(env.disassemble(address=t[0], offset=t[1], bytecode=t[2]))
         env.render()
         i -= 1
         if i == 0:
