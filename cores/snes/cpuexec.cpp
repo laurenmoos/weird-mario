@@ -2143,10 +2143,8 @@ void S9xMainLoop (void)
 		uint8 flag = (uint8) Registers.P.W & 0xFF;
 		Word offset = 0;
 
-        //fprintf(stderr, "%02x/%04x: %02x\n", Registers.PBPC >> 16, Registers.PBPC & 0xFFFF, Op);
 		if (CPU.PCBase)
 		{
-            //unsigned int offset = disasm((unsigned char *) CPU.PCBase + Registers.PCw, Registers.PBPC, Registers.P.W, dis, 0);
 			offset = inst_offset(CPU.PCBase + Registers.PCw, Registers.P.W);
 			// offset is always <= 4
 			int i;
@@ -2154,9 +2152,7 @@ void S9xMainLoop (void)
 				inst_bytes <<= 8;
 				inst_bytes |= CPU.PCBase[Registers.PCw + i];
 			}
-			//msg |= (inst_bytes << 32);
 
-			//fprintf(stderr, "-> %s\n", dis);
 			Op = CPU.PCBase[Registers.PCw];
 			CPU.PrevCycles = CPU.Cycles;
 			CPU.Cycles += CPU.MemSpeed;
@@ -2166,14 +2162,6 @@ void S9xMainLoop (void)
 		else
 		{
 			// NOTE: This section runs very infrequently
-//			disasm((unsigned char *) Memory.Map[Registers.PBPC >> 12] + Registers.PCw, Registers.PBPC, Registers.P.W, dis, 0);
-			//int offset = inst_offset((unsigned char*) Memory.Map[Registers.PBPC >> 12] + Registers.PCw, Registers.P.W);
-			//int i;
-			//for (i=0; i<=offset; i++) {
-		//		inst_bytes <<= 8;
-				//inst_bytes |= Memory.Map[Registers.PBPC >> 12][Registers.PCw + i];
-		//	}
-			//fprintf(stderr, "=> %s\n", dis);
 			Op = S9xGetByte(Registers.PBPC);
             inst_bytes |= Op;
 			OpenBus = Op;
