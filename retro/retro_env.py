@@ -18,7 +18,7 @@ gym_version = tuple(int(x) for x in gym.__version__.split('.'))
 
 __all__ = ['RetroEnv']
 
-MSG_FMT = struct.Struct("<HBsssss")
+MSG_FMT = struct.Struct("<HBBssss")
 
 
 Trace = namedtuple('Trace', ['bank', 'addr', 'inst', 'bytes'])
@@ -194,7 +194,7 @@ class RetroEnv(gym.Env):
         buf = self.shm.read((count+1) * WORD_SIZE)
         g = MSG_FMT.iter_unpack(buf)
         _ = next(g)
-        return ((addr | bank << 16, b''.join(bytecode)) for (addr, bank, *bytecode) in g)
+        return ((addr | bank << 16, flag, b''.join(bytecode)) for (addr, bank, flag, *bytecode) in g)
 
     def action_to_array(self, a):
         actions = []
@@ -222,7 +222,7 @@ class RetroEnv(gym.Env):
             actions.append(ap)
         return actions
 
-    def disassemble(self, address, bytecode=None):
+    def disassemble(self, address, flag=None, bytecode=None):
         bank = address >> 16 #(0x0F & (address >> 16)) | 0x80
         addr = address & 0xFFFF
         if bytecode is None:
@@ -232,6 +232,8 @@ class RetroEnv(gym.Env):
             else:
                 return Trace(bank, addr, *self.disas[(bank, addr)])
         else:
+            offset = retro.dispel.get_offset(bytecode, flag)
+            bytecode = bytecode[:offset]
             # run dispel
             return Trace(bank, addr, None, bytecode)
 
@@ -253,7 +255,7 @@ class RetroEnv(gym.Env):
         rew, done, info = self.compute_step()
         info = dict(info)
         if self.system == 'Snes':
-            info['trace'] = [self.disassemble(pc, inst) for (pc, inst) in self._read_snes_shm()]
+            info['trace'] = [self.disassemble(pc, flag, inst) for (pc, flag, inst) in self._read_snes_shm()]
         return ob, rew, bool(done), info
 
     def reset(self):

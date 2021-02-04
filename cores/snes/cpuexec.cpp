@@ -2043,7 +2043,6 @@ void S9xMainLoop (void)
 {
 	//fprintf(stderr, "Entering main loop...\n");
 	unsigned char *flag; // Used by the disassembler. TODO: integrate with emu
-	flag = (unsigned char*) calloc(64, 1);
 	Word *trace_shm = init_tracing_shm();
 	size_t addr_count = 0;
 	unsigned int iterations = 0;
@@ -2141,14 +2140,16 @@ void S9xMainLoop (void)
         char *dis;
         dis = (char *) calloc(512, 1);
         uint64 inst_bytes = 0;
+		uint8 flag = (uint8) Registers.P.W & 0xFF;
 
         //fprintf(stderr, "%02x/%04x: %02x\n", Registers.PBPC >> 16, Registers.PBPC & 0xFFFF, Op);
 		if (CPU.PCBase)
 		{
             //unsigned int offset = disasm((unsigned char *) CPU.PCBase + Registers.PCw, Registers.PBPC, Registers.P.W, dis, 0);
 			int offset = inst_offset(CPU.PCBase + Registers.PCw, Registers.P.W);
+			// offset is always <= 4
 			int i;
-			for (i=0;i<=offset;i++) {
+			for (i=0;i<offset;i++) {
 				inst_bytes <<= 8;
 				inst_bytes |= CPU.PCBase[Registers.PCw + i];
 			}
@@ -2191,7 +2192,8 @@ void S9xMainLoop (void)
 
         /******** Log the address visited. **************/
         msg |= Registers.PBPC & 0xFFffff;
-		msg |= inst_bytes << 24;
+		msg |= (uint64) flag << 24;
+		msg |= inst_bytes << 32;
 		/*** Message format:
 		 * |leading zeroes?|bytecode (length <= 40 bits)|Block (8 bits)|Address (16 bits)|
 		 *
@@ -2253,7 +2255,6 @@ void S9xMainLoop (void)
 	if (iterations > MAX_ITER) { MAX_ITER = iterations; }
     //fprintf(stderr, "Exiting main loop after %d iterations. (Mean: %d, Max: %d)\n", iterations, TOTAL_ITER / TOTAL_LOOPS, MAX_ITER);
 	free(visited);
-	free(flag);
 }
 
 static inline void S9xReschedule (void)
