@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="gtest"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\third-party\;CMake Files\third-party\capnproto\;CMake Files\third-party\capnproto\c++\;CMake Files\third-party\capnproto\c++\cmake\;CMake Files\third-party\capnproto\c++\src\;CMake Files\third-party\capnproto\c++\src\kj\;CMake Files\third-party\capnproto\c++\src\capnp\;CMake Files\third-party\libzip\;CMake Files\third-party\libzip\regress\;CMake Files\third-party\libzip\lib\;CMake Files\third-party\libzip\man\;CMake Files\third-party\libzip\src\;CMake Files\third-party\libzip\examples\;CMake Files\third-party\gtest\;CMake Files\third-party\gtest\googlemock\;CMake Files\third-party\gtest\googletest\;CMake Files\third-party\gtest\googletest\cmake\;CMake Files\tests\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/luajit/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/retro"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/pybind11/include"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest_main/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/libgtest_main.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/luajit/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/retro"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/pybind11/include"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest_main/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/luajit/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/retro"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/pybind11/include"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="gtest/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/libgtest.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/luajit/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/retro"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/pybind11/include"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/include"/>
+					<Add directory="/usr/include/python3.8"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/gtest/googletest"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 gtest/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/gtest/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/src/gtest-all.cc">
+			<Option target="gtest"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/src/gtest_main.cc">
+			<Option target="gtest_main"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp-json.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp-rpc.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/kj-async.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/kj.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/cmake/CapnProtoConfig.cmake.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/cmake/CapnProtoMacros.cmake">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/kj/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\kj\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/capnp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\capnp\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/cmake-config.h.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/cmake-zipconf.h.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/libzip.pc.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\regress\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/runtest.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\regress\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\lib\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/man/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\man\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\src\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\examples\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\gtest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\gtest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\third-party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>

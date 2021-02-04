@@ -1,0 +1,1212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="libzip"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;CMake Files\third-party\;CMake Files\third-party\capnproto\;CMake Files\third-party\capnproto\c++\;CMake Files\third-party\capnproto\c++\cmake\;CMake Files\third-party\capnproto\c++\src\;CMake Files\third-party\capnproto\c++\src\kj\;CMake Files\third-party\capnproto\c++\src\capnp\;CMake Files\third-party\libzip\;CMake Files\third-party\libzip\regress\;CMake Files\third-party\libzip\lib\;CMake Files\third-party\libzip\man\;CMake Files\third-party\libzip\src\;CMake Files\third-party\libzip\examples\;CMake Files\third-party\gtest\;CMake Files\third-party\gtest\googlemock\;CMake Files\third-party\gtest\googletest\;CMake Files\third-party\gtest\googletest\cmake\;CMake Files\tests\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="dist">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 dist"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="update_zip_err_str">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 update_zip_err_str"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zip">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/lib/libzip.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib/gladman-fcrypt"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 zip"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zip/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/lib/libzip.a" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+				<Option object_output="./"/>
+				<Option type="2"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib/gladman-fcrypt"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/lib/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 zip/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/lib/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="man">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/man"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 man"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="update-html">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/man"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 update-html"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="update-man">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/man"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 update-man"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="update_zip_errors">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/man"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 update_zip_errors"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/man/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ziptool">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/ziptool" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 ziptool"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ziptool/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/ziptool" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 ziptool/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zipmerge">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipmerge" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 zipmerge"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zipmerge/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipmerge" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 zipmerge/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zipcmp">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipcmp" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 zipcmp"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="zipcmp/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipcmp" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/src"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/src/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 zipcmp/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/src/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fread">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fread" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fread"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fread/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fread" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fread/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="malloc">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/libmalloc.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 malloc"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="malloc/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/libmalloc.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 malloc/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="nonrandomopentest">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/nonrandomopentest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 nonrandomopentest"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="nonrandomopentest/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/nonrandomopentest" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 nonrandomopentest/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fseek">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fseek" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fseek"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fseek/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fseek" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fseek/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="can_clone_file">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/can_clone_file" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 can_clone_file"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="can_clone_file/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/can_clone_file" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 can_clone_file/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="add_from_filep">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/add_from_filep" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 add_from_filep"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="add_from_filep/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/add_from_filep" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 add_from_filep/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="check">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 check"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ziptool_regress">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/ziptool_regress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 ziptool_regress"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="ziptool_regress/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/ziptool_regress" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 ziptool_regress/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hole">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/hole" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 hole"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="hole/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/hole" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 hole/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fopen_unchanged">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fopen_unchanged" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fopen_unchanged"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="fopen_unchanged/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fopen_unchanged" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 fopen_unchanged/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="cleanup">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 cleanup"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="testinput">
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 testinput"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="nonrandomopen">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/libnonrandomopen.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 nonrandomopen"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="nonrandomopen/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/libnonrandomopen.so" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="3"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 nonrandomopen/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="tryopen">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/tryopen" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 tryopen"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="tryopen/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/regress/tryopen" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/regress"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/regress/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 tryopen/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/regress/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="in-memory">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/examples/in-memory" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/examples"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 in-memory"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="in-memory/fast">
+				<Option output="/home/lucca/src/upstream/retro2/third-party/libzip/examples/in-memory" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/lucca/src/upstream/retro2/third-party/libzip/examples"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add option="-DUSE_CAPNP"/>
+					<Add option="-DHAVE_CONFIG_H"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/../lib"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/../src"/>
+					<Add directory="/home/lucca/src/upstream/retro2/third-party/libzip/examples/.."/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 in-memory/fast"/>
+					<CompileFile command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -f &quot;/home/lucca/src/upstream/retro2/third-party/libzip/examples/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/examples/in-memory.c">
+			<Option target="in-memory"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/gladman-fcrypt.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/gladman-fcrypt.h">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_add.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_add_dir.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_add_entry.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_algorithm_bzip2.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_algorithm_deflate.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_buffer.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_close.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_delete.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_dir_add.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_dirent.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_discard.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_entry.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_err_str.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error_clear.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error_get.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error_get_sys_type.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error_strerror.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_error_to_str.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_extra_field.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_extra_field_api.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fclose.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fdopen.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_add.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_error_clear.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_error_get.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_get_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_get_external_attributes.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_get_offset.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_rename.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_replace.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_set_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_set_encryption.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_set_external_attributes.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_set_mtime.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_file_strerror.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_filerange_crc.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fopen.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fopen_encrypted.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fopen_index.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fopen_index_encrypted.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fread.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_fseek.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_ftell.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_archive_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_archive_flag.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_encryption_implementation.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_file_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_name.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_num_entries.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_get_num_files.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_hash.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_io_util.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_libzip_version.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_memdup.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_name_locate.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_new.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_open.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_progress.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_random_unix.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_rename.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_replace.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_archive_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_archive_flag.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_default_password.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_file_comment.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_file_compression.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_set_name.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_begin_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_begin_write_cloning.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_buffer.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_call.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_close.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_commit_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_compress.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_crc.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_error.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_file.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_filep.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_free.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_function.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_get_compression_flags.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_is_deleted.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_layered.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_open.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_pkware.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_read.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_remove.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_rollback_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_seek.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_seek_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_stat.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_supports.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_tell.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_tell_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_window.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_winzip_aes_decode.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_winzip_aes_encode.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_write.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_zip.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_source_zip_new.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_stat.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_stat_index.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_stat_init.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_strerror.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_string.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_unchange.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_unchange_all.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_unchange_archive.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_unchange_data.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/zip_utf-8.c">
+			<Option target="zip"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/add_from_filep.c">
+			<Option target="add_from_filep"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/can_clone_file.c">
+			<Option target="can_clone_file"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fopen_unchanged.c">
+			<Option target="fopen_unchanged"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fread.c">
+			<Option target="fread"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/fseek.c">
+			<Option target="fseek"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/hole.c">
+			<Option target="hole"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/malloc.c">
+			<Option target="malloc"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/nonrandomopen.c">
+			<Option target="nonrandomopen"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/nonrandomopentest.c">
+			<Option target="nonrandomopentest"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/source_hole.c">
+			<Option target="ziptool_regress"/>
+			<Option target="hole"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/tryopen.c">
+			<Option target="tryopen"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/ziptool_regress.c">
+			<Option target="ziptool_regress"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipcmp.c">
+			<Option target="zipcmp"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/src/zipmerge.c">
+			<Option target="zipmerge"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/src/ziptool.c">
+			<Option target="ziptool"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp-json.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp-rpc.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/capnp.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/kj-async.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/kj.pc.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/cmake/CapnProtoConfig.cmake.in">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/cmake/CapnProtoMacros.cmake">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/kj/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\kj\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/capnproto/c++/src/capnp/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\capnproto\c++\src\capnp\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/cmake-config.h.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/cmake-zipconf.h.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/libzip.pc.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\regress\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/regress/runtest.in">
+			<Option virtualFolder="CMake Files\third-party\libzip\regress\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/lib/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\lib\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/man/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\man\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/src/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\src\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/libzip/examples/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\libzip\examples\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googlemock/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\gtest\googlemock\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\third-party\gtest\googletest\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/third-party/gtest/googletest/cmake/internal_utils.cmake">
+			<Option virtualFolder="CMake Files\third-party\gtest\googletest\cmake\"/>
+		</Unit>
+		<Unit filename="/home/lucca/src/upstream/retro2/tests/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\tests\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
