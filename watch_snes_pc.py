@@ -7,6 +7,7 @@ import random
 import os
 
 POKES='POKES' in os.environ
+TRACE='NOTRACE' not in os.environ
 DISALL='DISALL' in os.environ
 CYCLE_LENGTH = 500
 CONTINUE = True
@@ -48,16 +49,18 @@ def main():
     i = CYCLE_LENGTH
     while CONTINUE:
         info = step(env)
-        print(f"[+] {len(info['trace'])} instructions executed; {len(set(t.addr for t in info['trace']))} distinct")
-        if DISALL:
-            for t in info['trace']:
-                print(t)
-        else:
-            for t in info['trace'][:10]:
-                print(t)
-            print("...")
-            for pc in info['trace'][-10:]:
-                print(t)
+        if TRACE:
+            print(f"[+] {len(info['trace'])} instructions executed; {len(set(t for t in info['trace']))} distinct")
+            if DISALL:
+                for t in info['trace']:
+                    print(t)
+            else:
+                for t in info['trace'][:10]:
+                    #print(retro.dispel.disas_code(code=t[2], addr=t[0])[0])
+                    print(env.disassemble(address=t[0], bytecode=t[2]))
+                print("...")
+                for t in info['trace'][-10:]:
+                    print(env.disassemble(address=t[0], bytecode=t[2]))
         env.render()
         i -= 1
         if i == 0:

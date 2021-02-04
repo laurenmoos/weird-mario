@@ -7,26 +7,25 @@ import numpy as np
 import os
 import random
 import struct
-from collections import namedtuple
 import sysv_ipc as ipc
+import multiprocessing.shared_memory as shared_memory
 import retro
 import retro.data
 import retro.dispel
+from retro.dispel import Trace
 from gym.utils import seeding
 
 gym_version = tuple(int(x) for x in gym.__version__.split('.'))
 
 __all__ = ['RetroEnv']
 
-MSG_FMT = struct.Struct("<HBBssss")
+MSG_FMT = struct.Struct("<HBBBBBB")
+WORD_SIZE = 8
+VISITED_BUFFER_SIZE = 1 << 15
 
-
-Trace = namedtuple('Trace', ['bank', 'addr', 'inst', 'bytes'])
-#Trace.__repr__ = lambda t : \
-#    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes={bytes.hex(t.bytes, ' ')})"
-Trace.__repr__ = lambda t : \
-    f"{t.bank:02x}/{t.addr:04x}:    {bytes.hex(t.bytes, ' ') if t.bytes is not None else '':<15}{t.inst}"
-
+RETRO_DEBUG = 0
+if 'RETRO_DEBUG' in os.environ:
+    RETRO_DEBUG = int(os.environ['RETRO_DEBUG'])
 
 class RetroEnv(gym.Env):
     """
@@ -167,15 +166,14 @@ class RetroEnv(gym.Env):
         else:
             self.retro_run_id = retro_run_id
         os.environ['RETRO_RUN_ID'] = f"{self.retro_run_id}"
-        self.shm_key = ipc.ftok("/dev/shm", self.retro_run_id)
-        shm_size = 1 << 15 * 2 # enough to hold 2^15 16-bit words
+        self.shm_key = self.retro_run_id
+        shm_size = VISITED_BUFFER_SIZE * WORD_SIZE # enough to hold 2^15 16-bit words
         try:
             self.shm = ipc.SharedMemory(self.shm_key, flags=ipc.IPC_CREX, mode=0o666, size=shm_size)
         except Exception as e: # FIXME tighten this except up
             shm = ipc.SharedMemory(self.shm_key, 0, 0)
             ipc.remove_shared_memory(shm.id)
             self.shm = ipc.SharedMemory(self.shm_key, flags=ipc.IPC_CREX, mode=0o666, size=shm_size)
-        self.shm.attach()
         return
 
     def _update_obs(self):
@@ -189,12 +187,13 @@ class RetroEnv(gym.Env):
             raise ValueError('Unrecognized observation type: {}'.format(self._obs_type))
 
     def _read_snes_shm(self):
-        WORD_SIZE = 8
+        self.shm.attach()
         count = struct.unpack(f"<Q", self.shm.read(WORD_SIZE))[0]
         buf = self.shm.read((count+1) * WORD_SIZE)
+        self.shm.detach()
         g = MSG_FMT.iter_unpack(buf)
         _ = next(g)
-        return ((addr | bank << 16, flag, b''.join(bytecode)) for (addr, bank, flag, *bytecode) in g)
+        return [(addr | bank << 16, offset, bytes(bytecode)) for (addr, bank, offset, *bytecode) in g]
 
     def action_to_array(self, a):
         actions = []
@@ -225,17 +224,15 @@ class RetroEnv(gym.Env):
     def disassemble(self, address, flag=None, bytecode=None):
         bank = address >> 16 #(0x0F & (address >> 16)) | 0x80
         addr = address & 0xFFFF
-        if bytecode is None:
-            #print(f"disassemble(0x{address:x}); bank = {bank:x} addr = {addr:x}")
-            if (bank, addr) not in self.disas:
-                return Trace(bank, addr, None, None)
-            else:
-                return Trace(bank, addr, *self.disas[(bank, addr)])
+        if (bank, addr) in self.disas:
+            trace = self.disas[(bank, addr)]
+            if (trace.bytes[0] != bytecode[0]):
+                print(f"Disagreement: {trace.bytes} != {bytecode}")
+            return trace
         else:
-            offset = retro.dispel.get_offset(bytecode, flag)
-            bytecode = bytecode[:offset]
-            # run dispel
-            return Trace(bank, addr, None, bytecode)
+            trace = retro.dispel.disas_code(code=bytecode, addr=address)[0]
+            self.disas[(bank, addr)] = trace
+            return trace
 
     def step(self, a):
         if self.img is None and self.ram is None:
@@ -254,8 +251,9 @@ class RetroEnv(gym.Env):
         ob = self._update_obs()
         rew, done, info = self.compute_step()
         info = dict(info)
-        if self.system == 'Snes':
-            info['trace'] = [self.disassemble(pc, flag, inst) for (pc, flag, inst) in self._read_snes_shm()]
+        if self.system == 'Snes' and 'NOTRACE' not in os.environ:
+            #info['trace'] = [self.disassemble(pc, flag, inst) for (pc, flag, inst) in self._read_snes_shm()]
+            info['trace'] = self._read_snes_shm()
         return ob, rew, bool(done), info
 
     def reset(self):

@@ -163,6 +163,8 @@ int main(int argc, char *argv[])
 		exit(1);
 	}
 
+  unsigned int forced_length = 0;
+
 	for (i=1; i<(argc-1); i++)
 	{
 		if (sscanf(argv[i], "-%c", &opt) == 0)
@@ -243,6 +245,10 @@ int main(int argc, char *argv[])
 			i++;
 			strcpy(outfile, argv[i]);
 			break;
+    case 'L':
+      i++;
+      sscanf(argv[i], "%lX", &forced_length);
+      break;
 		default:
 			usage();
 			printf("\nUnknown option: -%c\n", opt);
@@ -276,6 +282,9 @@ int main(int argc, char *argv[])
 	}
 
 	// Read the file into memory
+  if (forced_length) {
+    len = forced_length;
+  } else {
 #ifndef _WIN32
 	fseek(fin, 0L, SEEK_END);
 	len = ftell(fin);
@@ -283,13 +292,15 @@ int main(int argc, char *argv[])
 #else
 	len = filelength(fileno(fin));
 #endif
+  }
 
 	// Make sure the image is big enough
-
+  /*
 	if (len < 0x8000 || (skip == 1 && len < 0x8200))
 	{
 		printf("This file looks too small to be a legitimate rom image.\n");
 	}
+  */
 
 	// Allocate mem for file. Extra 3 bytes to prevent segfault during memcpy
 	if ((data = malloc(len+3)) == NULL)

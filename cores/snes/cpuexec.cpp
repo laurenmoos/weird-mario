@@ -2021,7 +2021,7 @@ Word *init_tracing_shm(void) {
     {
         rid = atoi(retro_run_id);
     };
-	key_t key = ftok("/dev/shm", rid);
+	key_t key = (key_t) rid;
     int shmid = shmget(key, VISITED_BUFFER_SIZE * sizeof(Word), 0666|IPC_CREAT);
     Word *shm = (Word *) shmat(shmid, NULL, 0);
 	if (shm == (void *) -1)
@@ -2141,15 +2141,16 @@ void S9xMainLoop (void)
         dis = (char *) calloc(512, 1);
         uint64 inst_bytes = 0;
 		uint8 flag = (uint8) Registers.P.W & 0xFF;
+		Word offset = 0;
 
         //fprintf(stderr, "%02x/%04x: %02x\n", Registers.PBPC >> 16, Registers.PBPC & 0xFFFF, Op);
 		if (CPU.PCBase)
 		{
             //unsigned int offset = disasm((unsigned char *) CPU.PCBase + Registers.PCw, Registers.PBPC, Registers.P.W, dis, 0);
-			int offset = inst_offset(CPU.PCBase + Registers.PCw, Registers.P.W);
+			offset = inst_offset(CPU.PCBase + Registers.PCw, Registers.P.W);
 			// offset is always <= 4
 			int i;
-			for (i=0;i<offset;i++) {
+			for (i=offset-1;i>=0;i--) {
 				inst_bytes <<= 8;
 				inst_bytes |= CPU.PCBase[Registers.PCw + i];
 			}
@@ -2174,6 +2175,7 @@ void S9xMainLoop (void)
 		//	}
 			//fprintf(stderr, "=> %s\n", dis);
 			Op = S9xGetByte(Registers.PBPC);
+            inst_bytes |= Op;
 			OpenBus = Op;
 			Opcodes = S9xOpcodesSlow;
 		}
@@ -2191,26 +2193,33 @@ void S9xMainLoop (void)
 		}
 
         /******** Log the address visited. **************/
-        msg |= Registers.PBPC & 0xFFffff;
-		msg |= (uint64) flag << 24;
-		msg |= inst_bytes << 32;
+        Word old_pbpc = Registers.PBPC & 0xFFffff;
+		//msg |= (uint64) flag << 24;
 		/*** Message format:
 		 * |leading zeroes?|bytecode (length <= 40 bits)|Block (8 bits)|Address (16 bits)|
 		 *
 		 */
-		visited[addr_count] = (Word) msg;
 		//if (visited[addr_count] == 0x2020) {
 		//	fprintf(stderr, "[!] 0x%04x at visited[%d], Registers.PCw @ %p\n", visited[addr_count], addr_count, &(Registers.PCw));
 		//}
-        addr_count++;
-		if (addr_count >= VISITED_BUFFER_SIZE) {
-			// KLUDGE not sure this will work
-			fprintf(stderr, "=== Breaking loop after %d iterations ===\n", addr_count);
-			break;
-		}
 
 		Registers.PCw++;
 		(*Opcodes[Op].S9xOpcode)();
+
+		if (!offset)
+			offset = (Registers.PBPC - old_pbpc) & 0xFF;
+		// TODO: Figure out how to get inst bytes for other case
+        msg |= old_pbpc;
+		msg |= offset << 24;
+        msg |= inst_bytes << 32;
+        visited[addr_count++] = (Word) msg;
+		//if (addr_count > 1 && (visited[addr_count-1] == visited[addr_count-2]))
+	//		fprintf(stderr, "SUSPICIOUS REPETITION: %d: %X, %d: %X", addr_count-2, visited[addr_count-2], addr_count-1, visited[addr_count-1]);
+        if (addr_count >= VISITED_BUFFER_SIZE) {
+            // KLUDGE not sure this will work
+            fprintf(stderr, "=== Breaking loop after %d iterations ===\n", addr_count);
+            break;
+        }
 
 		if (Settings.SA1)
 			S9xSA1MainLoop();

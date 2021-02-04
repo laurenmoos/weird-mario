@@ -1,11 +1,20 @@
 import subprocess as sp
+from collections import namedtuple
 import json
+import tempfile
 import sys
 import os
 
 DISPEL_PATH = os.getenv("DISPEL_PATH")
 if DISPEL_PATH is None:
     DISPEL_PATH = f"{os.path.dirname(__file__)}/../Dispel/dispel.exe"
+
+Trace = namedtuple('Trace', ['bank', 'addr', 'inst', 'bytes'])
+#Trace.__repr__ = lambda t : \
+#    f"Trace(addr={t.addr:04x}, inst='{t.inst}', bytes={bytes.hex(t.bytes, ' ')})"
+Trace.__repr__ = lambda t : \
+    f"{t.bank:02x}/{t.addr:04x}:    {bytes.hex(t.bytes, ' ') if t.bytes is not None else '':<15}{t.inst}"
+
 
 
 OFFSETS = {
@@ -325,15 +334,15 @@ def parse_line(line):
         r_addr, r_ibytes, inst = parts
     bank, addr = parse_addr(r_addr)
     ibytes = parse_bytes(r_ibytes)
-    return bank, addr, ibytes, inst
+    return Trace(bank,  addr, inst, bytes=ibytes) 
 
 
 def build_table(rows):
     """Build a lookup table mapping addresses to instructions."""
     table = dict()
     for row in rows:
-        bank, addr, ibytes, inst = parse_line(row)
-        table[(bank, addr)] = (inst, ibytes)
+        trace = parse_line(row)
+        table[(trace.bank, trace.addr)] = trace
     return table
 
 
@@ -346,4 +355,20 @@ def ingest(rom):
 def export(rom):
     """Export the disassembly table of the ROM as a json file."""
     return json.dumps(ingest(rom))
+
+
+def disas_code(code, addr=0, flag=0):
+    """Slow, use only for debugging."""
+    args = ['-i', '-L', f'{len(code):X}', '-g', f'{addr:06X}']
+    if flag & 0x20:
+        args.append('-x')
+    if flag & 0x10:
+        args.append('-a')
+    cmd = [DISPEL_PATH, *args, '/dev/stdin']
+    p = sp.Popen(cmd, stdout=sp.PIPE, stdin=sp.PIPE)
+    p.stdin.write(code)
+    p.stdin.close()
+    out = p.stdout.readlines()
+    return [parse_line(r.decode('utf-8')) for r in out]
+
 
