@@ -301,8 +301,6 @@ def disas(rom):
     if has_smc_header(rom):
         print("SMC header detected")
         args.append('-n')
-    else:
-        print("No SMC header detected")
     out = []
     for flag in ['-i', '-s']:
         cmd = [DISPEL_PATH, *args, flag, rom]
