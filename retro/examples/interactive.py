@@ -21,11 +21,9 @@ from pyglet.window import key as keycodes
 SHOW_TRACE = False
 
 
-def pp_trace(trace):
-    if trace.bytes is None:
-        print(f"0x{trace.addr:04x}: NO INSTRUCTION")
-    else:
-        print(f"0x{trace.addr:04x}\t{trace.inst}")
+def pp_trace(env, trace):
+    trace = env.disassemble(address=trace[0], bytecode=trace[2])
+    print(trace)
 
 
 def mem_blocks(env):
@@ -224,10 +222,10 @@ class Interactive(abc.ABC):
             return
         print(f'[+] {len(info["trace"])} instructions executed:')
         for t in info['trace'][:5]:
-            pp_trace(t)
+            pp_trace(self._env, t)
         print('...')
         for t in info['trace'][-5:]:
-            pp_trace(t)
+            pp_trace(self._env, t)
 
 
     def run(self):

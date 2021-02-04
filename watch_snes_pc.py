@@ -49,6 +49,7 @@ def main():
     i = CYCLE_LENGTH
     while CONTINUE:
         info = step(env)
+        env.render()
         if TRACE:
             print(f"[+] {len(info['trace'])} instructions executed; {len(set(t for t in info['trace']))} distinct")
             if DISALL:
@@ -61,7 +62,6 @@ def main():
                 print("...")
                 for t in info['trace'][-10:]:
                     print(env.disassemble(address=t[0], offset=t[1], bytecode=t[2]))
-        env.render()
         i -= 1
         if i == 0:
             print("=== RESETTING ===")
