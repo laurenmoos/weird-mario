@@ -9,7 +9,7 @@
     "variables": {
       "lives": {
         "op": "equal",
-        "reference": 3
+        "reference": -1
       }
     }
   },
