@@ -153,5 +153,4 @@ research/SMW-dispel.txt
 retro-venv/
 retro/examples/.interactive.py.swp
 retro/examples/argparse
-third-party/*
 tests/Makefile
