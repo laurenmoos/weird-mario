@@ -132,6 +132,17 @@ lib*.a
 retro/cores/*-version
 retro/cores/*.json
 retro/VERSION.txt
+third-party/libzip/Makefile
+third-party/libzip/config.h
+third-party/libzip/examples
+third-party/libzip/libzip.pc
+third-party/libzip/libzip.cbp
+third-party/libzip/man
+third-party/libzip/src/Makefile
+third-party/libzip/src/zipcmp
+third-party/libzip/src/zipmerge
+third-party/libzip/src/ziptool
+third-party/libzip/zipconf.h
 
 # Test stuff
 Temporary
