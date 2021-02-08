@@ -137,20 +137,3 @@ retro/VERSION.txt
 Temporary
 *.mkv
 *.search
-
-# virtual environments
-./*-venv/
-./Dispel/*-venv/
-
-# artefacts
-.gdb_history
-Dispel/.gitignore
-SuperMarioWorld-Snes-Start-000000.bk2
-SuperMarioWorld-Snes-Start-000001.bk2
-best.bk2
-regress/
-research/SMW-dispel.txt
-retro-venv/
-retro/examples/.interactive.py.swp
-retro/examples/argparse
-tests/Makefile
