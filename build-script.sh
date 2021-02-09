@@ -19,6 +19,7 @@ git clone https://github.com/lejonet/baselines -b tf2
 echo "Installing lucca's fork of retrogym"
 pushd ~/retro/RetroGym
 pip3 install -e .
+python3 -m retro.import ./SMW
 popd
 
 echo "Installing a2c_ppo_acktr from MarioWM directory"
