@@ -18,3 +18,11 @@ lxc launch images:ubuntu/focal "${container_name}"
 sleep 10
 lxc file push ./build-script.sh "${container_name}/build-script.sh"
 lxc exec "${container_name}" -- bash /build-script.sh
+echo "Stopping ${container_name} to make an image from it"
+lxc stop "${container_name}"
+lxc publish "${container_name}" --alias mario-dev-env
+echo "A new image based on ${container_name} can be launched/initialized with either"
+echo " lxc launch mario-dev-env [optional name] or lxc init mario-dev-env [optional name]"
+echo
+echo "The container ${container_name} still exists and can also be used by just"
+echo " starting it with lxc start ${container_name}"
