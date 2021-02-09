@@ -14,7 +14,7 @@ pip3 install torch tensorflow numpy~=1.19.2
 
 echo "Cloning git repos"
 git clone https://github.com/oblivia-simplex/retro
-git clone https://github.com/openai/baselines -b tf2
+git clone https://github.com/lejonet/baselines -b tf2
 
 echo "Installing lucca's fork of retrogym"
 pushd ~/retro/RetroGym
