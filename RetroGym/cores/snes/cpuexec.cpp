@@ -2197,17 +2197,14 @@ void S9xMainLoop (void)
 		if (!offset)
 			offset = (Registers.PBPC - old_pbpc) & 0xFF;
 		// TODO: Figure out how to get inst bytes for other case
-        msg |= old_pbpc;
-		msg |= offset << 24;
-        msg |= inst_bytes << 32;
-        visited[addr_count++] = (Word) msg;
+		if (addr_count < VISITED_BUFFER_SIZE) {
+            msg |= old_pbpc;
+            msg |= offset << 24;
+            msg |= inst_bytes << 32;
+            visited[addr_count++] = (Word) msg;
+        }
 		//if (addr_count > 1 && (visited[addr_count-1] == visited[addr_count-2]))
 	//		fprintf(stderr, "SUSPICIOUS REPETITION: %d: %X, %d: %X", addr_count-2, visited[addr_count-2], addr_count-1, visited[addr_count-1]);
-        if (addr_count >= VISITED_BUFFER_SIZE) {
-            // KLUDGE not sure this will work
-            fprintf(stderr, "=== Breaking loop after %d iterations ===\n", addr_count);
-            break;
-        }
 
 		if (Settings.SA1)
 			S9xSA1MainLoop();
