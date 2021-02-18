@@ -1,8 +1,12 @@
 import torch
 from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
+from a2c_ppo_acktr.arguments import get_args
 
-trace_size = 1000
+args = get_args()
+trace_size = args.trace_size
+    
 
+    
 def _flatten_helper(T, N, _tensor):
     return _tensor.view(T * N, *_tensor.size()[2:])
 
@@ -174,8 +178,8 @@ class RolloutStorage(object):
             for offset in range(num_envs_per_batch):
                 ind = perm[start_ind + offset]
                 obs_batch.append(self.obs[:-1, ind])
-                tobs_batch.append(self.obs[:-1, ind])
-
+                #tobs_batch.append(self.obs[:-1, ind])
+                tobs_batch.append(self.tobs[:-1, ind])
                 recurrent_hidden_states_batch.append(
                     self.recurrent_hidden_states[0:1, ind])
                 actions_batch.append(self.actions[:, ind])
@@ -189,7 +193,7 @@ class RolloutStorage(object):
             T, N = self.num_steps, num_envs_per_batch
             # These are all tensors of size (T, N, -1)
             obs_batch = torch.stack(obs_batch, 1)
-            tobs_batch = torch.stack(obs_batch, 1)
+            tobs_batch = torch.stack(tobs_batch, 1)
 
             actions_batch = torch.stack(actions_batch, 1)
             value_preds_batch = torch.stack(value_preds_batch, 1)
