@@ -169,7 +169,16 @@ def get_args():
         action='store_true',
         default=False,
         help='use a recurrent policy')
-    
+    parser.add_argument(
+        '--weird',
+        action='store_true',
+        default=False,
+        help='start in weird state')
+    parser.add_argument(
+        '--autoshroom',
+        action='store_true',
+        default=False,
+        help='automatoc mushroom renewal (less realistic but easier)')
     parser.add_argument(
         '--skip',
         action='store_true',

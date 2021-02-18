@@ -230,7 +230,7 @@ class CNNBase(NNBase):
         
         if args.model == 2:
             z= torch.tensor((trace),dtype = torch.long)
-            x = self.lstm (z)
+            z = self.lstm (z)
             x = self.main(obs/ 255.0)
             x = torch.cat ((x,z),1)
             x = self.blend (x)    

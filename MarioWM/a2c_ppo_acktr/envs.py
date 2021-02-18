@@ -92,16 +92,16 @@ class ProcessFrameMario(gym.Wrapper):
         
     def step(self, action): #pylint: disable=method-hidden
             
-        
+        if args.autoshroom:
 
-        if  self.timer %shroom_interval == 0:
-            retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+            if  self.timer %shroom_interval == 0:
+                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+        if args.weird:
+            if self.fresh: 
+                retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
+                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
 
-        if self.fresh: 
-            retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
-            #retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
-           
-            self.fresh = False
+                self.fresh = False
 
         obs, _, done, info = self.env.step(action)
       

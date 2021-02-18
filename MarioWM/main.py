@@ -46,7 +46,7 @@ class tokenizer:
   
         for word in line:
             if word not in self.word_to_ix:  # word has not been assigned an index yet
-                print (len (self.word_to_ix))
+                #print (len (self.word_to_ix))
                 self.word_to_ix[word] = len(self.word_to_ix)  # Assign each word with a unique index
         return self.word_to_ix
         
