@@ -23,9 +23,9 @@ from a2c_ppo_acktr.arguments import get_args
 args = get_args()
 
 if args.skip:
-    shroom_interval = 25
+    shroom_interval = 50
 else:
-    shroom_interval = 100
+    shroom_interval = 200
 
 class SnesDiscretizer(gym.ActionWrapper):
     """
