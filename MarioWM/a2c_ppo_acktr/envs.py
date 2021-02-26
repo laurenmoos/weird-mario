@@ -18,33 +18,14 @@ import retro
 
 from baselines.common.retro_wrappers import make_retro
 from baselines.common.atari_wrappers import WarpFrame
+from a2c_ppo_acktr.arguments import get_args
 
-class tokenizer:
+args = get_args()
 
-    def __init__(self):
-        self.word_to_ix = {}
-        
-    def tokenize (self, line):
-        
-        for phrase in line:
-            if phrase is not (None):
-                for word in phrase.split():
-                    if word not in self.word_to_ix:  # word has not been assigned an index yet
-                        self.word_to_ix[word] = len(self.word_to_ix)  # Assign each word with a unique index
-        return self.word_to_ix
-
-   
-
-def prepare_sequence(line, to_ix):
-    idxs=[]
-    for phrase in line:
-            if phrase is not (None):
-                for word in phrase.split():
-                    idxs.append (to_ix[word])
-    return torch.tensor(idxs, dtype=torch.long)
-
-
-
+if args.skip:
+    shroom_interval = 50
+else:
+    shroom_interval = 200
 
 class SnesDiscretizer(gym.ActionWrapper):
     """
@@ -103,77 +84,65 @@ class ProcessFrameMario(gym.Wrapper):
         super(ProcessFrameMario, self).__init__(env)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(1, dim, dim), dtype=np.uint8)
         
-        self.timer = 200
+        self.timer = args.episode_length
         self.fresh= True
         self.x = 0
         self.s = 0
+        self.code_covered = set()
         
     def step(self, action): #pylint: disable=method-hidden
             
-        
+        if args.autoshroom:
 
-        if  self.timer %25 == 0:
-            retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+            if  self.timer %shroom_interval == 0:
+                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+        if args.weird:
+            if self.fresh: 
+                retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
+                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
 
-        if self.fresh: 
-            retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
-           
-            self.fresh = False
+                self.fresh = False
 
         obs, _, done, info = self.env.step(action)
       
         
         
         self.timer-=1
-      
-            
-        reward = 0   
-        
-        """
-        trace = np.random.rand(84)
-        trace = np.expand_dims (trace, axis=0)
-        trace = np.expand_dims (trace, axis=0)
-        obs= np.concatenate ((obs, trace),axis=1)
-        """
+        reward = 0  
      
       
-        #print (obs.shape)
-        if info ['score']> self.s:
-            reward =1
-            self.s = info['score']
-               
-                
-        if self.timer ==0:
-            done = True
+        trace = info ['trace'][:args.rtrace_length]
+        line = [x[2] for x in trace]
+        for word in line:
+            if word not in self.code_covered:  
+                self.code_covered.add(word)
+                reward+=1
+     
+     
+        #if self.timer ==0:
+            #done = True
              
         if done:     
-            self.timer = 200
+            self.timer = args.episode_length
             self.fresh = True 
             self.x = 0
             self.s = 0
-            #obs = self.reset
-        #reward*=0.0000001
+            self.code_covered = set()
+    
         
         
         return obs, reward, done, info
-    """
-    def reset(self):
   
-        obs = self.env.reset()
-        trace = np.random.rand(84)
-        trace = np.expand_dims (trace, axis=0)
-        trace = np.expand_dims (trace, axis=0)
-        obs= np.concatenate ((obs, trace),axis=1)
-        
-        return obs
-    """    
         
 def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
         
-        #mrank = rank % 24
-        mrank = 3
         
+        if args.level == 0:
+            mrank = rank % 24
+        else:
+            mrank = args.level % 24
+
         if mrank  == 1:
             env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland1.state', use_restricted_actions=retro.Actions.ALL)
         if mrank  == 2:
@@ -233,15 +202,11 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
         env = WarpFrame (env)
         
         #Uncomment to repeat each action for 4 frame -- standard for normal play but not always good for 'exploitation' 
-        env = MaxAndSkipEnv(env)
+        if args.skip:
+            env = MaxAndSkipEnv(env)
 
-     
-
-        # If the input has shape (W,H,3), wrap for PyTorch convolutions
-        #obs_shape = env.observation_space.shape
-      
-        #if len(obs_shape) == 3 and obs_shape[2] in [1, 3]:
         env = TransposeImage(env, op=[2, 0, 1])
+        env = TimeLimit(env, max_episode_steps=args.episode_length)
         env = ProcessFrameMario(env)
       
         if log_dir is not None:
@@ -299,16 +264,7 @@ def make_vec_envs(env_name,
 """
 Not using these additional features of original repo right now
 
-class TimeLimitMask(gym.Wrapper):
-    def step(self, action):
-        obs, rew, done, info = self.env.step(action)
-        if done and self.env._max_episode_steps == self.env._elapsed_steps:
-            info['bad_transition'] = True
 
-        return obs, rew, done, info
-
-    def reset(self, **kwargs):
-        return self.env.reset(**kwargs)
 
 
 # Can be used to test recurrent policies for Reacher-v2
@@ -392,7 +348,26 @@ class VecNormalize(VecNormalize_):
     def eval(self):
         self.training = False
 
+class TimeLimit(gym.Wrapper):
+    def __init__(self, env, max_episode_steps=None):
+        super().__init__(env)
+        self._max_episode_steps = max_episode_steps
+        self._elapsed_steps = 0
 
+    def step(self, ac):
+        observation, reward, done, info = self.env.step(ac)
+        self._elapsed_steps += 1
+        if self._elapsed_steps >= self._max_episode_steps:
+            done = True
+            info['TimeLimit.truncated'] = True
+            info['bad_transition'] = True
+        return observation, reward, done, info
+
+    def reset(self, **kwargs):
+        self._elapsed_steps = 0
+        return self.env.reset(**kwargs)
+
+    
 # Derived from
 # https://github.com/openai/baselines/blob/master/baselines/common/vec_env/vec_frame_stack.py
 class VecPyTorchFrameStack(VecEnvWrapper):

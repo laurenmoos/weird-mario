@@ -18,38 +18,51 @@ from a2c_ppo_acktr.envs import make_vec_envs
 from a2c_ppo_acktr.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 from evaluation import evaluate
+import datetime
+import pickle
 
-trace_size = 1000
+from torch.utils.tensorboard import SummaryWriter
+
+import os
+
+
+logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
+
+
+# default `log_dir` is "runs" - we'll be more specific here
+writer = SummaryWriter(logdir)
+
+
 
 class tokenizer:
 
-    def __init__(self):
-        self.word_to_ix = {}
+    def __init__(self,args):
+        if args.load:         
+            self.word_to_ix = pickle.load( open( "save.p", "rb" ) )             
+        else:
+            self.word_to_ix = {}
         
     def tokenize (self, line):
-        
-        for phrase in line:
-            if phrase is not (None):
-                for word in phrase.split():
-                    if word not in self.word_to_ix:  # word has not been assigned an index yet
-                        print (len (self.word_to_ix))
-                        self.word_to_ix[word] = len(self.word_to_ix)  # Assign each word with a unique index
+  
+        for word in line:
+            if word not in self.word_to_ix:  # word has not been assigned an index yet
+                #print (len (self.word_to_ix))
+                self.word_to_ix[word] = len(self.word_to_ix)  # Assign each word with a unique index
         return self.word_to_ix
-
+        
    
 
 def prepare_sequence(line, to_ix):
-    idxs=[]
-    for phrase in line:
-            if phrase is not (None):
-                for word in phrase.split():
-                    idxs.append (to_ix[word])
-    return torch.tensor(idxs, dtype=torch.long)
 
+    idxs=[]
+    for word in line:
+        idxs.append (to_ix[word])
+    return torch.tensor(idxs, dtype=torch.long)
 
 def main():
     args = get_args()
-    toke = tokenizer()
+    trace_size = args.trace_size    
+    toke = tokenizer(args)
 
     torch.manual_seed(args.seed)
     torch.cuda.manual_seed_all(args.seed)
@@ -113,11 +126,15 @@ def main():
 
     rollouts.to(device)
 
-    episode_rewards = deque(maxlen=10)
+    episode_rewards = deque(maxlen=args.num_processes)
 
     start = time.time()
     num_updates = int(
         args.num_env_steps) // args.num_steps // args.num_processes
+    save_path = os.path.join(args.save_dir, args.algo)
+    
+    if args.load:
+        actor_critic.load_state_dict = (os.path.join(save_path, args.env_name + ".pt"))
     for j in range(num_updates):
 
         if args.use_linear_lr_decay:
@@ -143,8 +160,8 @@ def main():
                 if 'episode' in info.keys():
                     #print ("episode ", info['episode'])
                     episode_rewards.append(info['episode']['r'])
-                trace = [x.inst for x in info['trace']]
-                trace = trace [0:trace_size]
+                trace = info['trace'] [0:trace_size]
+                trace = [x[2] for x in trace]
                 word_to_ix = toke.tokenize(trace)               
                 seq = prepare_sequence(trace, word_to_ix)
                 if len (seq)< trace_size:
@@ -177,6 +194,7 @@ def main():
         rollouts.after_update()
 
         # save for every interval-th episode or for the last epoch
+        #"""
         if (j % args.save_interval == 0
                 or j == num_updates - 1) and args.save_dir != "":
             save_path = os.path.join(args.save_dir, args.algo)
@@ -189,7 +207,10 @@ def main():
                 actor_critic,
                 getattr(utils.get_vec_normalize(envs), 'ob_rms', None)
             ], os.path.join(save_path, args.env_name + ".pt"))
+            pickle.dump (toke.word_to_ix, open( "save.p", "wb" ) )
 
+        #"""
+        
         if j % args.log_interval == 0 and len(episode_rewards) > 1:
             total_num_steps = (j + 1) * args.num_processes * args.num_steps
             end = time.time()
@@ -201,6 +222,12 @@ def main():
                         np.median(episode_rewards), np.min(episode_rewards),
                         np.max(episode_rewards), dist_entropy, value_loss,
                         action_loss))
+            writer.add_scalar('mean reward', np.mean(episode_rewards),total_num_steps, )
+            writer.add_scalar('median reward', np.median (episode_rewards), total_num_steps,)
+            writer.add_scalar('max reward', np.max(episode_rewards), total_num_steps,)
+
+            
+
 
         if (args.eval_interval is not None and len(episode_rewards) > 1
                 and j % args.eval_interval == 0):

@@ -19,6 +19,32 @@ import retro
 from baselines.common.retro_wrappers import make_retro
 from baselines.common.atari_wrappers import WarpFrame
 
+class tokenizer:
+
+    def __init__(self):
+        self.word_to_ix = {}
+        
+    def tokenize (self, line):
+        
+        for phrase in line:
+            if phrase is not (None):
+                for word in phrase.split():
+                    if word not in self.word_to_ix:  # word has not been assigned an index yet
+                        self.word_to_ix[word] = len(self.word_to_ix)  # Assign each word with a unique index
+        return self.word_to_ix
+
+   
+
+def prepare_sequence(line, to_ix):
+    idxs=[]
+    for phrase in line:
+            if phrase is not (None):
+                for word in phrase.split():
+                    idxs.append (to_ix[word])
+    return torch.tensor(idxs, dtype=torch.long)
+
+
+
 
 class SnesDiscretizer(gym.ActionWrapper):
     """
@@ -77,7 +103,7 @@ class ProcessFrameMario(gym.Wrapper):
         super(ProcessFrameMario, self).__init__(env)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(1, dim, dim), dtype=np.uint8)
         
-        self.timer = 150
+        self.timer = 200
         self.fresh= True
         self.x = 0
         self.s = 0
@@ -88,41 +114,30 @@ class ProcessFrameMario(gym.Wrapper):
 
         if  self.timer %25 == 0:
             retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
-        #"""
+
         if self.fresh: 
             retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
-            #for i in range (50):
-                #_, __, ___, info = self.env.step(1)
-            #self.x = info['x']        
+           
             self.fresh = False
-        #"""     
 
         obs, _, done, info = self.env.step(action)
+      
         
-        """
-        To compare with random:
-        
-        #z= random.randrange(22)
-
-        #obs, _, done, info = self.env.step(z)
-        """
         
         self.timer-=1
       
             
         reward = 0   
         
-        
         """
-        Arbitrary slightly complex optimization goal: score divided by x coordinate 
+        trace = np.random.rand(84)
+        trace = np.expand_dims (trace, axis=0)
+        trace = np.expand_dims (trace, axis=0)
+        obs= np.concatenate ((obs, trace),axis=1)
         """
-        """
-        if info['x']>0:
-            if info['score']/ info['x'] > self.s/self.x:
-                reward= (info['score']/ info['x']) - (self.s/self.x)
-                self.s = info['score']
-                self.x = info ['x']
-        """        
+     
+      
+        #print (obs.shape)
         if info ['score']> self.s:
             reward =1
             self.s = info['score']
@@ -132,19 +147,32 @@ class ProcessFrameMario(gym.Wrapper):
             done = True
              
         if done:     
-            self.timer = 150
+            self.timer = 200
             self.fresh = True 
             self.x = 0
             self.s = 0
             #obs = self.reset
         #reward*=0.0000001
+        
+        
         return obs, reward, done, info
-
+    """
+    def reset(self):
+  
+        obs = self.env.reset()
+        trace = np.random.rand(84)
+        trace = np.expand_dims (trace, axis=0)
+        trace = np.expand_dims (trace, axis=0)
+        obs= np.concatenate ((obs, trace),axis=1)
+        
+        return obs
+    """    
         
 def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
         
-        mrank = rank % 24
+        #mrank = rank % 24
+        mrank = 3
         
         if mrank  == 1:
             env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland1.state', use_restricted_actions=retro.Actions.ALL)
@@ -235,7 +263,7 @@ def make_vec_envs(env_name,
                   log_dir,
                   device,
                   allow_early_resets,
-                  num_frame_stack=16):
+                  num_frame_stack=4):
     envs = [
         make_env(env_name, seed, i, log_dir, allow_early_resets)
         for i in range(num_processes)
@@ -255,7 +283,7 @@ def make_vec_envs(env_name,
     envs = VecPyTorch(envs, device)
 
     if num_frame_stack is not None:
-        envs = VecPyTorchFrameStack(envs, num_frame_stack, device)
+        envs = VecPyTorchFrameStack(envs, 4, device)
     elif len(envs.observation_space.shape) == 3:
         envs = VecPyTorchFrameStack(envs, 4, device)
     """

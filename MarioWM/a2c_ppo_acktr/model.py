@@ -7,9 +7,13 @@ from a2c_ppo_acktr.distributions import Bernoulli, Categorical, DiagGaussian
 from a2c_ppo_acktr.utils import init
 device = torch.device("cuda:0")
 
+from a2c_ppo_acktr.arguments import get_args
+
+args = get_args()
+
 class LSTM(nn.Module):
 
-    def __init__(self, embedding_dim = 50, hidden_dim = 512, vocab_size = 5000):
+    def __init__(self, embedding_dim = 100, hidden_dim = 512, vocab_size = 50000):
         super(LSTM, self).__init__()
         self.hidden_dim = hidden_dim
 
@@ -23,13 +27,9 @@ class LSTM(nn.Module):
 
     def forward(self, sentence):
         embeds = self.word_embeddings(sentence)
-        #embeds = torch.squeeze(embeds)
-        #print (embeds.size())
-        #embeds = embeds.view(embeds.size[1], embeds.size[0], -1)
+        
         embeds = torch.transpose(embeds, 0, 1)
-        #print (embeds.size())
         lstm_out, h = self.lstm(embeds)
-        #print ("lstmout", lstm_out.size()
         return lstm_out[-1]
     
 
@@ -198,34 +198,42 @@ class CNNBase(NNBase):
 
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))
-        self.lstm = LSTM()         
-
-        self.main = nn.Sequential(
-            init_(nn.Conv2d(num_inputs, 32, 8, stride=4)), nn.ReLU(),
-            init_(nn.Conv2d(32, 64, 4, stride=2)), nn.ReLU(),
-            init_(nn.Conv2d(64, 32, 3, stride=1)), nn.ReLU(), Flatten(),
-            init_(nn.Linear(32 * 7 * 7, hidden_size)), nn.ReLU())
-
+        if args.model != 0:
+            self.lstm = LSTM()    
+        
+        if args.model != 1:
+            self.main = nn.Sequential(
+                init_(nn.Conv2d(num_inputs, 32, 8, stride=4)), nn.ReLU(),
+                init_(nn.Conv2d(32, 64, 4, stride=2)), nn.ReLU(),
+                init_(nn.Conv2d(64, 32, 3, stride=1)), nn.ReLU(), Flatten(),
+                init_(nn.Linear(32 * 7 * 7, hidden_size)), nn.ReLU())
+     
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0))
-        
-        self.blend = init_(nn.Linear(hidden_size*2, hidden_size))
+        if args.model == 2:
+            self.blend = init_(nn.Linear(hidden_size*2, hidden_size))
 
         self.critic_linear = init_(nn.Linear(hidden_size, 1))
 
         self.train()
 
     def forward(self, obs, trace, rnn_hxs, masks):
-
-        z= torch.tensor((trace),dtype = torch.long)
-        #print (z.size())
-        #print (obs.size())
-        z = self.lstm (z)
-        x = self.main(obs/ 255.0)
-        #print (x.size())
-        #print (z.size())
-        x = torch.cat ((x,z),1)
-        x = self.blend (x)
+        
+        if args.model == 0:
+          
+            x = self.main(obs/ 255.0)
+           
+        
+        if args.model == 1:
+            x= torch.tensor((trace),dtype = torch.long)
+            x = self.lstm (x)
+        
+        if args.model == 2:
+            z= torch.tensor((trace),dtype = torch.long)
+            z = self.lstm (z)
+            x = self.main(obs/ 255.0)
+            x = torch.cat ((x,z),1)
+            x = self.blend (x)    
 
         if self.is_recurrent:
             x, rnn_hxs = self._forward_gru(x, rnn_hxs, masks)
