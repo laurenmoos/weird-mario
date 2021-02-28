@@ -14,7 +14,7 @@ else
   container_name="${1}"
 fi
 
-lxc launch images:ubuntu/focal --profile default --profile x11 "${container_name}"
+lxc launch images:ubuntu/focal --profile default "${container_name}"
 sleep 10
 lxc file push ./build-script.sh "${container_name}/build-script.sh"
 lxc exec "${container_name}" -- bash /build-script.sh
