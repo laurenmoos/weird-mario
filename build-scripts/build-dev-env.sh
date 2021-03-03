@@ -16,8 +16,9 @@ fi
 
 lxc launch images:ubuntu/focal --profile default "${container_name}"
 sleep 10
-lxc file push ./build-script.sh "${container_name}/build-script.sh"
-lxc exec "${container_name}" -- bash /build-script.sh
+lxc file push ./build-scripts.tar.gz "${container_name}/build-scripts.tar.gz"
+lxc exec "${container_name}" -- tar xvf /build-scripts.tar.gz
+lxc exec "${container_name}" -- bash build-script.sh
 echo "[+] Stopping ${container_name} to make an image from it"
 lxc stop "${container_name}"
 lxc publish "${container_name}" --alias mario-dev-env
