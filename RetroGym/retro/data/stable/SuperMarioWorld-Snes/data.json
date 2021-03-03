@@ -11,6 +11,14 @@
     "score": {
       "address": 8261428,
       "type": "<u4" 
+    },
+    "yoshiCoins": {
+      "address": 8262690,
+      "type": "<u4"
+    },
+    "powerup": {
+      "address": 8257561,
+      "type": "|i1"
     }
   }
 }

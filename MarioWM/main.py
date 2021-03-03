@@ -87,7 +87,12 @@ def main():
         envs.action_space,
         base_kwargs={'recurrent': args.recurrent_policy})
     actor_critic.to(device)
-
+    
+    save_path = os.path.join(args.save_dir, args.algo)
+    
+    if args.load:
+        actor_critic.load_state_dict = (os.path.join(save_path, args.env_name + ".pt"))
+        
     if args.algo == 'a2c':
         agent = algo.A2C_ACKTR(
             actor_critic,
@@ -127,14 +132,13 @@ def main():
     rollouts.to(device)
 
     episode_rewards = deque(maxlen=args.num_processes)
-
+    episode_crash = deque(maxlen=args.num_processes)
+    crash_rewards = deque(maxlen=args.num_processes)
+    
     start = time.time()
     num_updates = int(
         args.num_env_steps) // args.num_steps // args.num_processes
-    save_path = os.path.join(args.save_dir, args.algo)
-    
-    if args.load:
-        actor_critic.load_state_dict = (os.path.join(save_path, args.env_name + ".pt"))
+  
     for j in range(num_updates):
 
         if args.use_linear_lr_decay:
@@ -158,8 +162,12 @@ def main():
             envs.render()
             for info in infos:
                 if 'episode' in info.keys():
-                    #print ("episode ", info['episode'])
                     episode_rewards.append(info['episode']['r'])
+                    episode_crash.append(info ['crash'])
+                    if info['crash'] == 1:
+                        crash_rewards.append(info['episode']['r'])
+                    
+                    
                 trace = info['trace'] [0:trace_size]
                 trace = [x[2] for x in trace]
                 word_to_ix = toke.tokenize(trace)               
@@ -225,6 +233,11 @@ def main():
             writer.add_scalar('mean reward', np.mean(episode_rewards),total_num_steps, )
             writer.add_scalar('median reward', np.median (episode_rewards), total_num_steps,)
             writer.add_scalar('max reward', np.max(episode_rewards), total_num_steps,)
+            writer.add_scalar('crash frequency', np.median (episode_crash), total_num_steps,)
+            writer.add_scalar('median crash reward', np.median (crash_rewards), total_num_steps,)
+
+
+            
 
             
 

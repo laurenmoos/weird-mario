@@ -89,12 +89,13 @@ class ProcessFrameMario(gym.Wrapper):
         self.x = 0
         self.s = 0
         self.code_covered = set()
+        self.crashed = False 
         
     def step(self, action): #pylint: disable=method-hidden
             
         if args.autoshroom:
 
-            if  self.timer %shroom_interval == 0:
+            if  self.timer % shroom_interval == 0:
                 retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
         if args.weird:
             if self.fresh: 
@@ -102,14 +103,23 @@ class ProcessFrameMario(gym.Wrapper):
                 retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
 
                 self.fresh = False
-
+        
         obs, _, done, info = self.env.step(action)
       
         
-        
+        if (info ['powerup'] != 22) and (info['powerup']>3):
+            self.crashed = True
+         
+       
+        if self.crashed:
+            info['crash'] = 1
+            
+        else:
+            info ['crash'] = 0
+         
         self.timer-=1
-        reward = 0  
-     
+        
+        reward = 0
       
         trace = info ['trace'][:args.rtrace_length]
         line = [x[2] for x in trace]
@@ -127,7 +137,9 @@ class ProcessFrameMario(gym.Wrapper):
             self.fresh = True 
             self.x = 0
             self.s = 0
+           
             self.code_covered = set()
+            self.crashed = False 
     
         
         
@@ -251,29 +263,9 @@ def make_vec_envs(env_name,
         envs = VecPyTorchFrameStack(envs, 4, device)
     elif len(envs.observation_space.shape) == 3:
         envs = VecPyTorchFrameStack(envs, 4, device)
-    """
-    if log_dir is not None:
-            envs = VecMonitor(
-                envs,
-                os.path.join(log_dir))    
-    """    
+ 
     return envs
 
-
-# Checks whether done was caused my timit limits or not 
-"""
-Not using these additional features of original repo right now
-
-
-
-
-# Can be used to test recurrent policies for Reacher-v2
-class MaskGoal(gym.ObservationWrapper):
-    def observation(self, observation):
-        if self.env._elapsed_steps > 0:
-            observation[-2:] = 0
-        return observation
-"""
 
 class TransposeObs(gym.ObservationWrapper):
     def __init__(self, env=None):
