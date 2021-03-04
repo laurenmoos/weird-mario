@@ -24,7 +24,7 @@ name: logs-directory
 * It can also be done on a ad-hoc basis with the following command: `lxc config device add <container name> <mount tag, can be anything> disk source=/path/to/logs path=/logs`
 
 As the image is fairly large by itself (currently around 13-14GB), LXD will most likely create a container with a rootfs that is just big enough to fit the image and not much else. This means that unless you tell LXD to create a rootfs with a larger size, you'll very quickly run into "out of space" errors.
-The easiest way to ensure that doesn't happen is to add a size parameter to the root disk defined in the default profile. It would look like the following:a
+The easiest way to ensure that doesn't happen is to add a size parameter to the root disk defined in the default profile. It would look like the following:
 ```
 config: {}
 description: Default LXD profile
