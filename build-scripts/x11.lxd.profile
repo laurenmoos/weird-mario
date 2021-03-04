@@ -1,5 +1,5 @@
 config:
-  environment.DISPLAY: :0
+  environment.DISPLAY: :1
   nvidia.driver.capabilities: all
   nvidia.runtime: "true"
   user.user-data: |
