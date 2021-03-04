@@ -20,6 +20,7 @@ devices:
     type: disk
 name: logs-directory
 ```
+To have it applied to a container you would either supply `--profile logs-directory` when creating the container with either `lxc init` or `lxc launch` or add it to an already existing container with command: `lxc profile add logs-directory <container name>`
 
 * It can also be done on a ad-hoc basis with the following command: `lxc config device add <container name> <mount tag, can be anything> disk source=/path/to/logs path=/logs`
 
