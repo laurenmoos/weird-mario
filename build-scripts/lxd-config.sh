@@ -29,7 +29,10 @@ echo "'nvidia.runtime: 'false' or else the container won't start at all."
 echo "You can also set the runtime to false if you don't want to pass your nvidia card to the container."
 echo
 sed -i "s/environment\.DISPLAY: :0/environment.DISPLAY: $DISPLAY/" ${PROFILE}
+D=$(tr -dc [0-9] <<< "$DISPLAY")
+sed -i "s|/tmp/\.X11-unix/X0|/tmp/.X11-unix/X${D}/|" ${PROFILE}
 
 echo "If the DISPLAY environment variable of the host doesn't output \"$DISPLAY\", you have to edit the"
 echo "'connect: unix:@/tmp/.X11-unix/X0' line in the profile and replace X0 with X<the number> in the DISPLAY variable"
+
 

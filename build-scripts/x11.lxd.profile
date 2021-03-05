@@ -11,8 +11,8 @@ description: GUI LXD profile
 devices:
   X0:
     bind: container
-    connect: unix:@/tmp/.X11-unix/X0
-    listen: unix:@/tmp/.X11-unix/X0
+    connect: unix:@/tmp/.X11-unix/X1/
+    listen: unix:@/tmp/.X11-unix/X1/
     security.gid: "1000"
     security.uid: "1000"
     type: proxy
