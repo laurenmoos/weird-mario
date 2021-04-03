@@ -64,12 +64,12 @@ def main():
     trace_size = args.trace_size    
     toke = tokenizer(args)
 
-    torch.manual_seed(args.seed)
-    torch.cuda.manual_seed_all(args.seed)
+    #torch.manual_seed(args.seed)
+    #torch.cuda.manual_seed_all(args.seed)
 
-    if args.cuda and torch.cuda.is_available() and args.cuda_deterministic:
-        torch.backends.cudnn.benchmark = False
-        torch.backends.cudnn.deterministic = True
+    #if args.cuda and torch.cuda.is_available() and args.cuda_deterministic:
+        #torch.backends.cudnn.benchmark = False
+        #torch.backends.cudnn.deterministic = True
 
     log_dir = os.path.expanduser(args.log_dir)
     eval_log_dir = log_dir + "_eval"
@@ -131,9 +131,9 @@ def main():
 
     rollouts.to(device)
 
-    episode_rewards = deque(maxlen=args.num_processes)
-    episode_crash = deque(maxlen=args.num_processes)
-    crash_rewards = deque(maxlen=args.num_processes)
+    episode_rewards = deque(maxlen=args.num_processes*3)
+    episode_crash = deque(maxlen=args.num_processes*3)
+    crash_rewards = deque(maxlen=args.num_processes*3)
     
     start = time.time()
     num_updates = int(
@@ -230,11 +230,13 @@ def main():
                         np.median(episode_rewards), np.min(episode_rewards),
                         np.max(episode_rewards), dist_entropy, value_loss,
                         action_loss))
-            writer.add_scalar('mean reward', np.mean(episode_rewards),total_num_steps, )
+            writer.add_scalar('mean reward', np.mean(episode_rewards) ,total_num_steps, )
+            writer.add_scalar('std', np.std(episode_rewards) ,total_num_steps, )
             writer.add_scalar('median reward', np.median (episode_rewards), total_num_steps,)
             writer.add_scalar('max reward', np.max(episode_rewards), total_num_steps,)
-            writer.add_scalar('crash frequency', np.median (episode_crash), total_num_steps,)
-            writer.add_scalar('median crash reward', np.median (crash_rewards), total_num_steps,)
+            writer.add_scalar('crash frequency', np.mean (episode_crash), total_num_steps,)
+            writer.add_scalar('median crash reward', np.median(crash_rewards), total_num_steps,)
+            writer.add_scalar('mean crash reward', np.mean(crash_rewards), total_num_steps,)
 
 
             

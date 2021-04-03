@@ -50,6 +50,44 @@ class SnesDiscretizer(gym.ActionWrapper):
 
     def action(self, a): # pylint: disable=W0221
         return self._actions[a].copy()
+
+class StochasticFrameSkip(gym.Wrapper):
+    def __init__(self, env, n, stickprob):
+        gym.Wrapper.__init__(self, env)
+        self.n = n
+        self.stickprob = stickprob
+        self.curac = None
+        self.rng = np.random.RandomState()
+        self.supports_want_render = hasattr(env, "supports_want_render")
+
+    def reset(self, **kwargs):
+        self.curac = None
+        return self.env.reset(**kwargs)
+
+    def step(self, ac):
+        done = False
+        totrew = 0
+        for i in range(self.n):
+            # First step after reset, use action
+            if self.curac is None:
+                self.curac = ac
+            # First substep, delay with probability=stickprob
+            elif i==0:
+                if self.rng.rand() > self.stickprob:
+                    self.curac = ac
+            # Second substep, new action definitely kicks in
+            elif i==1:
+                self.curac = ac
+            if self.supports_want_render and i<self.n-1:
+                ob, rew, done, info = self.env.step(self.curac, want_render=False)
+            else:
+                ob, rew, done, info = self.env.step(self.curac)
+            totrew += rew
+            if done: break
+        return ob, totrew, done, info
+
+    def seed(self, s):
+        self.rng.seed(s)
     
 class MaxAndSkipEnv(gym.Wrapper):
     def __init__(self, env, skip=4):
@@ -85,6 +123,8 @@ class ProcessFrameMario(gym.Wrapper):
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(1, dim, dim), dtype=np.uint8)
         
         self.timer = args.episode_length
+        self.countdown = 0
+        self.multiplier = 0
         self.fresh= True
         self.x = 0
         self.s = 0
@@ -97,13 +137,17 @@ class ProcessFrameMario(gym.Wrapper):
 
             if  self.timer % shroom_interval == 0:
                 retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+                
         if args.weird:
+            
             if self.fresh: 
+                
                 retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
                 retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
 
                 self.fresh = False
         
+        #action =  self.env.action_space.sample()
         obs, _, done, info = self.env.step(action)
       
         
@@ -120,27 +164,65 @@ class ProcessFrameMario(gym.Wrapper):
         self.timer-=1
         
         reward = 0
-      
-        trace = info ['trace'][:args.rtrace_length]
-        line = [x[2] for x in trace]
-        for word in line:
-            if word not in self.code_covered:  
-                self.code_covered.add(word)
-                reward+=1
-     
-     
-        #if self.timer ==0:
-            #done = True
-             
+        
+        
+        if args.reward == 0:
+            
+            if info ['yoshiCoins'] > self.s:
+                
+                reward = 1
+                self.s = info ['yoshiCoins']
+                
+        
+        elif args.reward == 1:
+            
+            reward = info ['yoshiCoins'] - self.s
+            reward*= 0.01 
+            self.s = info ['yoshiCoins']
+        
+            
+        elif args.reward == 2:
+        
+            trace = info ['trace'][:args.rtrace_length]
+            line = [x[2] for x in trace]
+            for word in line:
+                if word not in self.code_covered:  
+                    self.code_covered.add(word)
+                    reward = 1 
+
+                    
+        elif args.reward == 3: 
+            
+            trace = info ['trace'][:args.rtrace_length]
+            line = [x[2] for x in trace]
+            for word in line:
+                if word not in self.code_covered:  
+                    self.code_covered.add(word)
+                    reward+=1
+            reward*= 0.01 
+        
+                 
+                
+        if reward == 0:
+            self.countdown += 1
+        else:
+            self.countdown = 0
+        
+        if self.countdown > 200:
+            done = True
+            
+
+            
+       
+        
         if done:     
             self.timer = args.episode_length
             self.fresh = True 
             self.x = 0
             self.s = 0
-           
+            self.countdown = 0
             self.code_covered = set()
-            self.crashed = False 
-    
+            self.crashed = False     
         
         
         return obs, reward, done, info
@@ -215,7 +297,9 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
         
         #Uncomment to repeat each action for 4 frame -- standard for normal play but not always good for 'exploitation' 
         if args.skip:
-            env = MaxAndSkipEnv(env)
+            #env = MaxAndSkipEnv(env)
+            env = StochasticFrameSkip(env, n=4, stickprob=0.25)
+
 
         env = TransposeImage(env, op=[2, 0, 1])
         env = TimeLimit(env, max_episode_steps=args.episode_length)
