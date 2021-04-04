@@ -89,10 +89,11 @@ class RolloutStorage(object):
                     delta = self.rewards[step] + gamma * self.value_preds[
                         step + 1] * self.masks[step +
                                                1] - self.value_preds[step]
+                    #delta += 0.2 * abs(delta)
                     gae = delta + gamma * gae_lambda * self.masks[step +
                                                                   1] * gae
                     gae = gae * self.bad_masks[step + 1]
-                    self.returns[step] = gae + self.value_preds[step]
+                    self.returns[step] = gae + self.value_preds[step] 
             else:
                 self.returns[-1] = next_value
                 for step in reversed(range(self.rewards.size(0))):
@@ -107,9 +108,10 @@ class RolloutStorage(object):
                     delta = self.rewards[step] + gamma * self.value_preds[
                         step + 1] * self.masks[step +
                                                1] - self.value_preds[step]
+                    #delta += 0.2 * abs(delta)
                     gae = delta + gamma * gae_lambda * self.masks[step +
                                                                   1] * gae
-                    self.returns[step] = gae + self.value_preds[step]
+                    self.returns[step] = gae + self.value_preds[step] 
             else:
                 self.returns[-1] = next_value
                 for step in reversed(range(self.rewards.size(0))):

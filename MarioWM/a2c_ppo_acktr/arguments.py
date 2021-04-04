@@ -103,6 +103,11 @@ def get_args():
         default=5,
         help='number of forward steps in A2C (default: 5)')
     parser.add_argument(
+        '--reward',
+        type=int,
+        default=2,
+        help='0 = yoshiCoins reward clipped, 1= yoshiCoins reward delta, 2= trace reward clipped, 3 = trace reward delta')
+    parser.add_argument(
         '--ppo-epoch',
         type=int,
         default=4,
