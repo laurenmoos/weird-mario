@@ -1,6 +1,7 @@
 ﻿---
 title: "AIMEE Milestone 7 Report: Weird Mario"
 author: Peli Grietzer
+date: April 6, 2021
 ---
 
 # Overview
@@ -9,7 +10,7 @@ author: Peli Grietzer
 The purpose of our Weird Mario project is to use ML techniques to study regularities in emergent execution in a setting where the user’s input primitives are far from the natural level of abstraction of the program’s control flow. 
 
 
-We use the emulated SNES video-game environment as a logistically efficient proxy to the case exploiting complex applications by means of highly constrained user input---constrained, in this case, to a small alphabet of control signals: up, down, right, left, A, B, X, Y, left-pad, right-pad [the browser hacker stuff Sergey was talking about]. Working within an emulated video-games environment has two crucial advantages: 
+We use the emulated SNES video-game environment as a logistically efficient proxy to the case exploiting complex applications by means of highly constrained user input---constrained, in this case, to a small alphabet of control signals: up, down, right, left, A, B, X, Y, left-pad, right-pad. Working within an emulated video-games environment has two crucial advantages: 
 
 
 First, there is a strong foundation of existing open source infrastructure for interfacing ML algorithms with an emulated SNES environment, as well as well-developed best-practices regarding the appropriate learning algorithms, network architectures, and hyperparameters for deep reinforcement in arcade environments.
@@ -31,10 +32,10 @@ A weaker demonstration of a learnable general (for the given weird machine) stra
 
 
 
-# Infrastructure: 
+# Infrastructure 
 
 
-We built our ‘Weird Mario’ experimentation platform on the basis of OpenAI Gym Retro and an open-source pytorch implementation of the PPO algorithm for deep reinforcement learning.[1] 
+We built our ‘Weird Mario’ experimentation platform on the basis of OpenAI Gym Retro and an open-source pytorch implementation of the PPO algorithm for [PPO algorithm for deep reinforcement learning](https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail).
 
 
 We forked and heavily modified OpenAI Gym Retro by exposing the emulated system’s program counter, thus allowing users to include a record of the content of the program counter in between agent steps in agent’s observations. 
@@ -143,8 +144,29 @@ The next stage of our research will focus on the integration of genetic programm
 
 
 
+## Screen Captures
 
+![glass window](./img/Tuesday-13-22-36.jpg)
 
+![black block](./img/Tuesday-13-24-52.jpg)
 
+![jumble sky](./img/Tuesday-13-25-46.jpg)
 
-https://github.com/ikostrikov/pytorch-a2c-ppo-acktr-gail
+![pink sky](./img/Tuesday-13-26-58.jpg)
+
+![brown lumps](./img/Tuesday-13-28-43.jpg)
+
+![silhouette](./img/Tuesday-13-33-50.jpg)
+
+![green patterns](./img/Tuesday-13-33-58.jpg)
+
+![chaos cascade](./img/Tuesday-13-36-07.jpg)
+
+![raining pows](./img/Tuesday-13-40-25.jpg)
+
+![tablecloth](./img/Tuesday-14-32-08.jpg)
+
+![At one point, one of our agents found a means of escaping the level and visiting Yoshi's House.](./img/Tuesday-13-30-11.jpg)
+
+![The escaped agent eventually met its demise at the hands of Bullet Bill.](./img/Tuesday-13-33-29.jpg)
+
