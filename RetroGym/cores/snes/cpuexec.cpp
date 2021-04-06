@@ -2200,13 +2200,14 @@ void S9xMainLoop (void)
         msg |= old_pbpc;
 		msg |= offset << 24;
         msg |= inst_bytes << 32;
-        visited[addr_count++] = (Word) msg;
+        visited[addr_count % VISITED_BUFFER_SIZE] = (Word) msg;
+        addr_count++;
 		//if (addr_count > 1 && (visited[addr_count-1] == visited[addr_count-2]))
 	//		fprintf(stderr, "SUSPICIOUS REPETITION: %d: %X, %d: %X", addr_count-2, visited[addr_count-2], addr_count-1, visited[addr_count-1]);
         if (addr_count >= VISITED_BUFFER_SIZE) {
             // KLUDGE not sure this will work
             fprintf(stderr, "=== Breaking loop after %d iterations ===\n", addr_count);
-            break;
+            goto escape;
         }
 
 		if (Settings.SA1)
@@ -2246,7 +2247,10 @@ void S9xMainLoop (void)
     //fprintf(stderr, "Detaching from trace_shm\n");
     //fprintf(stderr, "Exiting main loop\n");
     //write_int(trace_shm, Registers.PCw);
-	write_visited(trace_shm, visited, addr_count);
+
+    escape:
+
+    write_visited(trace_shm, visited, addr_count);
 	addr_count = 0;
     shmdt(trace_shm);
 	if (iterations > MAX_ITER) { MAX_ITER = iterations; }

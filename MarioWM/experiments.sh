@@ -1,13 +1,18 @@
 #! /usr/bin/env bash
 
 DURATION=6h
-PROCESSES=10
+PROCESSES=20
 
 echo "[+] Beginning experiment 1"
 ##
 # Experiment 1
 ##
-timeout $DURATION python main.py --env-name "Experiment-1" --reward 2  --autoshroom --trace-size 2000 --rtrace-length 1000 --level 4 --use-linear-lr-decay --recurrent-policy --model 2 --weird --episode-length 90000 --algo ppo --skip --use-gae --lr 2.5e-5 --clip-param 0.1 --value-loss-coef 0.5 --num-processes $PROCESSES --num-steps 40 --num-mini-batch 5 --log-interval 5  --entropy-coef 0.01
+cmd="timeout $DURATION python main.py --env-name 'Experiment-1' --reward 2  --autoshroom --trace-size 2000 --rtrace-length 1000 --level 4 --use-linear-lr-decay --recurrent-policy --model 2 --weird --episode-length 90000 --algo ppo --skip --use-gae --lr 2.5e-5 --clip-param 0.1 --value-loss-coef 0.5 --num-processes $PROCESSES --num-steps 40 --num-mini-batch 5 --log-interval 5  --entropy-coef 0.01"
+echo "==> $cmd"
+$cmd
+
+echo "Exiting early"
+exit 0
 
 echo "[+] Beginning experiment 2"
 ##
