@@ -2182,14 +2182,10 @@ void S9xMainLoop (void)
 
         /******** Log the address visited. **************/
         Word old_pbpc = Registers.PBPC & 0xFFffff;
-		//msg |= (uint64) flag << 24;
 		/*** Message format:
 		 * |leading zeroes?|bytecode (length <= 40 bits)|Block (8 bits)|Address (16 bits)|
 		 *
 		 */
-		//if (visited[addr_count] == 0x2020) {
-		//	fprintf(stderr, "[!] 0x%04x at visited[%d], Registers.PCw @ %p\n", visited[addr_count], addr_count, &(Registers.PCw));
-		//}
 
 		Registers.PCw++;
 		(*Opcodes[Op].S9xOpcode)();
@@ -2248,7 +2244,7 @@ void S9xMainLoop (void)
     //fprintf(stderr, "Exiting main loop\n");
     //write_int(trace_shm, Registers.PCw);
 
-    escape:
+ escape:
 
     write_visited(trace_shm, visited, addr_count);
 	addr_count = 0;
