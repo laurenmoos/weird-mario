@@ -50,7 +50,9 @@ We chose the PPO algorithm after informally experimenting with more basic actor-
 
 
 
-# Experiments, basic setup:
+# Experiments
+
+## Basic Setup
 
 
 For all our experiments, we artificially initialize Super Mario World in a ‘contained’ weird state known to be stable: We set the value of Mario’s ‘power-up state’ counter is to 22, which renders the Mario sprite orange but does not further affect gameplay unless the agent collects an item that further increments Mario’s power-up state counter. If and when this additional incrementation takes place, what’s known to SNES hackers as an ‘open bus’ anomaly takes place: the SNES attempts to read a subroutine from an unmapped address, which initiates a sequence of hardware responses that results in executing the last value read (the last byte of the unmapped address) as an instruction.  
@@ -61,9 +63,7 @@ The initial ‘contained’ weird state, known in the Super Mario World hacking 
 In all our experiments, a play-episode ends when the agent ‘loses a life,’ or after 200 consecutive steps without reward. Imposing a step-limit is necessary in order to prevent never-ending ‘stuck’ episodes, and we have found that a reward-independent time limit pushes the agent towards uninteresting strategies that focus on initiation weird-state escalation as quickly as possible rather than on controlling the weird-state trajectory of the weird-state escalation. 
 
 
-# Experiments
-
-## Design
+## Design Decisions
 
 
 Weird Mario PPO can deploy simultaneous training on all Super Mario World levels (a training approach sometimes known as Joint PPO), or deploy training on multiple instances of a single level. In all cases we run 20 emulated SNES instances in parallel, which we found to deliver the best FPS ratio when running our Gym Retro fork on a mid-range modern ML workstation. It’s possible that further optimization of our Gym Retro fork will allow scaling up to 60 instances with benefits to FPS, as per the case when running unmodded Gym Retro on our workstation: unmodded Gym Retro is the product of years of optimization work iterating on OpenAI’s previous arcade emulation platform Universe, and restoring perfect calibration given the addition of a pipiline from the emulated SNES program counter to the RL agent’s observation space is a gradual process that will benefit from further iterations. 
