@@ -11,8 +11,6 @@ cmd="timeout $DURATION python main.py --env-name 'Experiment-1' --reward 2  --au
 echo "==> $cmd"
 $cmd
 
-echo "Exiting early"
-exit 0
 
 echo "[+] Beginning experiment 2"
 ##

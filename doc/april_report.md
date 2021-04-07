@@ -175,3 +175,7 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 ![The escaped agent eventually met its demise at the hands of Bullet Bill.](./img/Tuesday-13-33-29.jpg)
 
+
+# Plots (move this later)
+
+![Crash frequency](./img/crash_freq.png)
