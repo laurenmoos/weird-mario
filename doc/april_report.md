@@ -241,17 +241,29 @@ Run: 20210406-235718
 
 ### Plots
 
-![Crash frequency](./img/crash_frequency.png)
+![Crash frequency for Green and Grey](./img/crash_frequency_1+2.png)
 
-![Maximum reward](./img/max_reward.png)
+![Crash frequency for Red](./img/crash_frequency_7.png)
 
-![Mean crash reward](./img/mean_crash_reward.png)
+![Maximum reward for Green and Grey](./img/max_reward_1+2.png)
 
-![Median crash reward](./img/median_crash_reward.png)
+![Maximum reward for Red](./img/max_reward_7.png)
 
-![Median reward](./img/median_reward.png)
+![Mean crash reward for Green and Grey](./img/mean_crash_reward_1+2.png)
 
-![Standard deviation](./img/std.png)
+![Mean crash reward for Red](./img/mean_crash_reward_7.png)
+
+![Median crash reward for Green and Grey](./img/median_crash_reward_1+2.png)
+
+![Median crash reward for Red](./img/median_crash_reward_7.png)
+
+![Median reward for Green and Grey](./img/median_reward_1+2.png)
+
+![Median reward for Red](./img/median_reward_7.png)
+
+![Standard deviation for Green and Grey](./img/std_1+2.png)
+
+![Standard deviation for Red](./img/std_7.png)
 
 ## Screen Captures
 
