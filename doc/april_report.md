@@ -4,59 +4,20 @@ author: Peli Grietzer
 date: April 6, 2021
 ---
 
-# Introduction
-
-Super Mario World followed on the dynamics of prior Super Mario games while introducing some new dynamics like the ability to play with a companion called Yoshi or some new power-ups like the feather cape. The game had also significantly more complexity than the original Mario Bros game which resulted in a significant amount of issues and glitches affecting it. As usual most of these glitches had various effects ranging from full game crashes to minor visual artifacts affecting the game. Some of these glitches can be combined to trigger interesting side effects including the ability to execute code introduced manually by the player.
-
-The way in which these glitches operate differs significantly from the initial ROP approaches that were used in the initial steps of the project and on which the artificial intelligence (AI) had significant control on the state of the system. On one hand, in the ROP approach the intelligence had control over a relatively large amount of the memory introduced being restricted only by being unable to execute new code in the system. On the other in this project the only control the AI gets is the ability to enter inputs using a "virtual" controller emulating the original game controller (which can be seen below). Aditionally while on our first iteration the status of the memory was known and maintained during the whole execution of the attack, in these experiments the environment varies on each run with only a few constants making the memory states impredecible and therefore needing more complex techniques that can adapt to the environment variability (both in time and state) which was not present before.
-
-![imagen](https://user-images.githubusercontent.com/2823369/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
-
-In the following subsections, the concepts needed to understand some of the glitches used and their impact are explained.
-
-## Power up states
-
-In Super Mario World, the character controlled by the player can acquire a set of items that change the game mechanics slightly. Such items are known as power ups because the mechanic changes benefit the player in some way. The game, also keeps track of the current state of the character using a number known as the power up state. This number is used in a variety of ways, including deciding what to do once a new power up is acquired.
-
-In the game, when the player acquires a power up, instead of applying a lot of complex if else logic conditions to decide what to do, the game chooses a table based on the current number defining the current character state and then uses that table to get an address that point to some code that (when executed) carries out the desired actions. This is significantly faster and more elegant than having a large number of conditions. This approach has the issue that if, for some reason, the number used to decide which item to retrieve is larger than the number of items on the table, the code will instead interpret whatever data is placed on memory after the table as the item to be retrieved.
-
-Under normal conditions, the game itself ensures that the player's power up state, the number indicating the game dynamics to follow, is never larger than the tables indexed making such strange behavior imposible. Despite that, if a player can somehow increase that number over the known states, he can then make the game retrieve content of memory that was not originally intended to be used as an address to execute code from and then run code from that address.
-
-## Power up incrementation
-
-Power up incrementation is the name given to different techniques that allow the player to increase the power up state beyond 4 (which is the maximum number the game intended to allow). The techniques used to trigger this vary and exploit different weird behaviours that trigger under very specific corner cases. These techniques can and have been applied manually by certain players and are behind most of the glitch exploitation allowing interesting effects like directly jumping to the game ending or loading and executing a new game using code entered by the player using the controller.
-
-Over time, faster and more reliable approaches to attain these objective have been found and, currently, it is possible to achieve such a behavior already on the first level of the game.
-
-## Creamsicle Mario
-
-From the states that can be reached using the techniques mentioned above, of particular interest are the cases when this number is 6 and 22 since when acquiring certain power ups, they allow executing code from areas that can be influenced through the player actions. With power up state 6 the item is the 1-up mushroom which is very rare since it normally grants the player an extra life. With power up state 22 the item is the normal mushroom a very common item that makes the character grow in size among other things. Unlike 1-up mushrooms, normal mushrooms can be saved for later use by the player under certain cricumstances.
-
-This last power up state, when the value is 22 is also known as "Creamsicle Mario" because of the orangeish color the character acquires and is kept across levels as long as the character does not enter in contact with any hazard or enemy. This state is also fairly stable and contained under other conditions allowing playing the game as you normally would.
-
-## Open bus access
-
-Once the power up triggering this behaviour is acquired in the Creamsicle Mario state, what’s known to SNES hackers as an ‘open bus’ anomaly takes place. To understand what this does we have to first understand the basics of how a processor works.
-
-Processors have different components that perform different operations on the data they contain, to allow for greater flexibility and reduce costs all these components are usually interconnected using a data bus. A data bus can be seen as something similar to the air connecting different employees in an office. When an employee wants to send a message to a colleague he can just shout the message into the air so that it will reach its destination on the process all other employees will also hear the information but ignore it. On a processor, the data is instead placed on a set of wires that connects all of the components handling data together so that it reaches the intended destination. In order for the right component to then process and handle the data, additional internal signals are added so that: only one of the components will put data on the wires at a time; and only the desired components read the data from the wires. With the appropriate coordination all of these components act in an ordered manner performing the intended modifications on data given by a set of instructions.
-
-But, what happens when nobody writes into the data bus and somebody reads from it? The behaviour varies from processor to processor but on the original processor used by the SNES, the cables of the data bus act like small capacitors and keep their state for a tiny amount of time which may be enough for the destination component to read the value that the bus contained before. Going back to our example of the employees yelling data to the others in an office, this would be similar to an employee listening and acting on the echo of the data that was last yelled because everybody else was silent.
-
-This kind of behaviour is exactly what happens when the processor tries to access a memory address that does not point to memory nor any other devices. In particular when acquiring the power up in the creamsivle mario state we mentioned above, the processor tries to execute code on a memory address that points to nowhere. The processor then uses the data bus to update the component that keeps track of the memory address from which to run instructions sending first the higher part of it (a byte) over the data bus and then second part of it again over the data bus. The echoes of this second part still remain on the processor bus when, shortly afterward, the processor tries to obtain the data of the next instruction to run from memory and, since nobody replies, this byte that was last written is interpreted as the next instruction to execute.
 
 # Overview
 
 
-The purpose of our Weird Mario project is to use ML techniques to study regularities in emergent execution in a setting where the user’s input primitives are far from the natural level of abstraction of the program’s control flow. 
+The purpose of our AIMEE Weird Mario project is to use ML techniques to study regularities in emergent execution in a setting where the user’s input primitives are far from the natural level of abstraction of the program’s control flow. 
 
 
-We use the emulated SNES video-game environment as a logistically efficient proxy to the case exploiting complex applications by means of highly constrained user input---constrained, in this case, to a small alphabet of control signals: up, down, right, left, A, B, X, Y, left-pad, right-pad. Working within an emulated video-games environment has two crucial advantages: 
+We use the emulated SNES video-game environment as a logistically efficient proxy to the case exploiting complex applications by means of highly constrained user input---constrained, in this case, to a small alphabet of control signals: up, down, right, left, A, B, X, Y, select, left-pad, right-pad. Working within an emulated video-games environment has two crucial advantages: 
 
 
-First, there is a strong foundation of existing open source infrastructure for interfacing ML algorithms with an emulated SNES environment, as well as well-developed best-practices regarding the appropriate learning algorithms, network architectures, and hyperparameters for deep reinforcement in arcade environments.
+First, there is a strong foundation of existing open source infrastructure for interfacing ML algorithms with an emulated SNES environment, as well as well-developed best-practices regarding the appropriate learning algorithms, network architectures, and hyperparameters for deep reinforcement learning in arcade environments.
 
 
-Second, exploitation of emulated SNES games is an active and well-documented area of amature ‘straw hat’ exploitation research. The exploitation terrain of SNES game Super Mario World, in particular, has been extensively albeit non-systematically studied and documented by speed-runners, modders, and recreational hackers. 
+Second, exploitation of emulated SNES games is an active and well-documented area of amature ‘straw hat’ exploitation research. The exploitation terrain of the SNES game Super Mario World, in particular, has been extensively albeit non-systematically studied and documented by speed-runners, modders, and recreational hackers. 
 
 
 
@@ -68,6 +29,52 @@ The ideal demonstration of a learnable general (for the given weird machine) str
 
 
 A weaker demonstration of a learnable general (for the given weird machine) strategy relies on adding stochasticity to the operation of the weird machine, such that the algorithm cannot simply memorize effective sequences. This is the approach traditionally used in reinforcement learning research when the learning environment is deterministic: the added stochasticity ensures that performance improvement as measured by increase of mean reward over the course of training reflects generalization. 
+
+
+
+
+
+# Introduction: Super Mario World Exploitation
+
+Super Mario World followed on the dynamics of prior Super Mario games while introducing new dynamics such as the ability to play with a companion called Yoshi or  additional power-ups like the 'feather cape.' The game was significantly more complex than the original Mario Bros game, and features an early example of 'world-driven' video-game design, which resulted in a significant number of issues and glitches. As usual, most of these glitches have effects ranging from full game crashes to minor visual artifacts. Some of these glitches can be combined to trigger interesting side effects, including the ability to execute code introduced manually by the player.
+
+The way in which these glitches operate differs significantly from the ROP scenarios that we studied in phase 1 of AIMEE, wherein the artificial intelligence (AI) had significant control over the state of the system. On the one hand, in the ROP scenarios the AI had free reign over a relatively large share of the system's memory, and was restricted only by a prohibition on executing new code. On the other, in the Weird Mario project the AI's on point of control over the system is the ability to enter inputs using a "virtual" controller emulating the original SNES game controller (which can be seen below). Aditionally, while on our first iteration the status of the system's memory was known and maintained during the whole execution of the attack, in these experiments the environment spontaneously varies over time in ways that are chaotically conditioned by the agent's actions, making the memory states unpredictbale and therfore requiring more complex techniques. 
+
+![imagen](https://user-images.githubusercontent.com/2823369/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
+
+In the following subsections, we review the concepts necessary to understand some of the glitches used and their impact on emergent execution.
+
+## Power-up states
+
+In Super Mario World, the character controlled by the player can acquire a set of items that change the game mechanics slightly. Such items are known as power-ups because the mechanic changes benefit the player in some way. The game keeps track of the current state of the character using a number known as the power-up state. This number is used by the system in a variety of ways, including deciding what to do once a new power-up is acquired.
+
+In the game, when the player acquires a power-up, instead of applying a lot of complex if/else logic conditions to decide what to do, the game chooses a table based on the current number defining the current character state and then uses that table to get an address that points to some code that (when executed) carries out the desired actions. This is significantly faster and more elegant than having a large number of conditions. The problem with this approach, however, is that if for some reason the number used to decide which item to retrieve is larger than the number of items on the table, the code will instead interpret whatever data is placed on memory after the table as the item to be retrieved.
+
+Under normal conditions, the game itself ensures that the player's power-up state, the number indicating the game-dynamics to follow, is never larger than the tables indexed making such strange behavior imposible. Despite that, if a player can somehow increase that number over the number of known states, the player can then make the game retrieve content from a location in the system's memory that was not originally intended to be used as an address for code-execution, and then run code from that address.
+
+## Power-up incrementation
+
+Power-up incrementation is the name given to different techniques that allow the player to increase the power-up state beyond 4 (which is the maximum number the game intended to allow). The techniques used to trigger this vary and exploit different weird behaviours that trigger under very specific corner cases. These techniques can and have been applied manually by certain players and are behind most of the glitch exploitation allowing interesting effects like directly jumping to the game ending or loading and executing a new game using code entered by the player using the controller.
+
+Over time, faster and more reliable approaches to attain these objective have been found and, currently, it is possible to achieve such a behavior already on the first level of the game.
+
+## Creamsicle Mario
+
+From the states that can be reached using the techniques mentioned above, of particular interest are the cases when this number is 6 or 22 since when acquiring certain power-ups, they allow executing code from areas that can be influenced through the player actions. With power-up state 6 the item is the 1-up mushroom which is very rare since it normally grants the player an extra life. With power-up state 22 there are several such items, including the item known as the 'standard' power-up mushroom -- a very common item that makes the character grow in size among other things. Unlike 1-up mushrooms, standard mushrooms can be saved for later use by the player under certain cricumstances.
+
+This last power-up state (power-up state 22) is also known as "Creamsicle Mario" because of the orangeish color the character acquires, and is kept across levels as long as the character does not enter in contact with any hazard or enemy. This state is also fairly stable and contained under other conditions, allowing playing the game as you normally would.
+
+## Open bus access
+
+Once the power-up triggering this behaviour is acquired in the Creamsicle Mario state, what’s known to SNES hackers as an ‘open bus’ anomaly takes place. To understand what this anomaly does, we have to first understand the basics of how a processor works.
+
+Processors have different components that perform different operations on the data they contain, to allow for greater flexibility and reduce costs all these components are usually interconnected using a data bus. A data bus can be seen as something similar to the air connecting different employees in an office. When an employee wants to send a message to a colleague he can just shout the message into the air so that it will reach its destination on the process all other employees will also hear the information but ignore it. On a processor, the data is instead placed on a set of wires that connects all of the components handling data together so that it reaches the intended destination. In order for the right component to then process and handle the data, additional internal signals are added so that: only one of the components will put data on the wires at a time; and only the desired components read the data from the wires. With the appropriate coordination all of these components act in an ordered manner performing the intended modifications on data given by a set of instructions.
+
+But, what happens when nobody writes into the data bus and somebody reads from it? The behaviour varies from processor to processor but on the original processor used by the SNES, the cables of the data bus act like small capacitors and keep their state for a tiny amount of time which may be enough for the destination component to read the value that the bus contained before. Going back to our example of the employees yelling data to the others in an office, this would be similar to an employee listening and acting on the echo of the data that was last yelled because everybody else was silent.
+
+This kind of behaviour is exactly what happens when the processor tries to access a memory address that does not point to memory nor any other devices. In particular, when acquiring the power-up in the Creamsicle Mario state we mentioned above, the processor tries to execute code on a memory address that points to nowhere. The processor then uses the data bus to update the component that keeps track of the memory address from which to run instructions, sending first the higher part of it (a byte) over the data bus and then second part of it again over the data bus. The echoes of this second part still remain on the processor bus when, shortly afterward, the processor tries to obtain the data of the next instruction to run from memory and, since nobody replies, this byte that was last written is interpreted as the next instruction to execute.
+
+
 
 
 
@@ -96,7 +103,7 @@ We chose the PPO algorithm after informally experimenting with more basic actor-
 ## Basic Setup
 
 
-Our setup assumes a scenario in which a player has transitioned to Creamsicle Mario on level 1, and is now entering a new level (or reentering level 1) while in Creamsicle Mario state. In all our experiments, a play-episode ends when the agent ‘loses a life,’ or after 200 consecutive steps without reward. Imposing a step-limit is necessary in order to prevent never-ending ‘stuck’ episodes, and we have found that a reward-independent time limit pushes the agent towards uninteresting strategies that focus on initiation weird-state escalation as quickly as possible rather than on controlling the weird-state trajectory of the weird-state escalation. 
+Our setup assumes a scenario in which a player has transitioned to Creamsicle Mario on level 1, and is now entering a new level while in Creamsicle Mario state. In all our experiments, a play-episode ends when the agent ‘loses a life,’ or after 200 consecutive steps without reward. Imposing a step-limit is necessary in order to prevent never-ending ‘stuck’ episodes, and we have found that a reward-independent time limit pushes the agent towards uninteresting strategies that focus on initiation weird-state escalation as quickly as possible rather than on controlling the weird-state trajectory of the weird-state escalation. 
 
 
 ## Design Decisions
@@ -322,7 +329,7 @@ Run: 20210406-235718
 
 ![tablecloth](./img/Tuesday-14-32-08.jpg)
 
-![At one point, one of our agents found a means of escaping the level and visiting Yoshi's House.](./img/Tuesday-13-30-11.jpg)
+![At one point, one of our agents found a werid-states route to escape the level and visit Yoshi's House.](./img/Tuesday-13-30-11.jpg)
 
 ![The escaped agent eventually met its demise at the hands of Bullet Bill.](./img/Tuesday-13-33-29.jpg)
 
