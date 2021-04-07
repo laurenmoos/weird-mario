@@ -148,6 +148,110 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 
 
+## Experiment Parameters and Plots
+
+### Green
+
+```
+timeout 6h python main.py \
+  --env-name 'Experiment-1' \
+  --reward 2 \
+  --autoshroom \
+  --trace-size 2000 \
+  --rtrace-length 1000 \
+  --level 4 \
+  --use-linear-lr-decay \
+  --recurrent-policy \
+  --model 2 \
+  --weird \
+  --episode-length 90000 \
+  --algo ppo \
+  --skip \
+  --use-gae \
+  --lr 2.5e-5 \
+  --clip-param 0.1 \
+  --value-loss-coef 0.5 \
+  --num-processes 20 \
+  --num-steps 40 \
+  --num-mini-batch 5 \
+  --log-interval 5 \
+  --entropy-coef 0.01 
+```
+
+Run: 20210406-115451 
+
+### Grey
+
+```
+timeout 6h python main.py \
+  --env-name 'Experiment-2' \
+  --reward 2 \
+  --autoshroom \
+  --trace-size 1 \
+  --rtrace-length 1000 \
+  --level 4 \
+  --use-linear-lr-decay \
+  --recurrent-policy \
+  --model 0 \
+  --weird \
+  --episode-length 90000 \
+  --algo ppo \
+  --skip \
+  --use-gae \
+  --lr 2.5e-5 \
+  --clip-param 0.1 \
+  --value-loss-coef 0.5 \
+  --num-processes 20 \
+  --num-steps 40 \
+  --num-mini-batch 5 \
+  --log-interval 5 \
+  --entropy-coef 0.01
+```
+
+Run: 20210406-175543
+
+### Red
+
+```
+timeout 6h python main.py \
+  --env-name 'Experiment-7' \
+  --reward 2 \
+  --trace-size 2000 \
+  --rtrace-length 1000 \
+  --level 4 \
+  --use-linear-lr-decay \
+  --recurrent-policy \
+  --model 2 \
+  --weird \
+  --episode-length 90000 \
+  --algo ppo \
+  --skip \
+  --use-gae \
+  --lr 2.5e-5 \
+  --clip-param 0.1 \
+  --value-loss-coef 0.5 \
+  --num-processes 20 \
+  --num-steps 40 \
+  --num-mini-batch 5 \
+  --log-interval 5 \
+  --entropy-coef 0.01
+```
+
+Run: 20210406-235718
+
+### Plots
+
+![Crash frequency](./img/crash_frequency.png)
+
+![Maximum reward](./img/max_reward.png)
+
+![Mean crash reward](./img/mean_crash_reward.png)
+
+![Median crash reward](./img/median_crash_reward.png)
+
+![Median reward](./img/median_reward.png)
+
+![Standard deviation](./img/std.png)
 
 ## Screen Captures
 
@@ -176,6 +280,3 @@ The advantage of this approach over pure deep reinforcement learning is that the
 ![The escaped agent eventually met its demise at the hands of Bullet Bill.](./img/Tuesday-13-33-29.jpg)
 
 
-# Plots (move this later)
-
-![Crash frequency](./img/crash_freq.png)
