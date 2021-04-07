@@ -4,6 +4,19 @@ author: Peli Grietzer
 date: April 6, 2021
 ---
 
+# Executive Summary
+
+Until now our contribution to AIMEE focused on using genetic algorithms as a way to find variety of interesting states arising from a system on which a small amount of data and the execution flow could be controlled by an attacker but no new instructions could be added.
+
+During this stage of the project we have explored the possibility to generalize and apply some of the lessons learned until now to other systems in weird statges. In particular we have explored the possibility of using an AI technique known as reinforcement learning to create agents able to find "interesting" results by sending inputs to a video game which is on a weird state. This weird state allows playing the game under relatively normal conditions until a specific item is acquired which further modifies the program state. The behaviour of the game in this second weird state varies weirdly and may even allow the system to execute code derived from the player's actions. Reinforcement learning was deemed appropriate for this approach because it can adapt to the changes in state that different inputs to the game may produce over time.
+
+Reinforcement learning is based on rewards and we considered 3 main basic approaches, rewarding when a specific game counter increased, rewarding when the computer program counter had unseen instructions and rewarding increases on the maximum brightness of the screen.
+
+The research found that such rewards already incetivize the agents to trigger execution of weird-states since they produce significantly higher rewards than normal use of the game. It also found that although the values of the final reward scaled with training and compute investment, the high scores were more stable and even lowered later on. This may be a result of the agent prioritizing mid gain lower risk strategies over huge gain and high risk ones. This may also be caused by the inability of the agent to generalize into new broader strategies once a good fit is found.
+
+In general, it was found that although the issues found so far may paint reinforcement learning as a less effective approach for emergent-execution research, it is plausible that the limitations found may also arise from the resource limitations of the project and not the algorithm itself.
+
+Future work will aim to combine both genetic and reinforcement learning approaches to create agents that will behave better in real world conditions where rewards are given less often and in more unpredictable ways.
 
 # Overview
 
