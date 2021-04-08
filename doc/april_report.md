@@ -179,7 +179,11 @@ The purpose of the added stochasticity is to ensure that a trained model's mean 
 
 Note that when comparing Weird Mario PPO max score to baselines from agents generated using ‘The Brute’, we compare the performance of Weird Mario PPO in the stochasticity-added environment both to the performance of ‘The Brute’ in the original deterministic environment and to the performance of ‘The Brute’ in the stochasticity-added environment. 
 
-Mean-score results are consistently strong compared to baselines, and reliably scale with compute. Max score results and high-score count results are less decisive, and may reflect limitations of pure deep reinforcement learning as an approach for discovering very high-scoring individual input sequences in deterministic environments. Weird Mario PPO max score typically beats the max score for similar-length random runs by a small margin. This score also, typically, beats the max score for for similar-length ‘The Brute’ runs (without added stochasticity) only when the run-length is relatively short. Weird Mario PPO high-score count beats random runs handily for 'mid right tail' score values, but less decivisly for 'extreme right tail' score values. We generaly observe that high-score count for 'mid right tail' values consistently goes up with succesful deep RL training and scales with compute investment. In contraposition to this, high-score count for 'extreme right tail' score values is unevenly responsive to other indicators of training quality, and actively decays in later stages of training despite mean performance and 'mid right tail' performance continuing to improve. 
+Mean-score results are consistently strong compared to baselines, and reliably scale with compute. Max score results and high-score count results are less decisive, and may reflect limitations of pure deep reinforcement learning as an approach for discovering very high-scoring individual input sequences in deterministic environments. 
+
+Weird Mario PPO max score typically beats the max score for random runs by a small margin when considering the max score at a given step-count, but trails behind when considering max score verses wall-time. Max scores from 'The Brute' runs (without added stochasticity) trail behind when measured in wall-time, but lead when measured in step-count. 
+
+Weird Mario PPO score-values counts beat random runs handily for 'mid right tail' score values, but inconsistently for 'extreme right tail' score values. We generaly observe that high-score count for 'mid right tail' values consistently goes up with succesful deep RL training, and scales with compute investment. In contraposition to this, high-score count for 'extreme right tail' score values is unevenly responsive to standard indicators of training quality, and actively decays in later stages of training despite mean performance and 'mid right tail' performance continuing to improve. 
 
 The principal difficulty appears to be that although in the early stages of Weird Mario PPO training mean score and max score rise together, the agent soon discovers strategies with high expected reward but low reward-variance. Strategies with low reward-variance are especially stable given the working of standard deep RL training algorithms such as PPO, since they keep the gradient of the reward-prediction network (aka the ‘value network’ or ‘critic network’) small. We informally experimented at length with introducing tweaks to PPO’s advantage computations (the formula for the impact of sampled performance on the network’s gradient) with the purpose of inducing a bias in favor of strategies with high reward-variance. Based on our results, we currently do not believe this is a promising direction: deep RL methods are famously fragile, and there may well be no ‘clean’ way to introduce such a bias. 
 
@@ -297,29 +301,11 @@ Run: 20210406-235718
 
 ### Plots
 
-![Crash frequency for E1, E2](./img/crash_frequency_1+2_combo.png)
+### Reward 0, Renewing Musroom, Combined Observation Agent vs. Random Agent 
 
-![Crash frequency for E7](./img/crash_frequency_7_combo.png)
+## Initial Escalation Frequency
+file:///home/peli/Reward%200,%20rewnewing%20mushroom,%20lstm+%20pixelspace%20vs%20random,%20raw/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114080812-1a6bc780-98ac-11eb-9144-3a5a0977381d.png)
 
-![Maximum reward for E1, E2](./img/max_reward_1+2_combo.png)
-
-![Maximum reward for E7](./img/max_reward_7_combo.png)
-
-![Mean crash reward for E1, E2](./img/mean_crash_reward_1+2_combo.png)
-
-![Mean crash reward for E7](./img/mean_crash_reward_7_combo.png)
-
-![Median crash reward for E1, E2](./img/median_crash_reward_1+2_combo.png)
-
-![Median crash reward for E7](./img/median_crash_reward_7_combo.png)
-
-![Median reward for E1, E2](./img/median_reward_1+2_combo.png)
-
-![Median reward for E7](./img/median_reward_7_combo.png)
-
-![Standard deviation for E1, E2](./img/std_1+2_combo.png)
-
-![Standard deviation for E7](./img/std_7_combo.png)
 
 ## Screen Captures
 
