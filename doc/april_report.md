@@ -12,11 +12,11 @@ During this stage of the project we have explored the possibility to generalize 
 
 Reinforcement learning is based on rewards. Therefore, we considered three main basic approaches: rewarding when a specific game counter increased; rewarding when the computer program counter had unseen instructions; and rewarding increases on the maximum brightness of the screen.
 
-The research found that such rewards successfully incetivize the agents to trigger execution of weird-states, since weird states can produce significantly higher rewards than normal use of the game. The research additionally found that trained agents can impliclty distinguish triggers for profitable weird-state execution from triggers for unprofitable weird-state execution, demonstrating the trained agent's ability to statistically predict properties of emergent excution. Finally, the research also produced a negative result: it was found that although mean score scaled with training and rose further for more powerful, compute-intensive agent types, these factors don't improve an agent's chance to earn extreme high scores. This may be a result of the agent prioritizing mid-gain lower risk strategies over huge-gain and high risk ones. A second and related cause may be the inability of reinforcement learning agents to continue searching for new strategies after discovering a reliable strategy. 
+The research found that such rewards successfully incentivize the agents to trigger execution of weird-states, since weird states can produce significantly higher rewards than normal use of the game. The research additionally found that trained agents can implicitly distinguish triggers for profitable weird-state execution from triggers for unprofitable weird-state execution, demonstrating the trained agent's ability to statistically predict properties of emergent execution. Finally, the research also produced a negative result: it was found that although mean score scaled with training and rose further for more powerful, compute-intensive agent types, these factors don't improve an agent's chance to earn extreme high scores. This may be a result of the agent prioritizing mid-gain lower risk strategies over huge-gain and high risk ones. A second and related cause may be the inability of reinforcement learning agents to continue searching for new strategies after discovering a reliable strategy. 
 
 In general, it was found that reinforcement learning is promising for researching statistical patterns in emergent-execution spaces, but may be less promising as a direct technique for 'proof by demonstration' exploitation studies. The negative part of the conclusion remains tentative, since resource limitations ruled out experimenting with industrial-scale deep reinforcement learning, and deep reinforcement learning is known to be sensitive to scale. 
 
-Future work will aim to integrate deep reinforcement learning and our genetic programming techniques. The literature suggests that hybrid reinforcement/genetic tecniques are well-suited for conditions where pure reniforcement learning prematurely settles on a mediocre strategy. The current iteration of our genetic programming framework Berbalang was designed for easy integration with deep-learning systems, so we expect the integration process to be rapid. 
+Future work will aim to integrate deep reinforcement learning and our genetic programming techniques. The literature suggests that hybrid reinforcement/genetic techniques are well-suited for conditions where pure reinforcement learning prematurely settles on a mediocre strategy. The current iteration of our genetic programming framework Berbalang was designed for easy integration with deep-learning systems, so we expect the integration process to be rapid. 
 
 # Overview
 
@@ -51,7 +51,7 @@ A weaker demonstration of a learnable general (for the given weird machine) stra
 
 Super Mario World followed on the dynamics of prior Super Mario games while introducing new dynamics such as the ability to play with a companion called Yoshi or  additional power-ups like the ‘feather cape’. The game was significantly more complex than the original Mario Bros game, and features an early example of ‘world-driven’ video-game design, which resulted in a significant number of issues and glitches. As usual, most of these glitches have effects ranging from full game crashes to minor visual artifacts. Some of these glitches can be combined to trigger interesting side effects, including the ability to execute code introduced manually by the player.
 
-The way in which these glitches operate differs significantly from the ROP scenarios that we studied in phase 1 of AIMEE, wherein the artificial intelligence (AI) had significant control over the state of the system. On the one hand, in the ROP scenarios the AI had free reign over a relatively large share of the system's memory, and was restricted only by a prohibition on executing new code. On the other, in the Weird Mario project the AI's on point of control over the system is the ability to enter inputs using a "virtual" controller emulating the original SNES game controller (which can be seen below). Aditionally, while on our first iteration the status of the system's memory was known and maintained during the whole execution of the attack, in these experiments the environment spontaneously varies over time in ways that are chaotically conditioned by the agent's actions, making the memory states unpredictable and therfore requiring more complex techniques. 
+The way in which these glitches operate differs significantly from the ROP scenarios that we studied in phase 1 of AIMEE, wherein the artificial intelligence (AI) had significant control over the state of the system. On the one hand, in the ROP scenarios the AI had free reign over a relatively large share of the system's memory, and was restricted only by a prohibition on executing new code. On the other, in the Weird Mario project the AI's on point of control over the system is the ability to enter inputs using a "virtual" controller emulating the original SNES game controller (which can be seen below). Additionally, while on our first iteration the status of the system's memory was known and maintained during the whole execution of the attack, in these experiments the environment spontaneously varies over time in ways that are chaotically conditioned by the agent's actions, making the memory states unpredictable and therefore requiring more complex techniques. 
 
 ![imagen](https://user-images.githubusercontent.com/2823369/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
 
@@ -183,7 +183,7 @@ Mean-score results are consistently strong compared to baselines, and reliably s
 
 Weird Mario PPO max score typically beats the max score for random runs by a small margin when considering the max score at a given step-count, but trails behind when considering max score verses wall-time. Max scores from 'The Brute' runs (without added stochasticity) trail behind when measured in wall-time, but lead when measured in step-count. 
 
-Weird Mario PPO score-values counts beat random runs handily for 'mid right tail' score values, but inconsistently for 'extreme right tail' score values. We generaly observe that high-score count for 'mid right tail' values consistently goes up with succesful deep RL training, and scales with compute investment. In contraposition to this, high-score count for 'extreme right tail' score values is unevenly responsive to standard indicators of training quality, and actively decays in later stages of training despite mean performance and 'mid right tail' performance continuing to improve. 
+Weird Mario PPO score-values counts beat random runs handily for 'mid right tail' score values, but inconsistently for 'extreme right tail' score values. We generally observe that high-score count for 'mid right tail' values consistently goes up with successful deep RL training, and scales with compute investment. By contrast, high-score count for 'extreme right tail' score values is unevenly responsive to standard indicators of training quality, and actively decays in later stages of training despite mean performance and 'mid right tail' performance continuing to improve. 
 
 The principal difficulty appears to be that although in the early stages of Weird Mario PPO training mean score and max score rise together, the agent soon discovers strategies with high expected reward but low reward-variance. Strategies with low reward-variance are especially stable given the working of standard deep RL training algorithms such as PPO, since they keep the gradient of the reward-prediction network (aka the ‘value network’ or ‘critic network’) small. We informally experimented at length with introducing tweaks to PPO’s advantage computations (the formula for the impact of sampled performance on the network’s gradient) with the purpose of inducing a bias in favor of strategies with high reward-variance. Based on our results, we currently do not believe this is a promising direction: deep RL methods are famously fragile, and there may well be no ‘clean’ way to introduce such a bias. 
 
@@ -210,9 +210,9 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 ## Plots
 
-We present a collection of blindly pre-selected recent experiments. All reported quantities are averaged over a 60-episodes windows, with the exception of quantities for 'Large Random Agent Run,' which are averaged over a 180-episodes window. 
+We present a collection of blindly pre-selected recent experiments. All reported quantities are averaged over a 60-episodes window, with the exception of quantities for 'Large Random Agent Run,' which are averaged over a 180-episodes window. We note that in retrospected we overestimated the expected step-count for 6 hours of runtime on our new ML workstation, and consequently the majority of these experiments do not fully display the long-run benefits of combined (pixel + program counter) observation agents over pixel-observation agents. 
 
-## Setting: Reward 0, Renewing Musroom 
+## Setting: Reward 0, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Random Agent Run (Grey)
 
 ### Mean Reward
@@ -247,7 +247,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 [image](https://user-images.githubusercontent.com/10780796/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
 
-## Setting: Reward 0, Renewing Musroom 
+## Setting: Reward 0, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
@@ -275,7 +275,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 [image](https://user-images.githubusercontent.com/10780796/114085952-543fcc80-98b2-11eb-924b-a9e7ebf03cac.png)
 
 
-## Setting: Reward 2, Renewing Musroom
+## Setting: Reward 2, Renewing Mushroom
 ## Combined-Observation Agent Runs (Red, Green) vs. Random Agent Run (Light Blue)
 
 ### Mean Reward
@@ -308,7 +308,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 [image](https://user-images.githubusercontent.com/10780796/114087274-f8764300-98b3-11eb-8c0a-6a45d264176d.png)
 
-## Setting: Reward 2, Renewing Musroom
+## Setting: Reward 2, Renewing Mushroom
 ## Combined-Observation Agent Runs (Greed, Red) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
