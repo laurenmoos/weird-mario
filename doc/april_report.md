@@ -212,7 +212,7 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 We present a collection of blindly pre-selected recent experiments. All reported quantities are averaged over a 60-episodes window, with the exception of quantities for 'Large Random Agent Run,' which are averaged over a 180-episodes window. We note that in retrospected we overestimated the expected step-count for 6 hours of runtime on our new ML workstation, and consequently the majority of these experiments do not fully display the long-run benefits of combined (pixel + program counter) observation agents over pixel-observation agents. 
 
-## Setting: Reward 0, Renewing Mushroom 
+## Setting: Reward 1, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Random Agent Run (Grey)
 
 ### Mean Reward
@@ -247,7 +247,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 [image](https://user-images.githubusercontent.com/10780796/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
 
-## Setting: Reward 0, Renewing Mushroom 
+## Setting: Reward 1, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
@@ -275,7 +275,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 [image](https://user-images.githubusercontent.com/10780796/114085952-543fcc80-98b2-11eb-924b-a9e7ebf03cac.png)
 
 
-## Setting: Reward 2, Renewing Mushroom
+## Setting: Reward 3, Renewing Mushroom
 ## Combined-Observation Agent Runs (Red, Green) vs. Random Agent Run (Light Blue)
 
 ### Mean Reward
@@ -308,7 +308,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 [image](https://user-images.githubusercontent.com/10780796/114087274-f8764300-98b3-11eb-8c0a-6a45d264176d.png)
 
-## Setting: Reward 2, Renewing Mushroom
+## Setting: Reward 3, Renewing Mushroom
 ## Combined-Observation Agent Runs (Greed, Red) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
@@ -336,7 +336,7 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 [image](https://user-images.githubusercontent.com/10780796/114089168-1c3a8880-98b6-11eb-9420-669eec175369.png)
 
-## Setting: Reward 2, Single Mushroom
+## Setting: Reward 3, Single Mushroom
 ## Combined-Observation Agent Runs (Magenta, Red) vs. Large Random Agent Run (Blue)  
 
 ### Mean Reward
