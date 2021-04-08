@@ -360,6 +360,10 @@ file:///home/peli/Downloads/Lib2/max%20reward%20(1).svg![image](https://user-ima
 file:///home/peli/Downloads/Lib2/mean%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114086864-784fdd80-98b3-11eb-9080-b71419e86321.png)
 file:///home/peli/Downloads/Lib2/mean%20crash%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114087064-b220e400-98b3-11eb-8ef1-881c796127f4.png)
 
+### Median Escalated Episodes Reward
+file:///home/peli/Downloads/Lib5/median%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114091488-0da1a080-98b9-11eb-9123-f7a314085a8b.png)
+file:///home/peli/Downloads/Lib5/median%20crash%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114091547-1eeaad00-98b9-11eb-94cf-fcbcccb5a9df.png)
+
 ### Escalated Episodes Frequency
 file:///home/peli/Downloads/Lib2/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114087180-d67cc080-98b3-11eb-84e5-29246fdaff00.png)
 file:///home/peli/Downloads/Lib2/crash%20frequency%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114087274-f8764300-98b3-11eb-8c0a-6a45d264176d.png)
@@ -378,10 +382,6 @@ file:///home/peli/Downloads/Lib3/max%20reward%20(1).svg![image](https://user-ima
 ### Mean Escalated Episodes Reward
 file:///home/peli/Downloads/Lib3/mean%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114089048-fd3bf680-98b5-11eb-868b-8b4eb53b3287.png)
 file:///home/peli/Downloads/Lib3/mean%20crash%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114089086-06c55e80-98b6-11eb-8bcd-c67011250e6e.png)
-
-### Median Escalated Episodes Reward
-file:///home/peli/Downloads/Lib5/median%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114091488-0da1a080-98b9-11eb-9123-f7a314085a8b.png)
-file:///home/peli/Downloads/Lib5/median%20crash%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114091547-1eeaad00-98b9-11eb-94cf-fcbcccb5a9df.png)
 
 ### Escalated Episodes Frequency
 file:///home/peli/Downloads/Lib3/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114089128-12188a00-98b6-11eb-9f61-a544f493a2f0.png)
