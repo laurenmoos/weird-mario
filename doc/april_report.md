@@ -301,35 +301,37 @@ Run: 20210406-235718
 
 ## Plots
 
-## Reward 0, Renewing Musroom, Combined-Observation Agent vs. Random Agent 
+
+## Reward 0, Renewing Musroom, Combined-Observation Agent vs. Random Agent
 
 ### Mean Reward
-file:///home/peli/Reward%200,%20rewnewing%20mushroom,%20lstm+%20pixelspace%20vs%20random,%20raw/mean%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114083223-ffe71d80-98ae-11eb-83ca-1ec9bfca8ff3.png)
-file:///home/peli/Downloads/mean%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114083957-ed211880-98af-11eb-9e93-8f5899bdf0ba.png)
-
-### Max Reward
-file:///home/peli/Reward%200,%20rewnewing%20mushroom,%20lstm+%20pixelspace%20vs%20random,%20raw/max%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114083264-08d7ef00-98af-11eb-8ea2-c38c90182b6c.png)
-file:///home/peli/Downloads/max%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114084012-fd38f800-98af-11eb-844b-3c8f3ab73752.png)
-
-### Mean Escalated Episodes Reward
-file:///home/peli/Reward%200,%20rewnewing%20mushroom,%20lstm+%20pixelspace%20vs%20random,%20raw/mean%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114083325-1b522880-98af-11eb-9d9b-f1a18f0de152.png)
-file:///home/peli/Downloads/mean%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114084104-15a91280-98b0-11eb-9bdc-6e4c1f852ec3.png)
-
-### Escalated Episodes Frequency
-file:///home/peli/Reward%200,%20rewnewing%20mushroom,%20lstm+%20pixelspace%20vs%20random,%20raw/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114080812-1a6bc780-98ac-11eb-9144-3a5a0977381d.png)
-file:///home/peli/Downloads/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114084049-07f38d00-98b0-11eb-9cc3-8a7f3191ce26.png)
-
-
-## Reward 0, Renewing Musroom, Combined-Observation Agent vs. Pixel Observation Agent 
-
-### Mean Reward
+file:///home/peli/Downloads/mean%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
+file:///home/peli/Downloads/mean%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114084688-c31c2600-98b0-11eb-8a95-6bfd7e690953.png)
 
 
 ### Max Reward
+file:///home/peli/Downloads/max%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114084904-f9f23c00-98b0-11eb-9dc2-b08e4751a74f.png)
+file:///home/peli/Downloads/max%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114084936-02e30d80-98b1-11eb-82b6-87b116a9bbd9.png)
+
+### Mean Escalated Episodes Reward
+file:///home/peli/Downloads/mean%20crash%20reward%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114084741-d0391500-98b0-11eb-9f85-bd11e5a799ae.png)
+file:///home/peli/Downloads/mean%20crash%20reward.svg![image](https://user-images.githubusercontent.com/10780796/114084805-df1fc780-98b0-11eb-802c-6eb2f5d671f0.png)
+
+### Escalated Episodes Frequency
+file:///home/peli/Downloads/crash%20frequency%20(1).svg![image](https://user-images.githubusercontent.com/10780796/114084845-e941c600-98b0-11eb-92ac-cf469b25d135.png)
+file:///home/peli/Downloads/crash%20frequency.svg![image](https://user-images.githubusercontent.com/10780796/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
+
+
+## Reward 0, Renewing Musroom, Combined-Observation Agent vs. Pixel Observation Agent
+
+### Mean Reward
+
+### Max Reward
 
 ### Mean Escalated Episodes Reward
 
 ### Escalated Episodes Frequency
+
 
 ## Reward 2, Renewing Musroom, Combined-Observation Agents vs. Random Agent
 
