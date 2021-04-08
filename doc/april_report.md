@@ -206,7 +206,7 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 ## Experiment Parameters and Plots
 
-### Green
+### E1: Green and Blue
 
 ```
 timeout 6h python main.py \
@@ -234,9 +234,9 @@ timeout 6h python main.py \
   --entropy-coef 0.01 
 ```
 
-Run: 20210406-115451 
+Runs: 20210406-115451, 20210407-103704 
 
-### Grey
+### E2: Grey and Magenta
 
 ```
 timeout 6h python main.py \
@@ -264,9 +264,9 @@ timeout 6h python main.py \
   --entropy-coef 0.01
 ```
 
-Run: 20210406-175543
+Runs: 20210406-175543, 20210407-163704
 
-### Red
+### E7: Red, Orange
 
 ```
 timeout 6h python main.py \
@@ -297,27 +297,27 @@ Run: 20210406-235718
 
 ### Plots
 
-![Crash frequency for Green and Grey](./img/crash_frequency_1+2.png)
+![Crash frequency for E1, E2](./img/crash_frequency_1+2_combo.png)
 
 ![Crash frequency for Red](./img/crash_frequency_7.png)
 
-![Maximum reward for Green and Grey](./img/max_reward_1+2.png)
+![Maximum reward for E1, E2](./img/max_reward_1+2_combo.png)
 
 ![Maximum reward for Red](./img/max_reward_7.png)
 
-![Mean crash reward for Green and Grey](./img/mean_crash_reward_1+2.png)
+![Mean crash reward for E1, E2](./img/mean_crash_reward_1+2_combo.png)
 
 ![Mean crash reward for Red](./img/mean_crash_reward_7.png)
 
-![Median crash reward for Green and Grey](./img/median_crash_reward_1+2.png)
+![Median crash reward for E1, E2](./img/median_crash_reward_1+2_combo.png)
 
 ![Median crash reward for Red](./img/median_crash_reward_7.png)
 
-![Median reward for Green and Grey](./img/median_reward_1+2.png)
+![Median reward for E1, E2](./img/median_reward_1+2_combo.png)
 
 ![Median reward for Red](./img/median_reward_7.png)
 
-![Standard deviation for Green and Grey](./img/std_1+2.png)
+![Standard deviation for E1, E2](./img/std_1+2_combo.png)
 
 ![Standard deviation for Red](./img/std_7.png)
 
