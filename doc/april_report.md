@@ -266,7 +266,7 @@ timeout 6h python main.py \
 
 Runs: 20210406-175543, 20210407-163704
 
-### E7: Red, Orange
+### E7: Red and Orange
 
 ```
 timeout 6h python main.py \
@@ -299,27 +299,27 @@ Run: 20210406-235718
 
 ![Crash frequency for E1, E2](./img/crash_frequency_1+2_combo.png)
 
-![Crash frequency for Red](./img/crash_frequency_7.png)
+![Crash frequency for E7](./img/crash_frequency_7_combo.png)
 
 ![Maximum reward for E1, E2](./img/max_reward_1+2_combo.png)
 
-![Maximum reward for Red](./img/max_reward_7.png)
+![Maximum reward for E7](./img/max_reward_7_combo.png)
 
 ![Mean crash reward for E1, E2](./img/mean_crash_reward_1+2_combo.png)
 
-![Mean crash reward for Red](./img/mean_crash_reward_7.png)
+![Mean crash reward for E7](./img/mean_crash_reward_7_combo.png)
 
 ![Median crash reward for E1, E2](./img/median_crash_reward_1+2_combo.png)
 
-![Median crash reward for Red](./img/median_crash_reward_7.png)
+![Median crash reward for E7](./img/median_crash_reward_7_combo.png)
 
 ![Median reward for E1, E2](./img/median_reward_1+2_combo.png)
 
-![Median reward for Red](./img/median_reward_7.png)
+![Median reward for E7](./img/median_reward_7_combo.png)
 
 ![Standard deviation for E1, E2](./img/std_1+2_combo.png)
 
-![Standard deviation for Red](./img/std_7.png)
+![Standard deviation for E7](./img/std_7_combo.png)
 
 ## Screen Captures
 
