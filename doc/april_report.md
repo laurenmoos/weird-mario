@@ -53,7 +53,8 @@ Super Mario World followed on the dynamics of prior Super Mario games while intr
 
 The way in which these glitches operate differs significantly from the ROP scenarios that we studied in phase 1 of AIMEE, wherein the artificial intelligence (AI) had significant control over the state of the system. On the one hand, in the ROP scenarios the AI had free reign over a relatively large share of the system's memory, and was restricted only by a prohibition on executing new code. On the other, in the Weird Mario project the AI's on point of control over the system is the ability to enter inputs using a "virtual" controller emulating the original SNES game controller (which can be seen below). Additionally, while on our first iteration the status of the system's memory was known and maintained during the whole execution of the attack, in these experiments the environment spontaneously varies over time in ways that are chaotically conditioned by the agent's actions, making the memory states unpredictable and therefore requiring more complex techniques. 
 
-![imagen](https://user-images.githubusercontent.com/2823369/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
+
+![imagen](./img/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
 
 In the following subsections, we review the concepts necessary to understand some of the glitches used and their impact on emergent execution.
 
@@ -219,62 +220,80 @@ We present each plot with and without smoothing, using Tensorboard's native smoo
 
 ### Mean Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114084688-c31c2600-98b0-11eb-8a95-6bfd7e690953.png)
+![image](./img/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
+
+
+![image](./img/114084688-c31c2600-98b0-11eb-8a95-6bfd7e690953.png)
 
 
 ### Max Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114084904-f9f23c00-98b0-11eb-9dc2-b08e4751a74f.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114084936-02e30d80-98b1-11eb-82b6-87b116a9bbd9.png)
+![image](./img/114084904-f9f23c00-98b0-11eb-9dc2-b08e4751a74f.png)
+
+
+![image](./img/114084936-02e30d80-98b1-11eb-82b6-87b116a9bbd9.png)
 
 ### Mean Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114084741-d0391500-98b0-11eb-9f85-bd11e5a799ae.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114084805-df1fc780-98b0-11eb-802c-6eb2f5d671f0.png)
+![image](./img/114084741-d0391500-98b0-11eb-9f85-bd11e5a799ae.png)
+
+
+![image](./img/114084805-df1fc780-98b0-11eb-802c-6eb2f5d671f0.png)
 
 ### Median Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114091992-adf7c500-98b9-11eb-9bd1-6572f706ce9e.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114092068-c071fe80-98b9-11eb-8806-7ce21effd1da.png)
+![image](./img/114091992-adf7c500-98b9-11eb-9bd1-6572f706ce9e.png)
+
+
+![image](./img/114092068-c071fe80-98b9-11eb-8806-7ce21effd1da.png)
 
 
 ### Escalated Episodes Frequency
 
-[image](https://user-images.githubusercontent.com/10780796/114084845-e941c600-98b0-11eb-92ac-cf469b25d135.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
+![image](./img/114084845-e941c600-98b0-11eb-92ac-cf469b25d135.png)
+
+
+![image](./img/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
 
 ## Setting: Reward 1, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114085622-e4314680-98b1-11eb-9c94-fee1d1136a3b.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114085753-104cc780-98b2-11eb-837d-6426436cc838.png)
+![image](./img/114085622-e4314680-98b1-11eb-9c94-fee1d1136a3b.png)
+
+
+![image](./img/114085753-104cc780-98b2-11eb-837d-6426436cc838.png)
 
 ### Max Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114086014-67529c80-98b2-11eb-82e1-34d404e5a999.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114086048-6faad780-98b2-11eb-8c0e-764396b1fc3b.png)
+![image](./img/114086014-67529c80-98b2-11eb-82e1-34d404e5a999.png)
+
+
+![image](./img/114086048-6faad780-98b2-11eb-8c0e-764396b1fc3b.png)
 
 ### Mean Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114085778-18a50280-98b2-11eb-804c-ea5656675625.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114085813-2490c480-98b2-11eb-8abb-0a5477ab4140.png)
+![image](./img/114085778-18a50280-98b2-11eb-804c-ea5656675625.png)
+
+
+![image](./img/114085813-2490c480-98b2-11eb-8abb-0a5477ab4140.png)
 
 ### Escalated Episodes Frequency
 
-[image](https://user-images.githubusercontent.com/10780796/114085848-31adb380-98b2-11eb-8d23-7ab1e36eae2a.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114085952-543fcc80-98b2-11eb-924b-a9e7ebf03cac.png)
+![image](./img/114085848-31adb380-98b2-11eb-8d23-7ab1e36eae2a.png)
+
+
+![image](./img/114085952-543fcc80-98b2-11eb-924b-a9e7ebf03cac.png)
 
 
 ## Setting: Reward 3, Renewing Mushroom
@@ -282,113 +301,151 @@ We present each plot with and without smoothing, using Tensorboard's native smoo
 
 ### Mean Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114086669-2f982480-98b3-11eb-91db-ff7f9dbdc092.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114086692-3757c900-98b3-11eb-9956-8999f0431ddf.png)
+![image](./img/114086669-2f982480-98b3-11eb-91db-ff7f9dbdc092.png)
+
+
+![image](./img/114086692-3757c900-98b3-11eb-9956-8999f0431ddf.png)
 
 ### Max Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114086784-57878800-98b3-11eb-97db-628db56a8d7d.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114086807-63734a00-98b3-11eb-9dfb-ed7871c8f18a.png)
+![image](./img/114086784-57878800-98b3-11eb-97db-628db56a8d7d.png)
+
+
+![image](./img/114086807-63734a00-98b3-11eb-9dfb-ed7871c8f18a.png)
 
 ### Mean Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114086864-784fdd80-98b3-11eb-9080-b71419e86321.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114087064-b220e400-98b3-11eb-8ef1-881c796127f4.png)
+![image](./img/114086864-784fdd80-98b3-11eb-9080-b71419e86321.png)
+
+
+![image](./img/114087064-b220e400-98b3-11eb-8ef1-881c796127f4.png)
 
 ### Median Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114091488-0da1a080-98b9-11eb-9123-f7a314085a8b.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114091547-1eeaad00-98b9-11eb-94cf-fcbcccb5a9df.png)
+![image](./img/114091488-0da1a080-98b9-11eb-9123-f7a314085a8b.png)
+
+
+![image](./img/114091547-1eeaad00-98b9-11eb-94cf-fcbcccb5a9df.png)
 
 ### Escalated Episodes Frequency
 
-[image](https://user-images.githubusercontent.com/10780796/114087180-d67cc080-98b3-11eb-84e5-29246fdaff00.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114087274-f8764300-98b3-11eb-8c0a-6a45d264176d.png)
+![image](./img/114087180-d67cc080-98b3-11eb-84e5-29246fdaff00.png)
+
+
+![image](./img/114087274-f8764300-98b3-11eb-8c0a-6a45d264176d.png)
 
 ## Setting: Reward 3, Renewing Mushroom
 ## Combined-Observation Agent Runs (Greed, Red) vs. Pixel Observation Agent Run (Orange) 
 
 ### Mean Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114088707-94ed1500-98b5-11eb-828d-5b2b6e865df1.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114088887-ce258500-98b5-11eb-9f24-b3dba2022036.png)
+![image](./img/114088707-94ed1500-98b5-11eb-828d-5b2b6e865df1.png)
+
+
+![image](./img/114088887-ce258500-98b5-11eb-9f24-b3dba2022036.png)
 
 
 ### Max Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114088967-e4334580-98b5-11eb-9ba0-958450ed4f54.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114088996-edbcad80-98b5-11eb-8ac5-273586752b65.png)
+![image](./img/114088967-e4334580-98b5-11eb-9ba0-958450ed4f54.png)
+
+
+![image](./img/114088996-edbcad80-98b5-11eb-8ac5-273586752b65.png)
 
 ### Mean Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114089048-fd3bf680-98b5-11eb-868b-8b4eb53b3287.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114089086-06c55e80-98b6-11eb-8bcd-c67011250e6e.png)
+![image](./img/114089048-fd3bf680-98b5-11eb-868b-8b4eb53b3287.png)
+
+
+![image](./img/114089086-06c55e80-98b6-11eb-8bcd-c67011250e6e.png)
 
 ### Escalated Episodes Frequency
 
-[image](https://user-images.githubusercontent.com/10780796/114089128-12188a00-98b6-11eb-9f61-a544f493a2f0.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114089168-1c3a8880-98b6-11eb-9420-669eec175369.png)
+![image](./img/114089128-12188a00-98b6-11eb-9f61-a544f493a2f0.png)
+
+
+![image](./img/114089168-1c3a8880-98b6-11eb-9420-669eec175369.png)
 
 ## Setting: Reward 3, Single Mushroom
 ## Combined-Observation Agent Runs (Magenta, Red) vs. Large Random Agent Run (Blue)  
 
 ### Mean Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114090885-49883600-98b8-11eb-90cf-b0244b0fbc63.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114090937-57d65200-98b8-11eb-8449-ed66b1f58fc3.png)
+![image](./img/114090885-49883600-98b8-11eb-90cf-b0244b0fbc63.png)
+
+
+![image](./img/114090937-57d65200-98b8-11eb-8449-ed66b1f58fc3.png)
 
 ### Max Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114090517-d4b4fc00-98b7-11eb-969b-e0598c294397.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114090547-dd0d3700-98b7-11eb-83b5-9127ac49814b.png)
+![image](./img/114090517-d4b4fc00-98b7-11eb-969b-e0598c294397.png)
+
+
+![image](./img/114090547-dd0d3700-98b7-11eb-83b5-9127ac49814b.png)
 
 ### Mean Escalated Episodes Reward
 
-[image](https://user-images.githubusercontent.com/10780796/114090659-0201aa00-98b8-11eb-9b32-1d111a988ecb.png)
 
-[image](https://user-images.githubusercontent.com/10780796/114090695-0c23a880-98b8-11eb-9e70-874fcbd055fb.png)
+![image](./img/114090659-0201aa00-98b8-11eb-9b32-1d111a988ecb.png)
+
+
+![image](./img/114090695-0c23a880-98b8-11eb-9e70-874fcbd055fb.png)
 
 ### Escalated Episodes Frequency
 
-[image](https://user-images.githubusercontent.com/10780796/114090722-147be380-98b8-11eb-9a06-2831ef960127.png)
-[image](https://user-images.githubusercontent.com/10780796/114090782-28bfe080-98b8-11eb-9912-6b584a28ca75.png)
+
+![image](./img/114090722-147be380-98b8-11eb-9a06-2831ef960127.png)
+
+![image](./img/114090782-28bfe080-98b8-11eb-9912-6b584a28ca75.png)
 
 
 
 ## Screen Captures
 
+
 ![glass window](./img/Tuesday-13-22-36.jpg)
+
 
 ![black block](./img/Tuesday-13-24-52.jpg)
 
+
 ![jumble sky](./img/Tuesday-13-25-46.jpg)
+
 
 ![pink sky](./img/Tuesday-13-26-58.jpg)
 
+
 ![brown lumps](./img/Tuesday-13-28-43.jpg)
+
 
 ![silhouette](./img/Tuesday-13-33-50.jpg)
 
+
 ![green patterns](./img/Tuesday-13-33-58.jpg)
+
 
 ![chaos cascade](./img/Tuesday-13-36-07.jpg)
 
+
 ![raining pows](./img/Tuesday-13-40-25.jpg)
+
 
 ![tablecloth](./img/Tuesday-14-32-08.jpg)
 
+
 ![At one point, one of our agents found a werid-states route to escape the level and visit Yoshi's House.](./img/Tuesday-13-30-11.jpg)
+
 
 ![The escaped agent eventually met its demise at the hands of Bullet Bill.](./img/Tuesday-13-33-29.jpg)
 
