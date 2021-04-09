@@ -211,14 +211,13 @@ The advantage of this approach over pure deep reinforcement learning is that the
 
 ## Plots
 
-We present a collection of blindly pre-selected recent experiments. All reported quantities are averaged over a 60-episodes window, with the exception of quantities for 'Large Random Agent Run,' which are averaged over a 180-episodes window. We note that in retrospected we overestimated the expected step-count for 6 hours of runtime on our new ML workstation, and consequently the majority of these experiments do not fully display the long-run benefits of combined (pixel + program counter) observation agents over pixel-observation agents. 
+In the next pages, we present a collection of blindly pre-selected recent experiments. All reported quantities are averaged over a 60-episodes window, with the exception of quantities for 'Large Random Agent Run,' which are averaged over a 180-episodes window. Please note that we overestimated the expected step-count for 6 hours of runtime on our new ML workstation, and consequently the majority of these experiments do not fully display the long-run benefits of combined (pixel + program counter) observation agents over pixel-observation agents. 
 
 We present each plot with and without smoothing, using Tensorboard's native smoothing function. 
 
 We also present a collection of interesting screen captures from our experiments.
 
 All of these images are presented on the next pages.
-
 
 ![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing mean reward score. Smoothed graph.](./img/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
 
