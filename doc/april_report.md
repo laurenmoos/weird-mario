@@ -54,7 +54,7 @@ Super Mario World followed on the dynamics of prior Super Mario games while intr
 The way in which these glitches operate differs significantly from the ROP scenarios that we studied in phase 1 of AIMEE, wherein the artificial intelligence (AI) had significant control over the state of the system. On the one hand, in the ROP scenarios the AI had free reign over a relatively large share of the system's memory, and was restricted only by a prohibition on executing new code. On the other, in the Weird Mario project the AI's on point of control over the system is the ability to enter inputs using a "virtual" controller emulating the original SNES game controller (which can be seen below). Additionally, while on our first iteration the status of the system's memory was known and maintained during the whole execution of the attack, in these experiments the environment spontaneously varies over time in ways that are chaotically conditioned by the agent's actions, making the memory states unpredictable and therefore requiring more complex techniques. 
 
 
-![Peli, please add a caption here TODO](./img/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
+![Super Nintendo Entertainment System controller](./img/113896374-297a4900-97ca-11eb-8b9a-9ef456c05e3c.png)
 
 In the following subsections, we review the concepts necessary to understand some of the glitches used and their impact on emergent execution.
 
@@ -215,50 +215,42 @@ We present a collection of blindly pre-selected recent experiments. All reported
 
 We present each plot with and without smoothing, using Tensorboard's native smoothing function. 
 
-## Setting: Reward 1, Renewing Mushroom 
-## Combined-Observation Agent Long Run (Blue) vs. Random Agent Run (Grey)
-
-### Mean Reward
 
 
-![Peli, please add a caption here TODO](./img/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing mean reward score.](./img/114084663-b8619100-98b0-11eb-8002-249f71b21557.png)
 
 
-![Peli, please add a caption here TODO](./img/114084688-c31c2600-98b0-11eb-8a95-6bfd7e690953.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing mean reward score](./img/114084688-c31c2600-98b0-11eb-8a95-6bfd7e690953.png)
 
 
-### Max Reward
 
 
-![Peli, please add a caption here TODO](./img/114084904-f9f23c00-98b0-11eb-9dc2-b08e4751a74f.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing max reward score](./img/114084904-f9f23c00-98b0-11eb-9dc2-b08e4751a74f.png)
 
 
-![Peli, please add a caption here TODO](./img/114084936-02e30d80-98b1-11eb-82b6-87b116a9bbd9.png)
-
-### Mean Escalated Episodes Reward
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing max reward score](./img/114084936-02e30d80-98b1-11eb-82b6-87b116a9bbd9.png)
 
 
-![Peli, please add a caption here TODO](./img/114084741-d0391500-98b0-11eb-9f85-bd11e5a799ae.png)
+
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing max escalated episodes reward](./img/114084741-d0391500-98b0-11eb-9f85-bd11e5a799ae.png)
 
 
-![Peli, please add a caption here TODO](./img/114084805-df1fc780-98b0-11eb-802c-6eb2f5d671f0.png)
-
-### Median Escalated Episodes Reward
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing max escalated episodes reward](./img/114084805-df1fc780-98b0-11eb-802c-6eb2f5d671f0.png)
 
 
-![Peli, please add a caption here TODO](./img/114091992-adf7c500-98b9-11eb-9bd1-6572f706ce9e.png)
+
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing median escalated episodes reward](./img/114091992-adf7c500-98b9-11eb-9bd1-6572f706ce9e.png)
 
 
-![Peli, please add a caption here TODO](./img/114092068-c071fe80-98b9-11eb-8806-7ce21effd1da.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing median escalated episodes reward](./img/114092068-c071fe80-98b9-11eb-8806-7ce21effd1da.png)
 
 
-### Escalated Episodes Frequency
 
 
-![Peli, please add a caption here TODO](./img/114084845-e941c600-98b0-11eb-92ac-cf469b25d135.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing escalated episodes frequency](./img/114084845-e941c600-98b0-11eb-92ac-cf469b25d135.png)
 
 
-![Peli, please add a caption here TODO](./img/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
+![Reward 1, renewing mushroom. Combined-observation agent long run (blue) vs. random agent run (grey), showing escalated episodes frequency](./img/114084866-ef37a700-98b0-11eb-88e4-a81ebb4dae53.png)
 
 ## Setting: Reward 1, Renewing Mushroom 
 ## Combined-Observation Agent Long Run (Blue) vs. Pixel Observation Agent Run (Orange) 
