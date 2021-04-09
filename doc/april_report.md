@@ -338,7 +338,7 @@ All of these images are presented on the next pages.
 
 ![Reward 3, single mushroom. Combined-observation agent runs (magenta, red) vs. large random agent run (blue), showing escalated episodes frequency. Not smoothed graph.](./img/114090782-28bfe080-98b8-11eb-9912-6b584a28ca75.png)
 
-
+\clearpage
 
 ![Glass window effect.](./img/Tuesday-13-22-36.jpg)
 
