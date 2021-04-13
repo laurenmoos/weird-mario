@@ -1,7 +1,6 @@
 import glob
 import os
 
-import torch
 import torch.nn as nn
 
 from a2c_ppo_acktr.envs import VecNormalize

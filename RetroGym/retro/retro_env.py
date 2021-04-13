@@ -27,6 +27,11 @@ RETRO_DEBUG = 0
 if 'RETRO_DEBUG' in os.environ:
     RETRO_DEBUG = int(os.environ['RETRO_DEBUG'])
 
+
+RETRO_TRACE = True
+if 'RETRO_TRACE' in os.environ:
+    RETRO_TRACE = bool(int(os.environ['RETRO_TRACE']))
+
 class RetroEnv(gym.Env):
     """
     Gym Retro environment class
@@ -155,7 +160,7 @@ class RetroEnv(gym.Env):
             self._close = self.close
 
     def _init_shm(self, retro_run_id):
-        if self.system != 'Snes':
+        if self.system != 'Snes' or not RETRO_TRACE:
             self.shm = None
             return
         ##### Set up the shared memory segment ##################################################
@@ -187,10 +192,13 @@ class RetroEnv(gym.Env):
             raise ValueError('Unrecognized observation type: {}'.format(self._obs_type))
 
     def _read_snes_shm(self):
+        if self.shm is None:
+            return []
+
         self.shm.attach()
         count = struct.unpack(f"<Q", self.shm.read(WORD_SIZE))[0]
         buf = self.shm.read((count+1) * WORD_SIZE)
-        self.shm.detach()
+        #self.shm.detach()
         g = MSG_FMT.iter_unpack(buf)
         _ = next(g)
         return [(addr | bank << 16, offset, bytes(bytecode)) for (addr, bank, offset, *bytecode) in g]

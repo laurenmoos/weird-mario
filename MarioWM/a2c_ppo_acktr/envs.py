@@ -1,22 +1,19 @@
 import os
 
+import math
 import gym
 import numpy as np
 import torch
 from gym.spaces.box import Box
-import random 
 from baselines import bench
-from baselines.common.atari_wrappers import make_atari, wrap_deepmind
 from baselines.common.vec_env import VecEnvWrapper
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.vec_env.shmem_vec_env import ShmemVecEnv
-from baselines.common.vec_env.vec_monitor import VecMonitor
 from baselines.common.vec_env.vec_normalize import \
     VecNormalize as VecNormalize_
 
 import retro 
 
-from baselines.common.retro_wrappers import make_retro
 from baselines.common.atari_wrappers import WarpFrame
 from a2c_ppo_acktr.arguments import get_args
 
@@ -42,7 +39,7 @@ class SnesDiscretizer(gym.ActionWrapper):
         
         self._actions = []
         for action in actions:
-            arr = np.array([False] * 12)
+            arr = np.array([False] * len(buttons))
             for button in action:
                 arr[buttons.index(button)] = True
             self._actions.append(arr)
@@ -116,7 +113,20 @@ class MaxAndSkipEnv(gym.Wrapper):
 
     def reset(self, **kwargs):
         return self.env.reset(**kwargs)
-    
+
+MUSHROOM_BOX_ADDR = 8261058
+CREAMSICLE_STATE = 22
+
+
+def add_mushroom(env):
+    retro._retro.Memory.assign(env.data.memory, MUSHROOM_BOX_ADDR, "uint8", 1)
+    return
+
+def set_powerup_state(env, state):
+    retro._retro.Memory.assign(env.data.memory, 8257561, "uint8", state)
+    return
+
+
 class ProcessFrameMario(gym.Wrapper):
     def __init__(self, env=None, reward_type=None, dim=84):
         super(ProcessFrameMario, self).__init__(env)
@@ -136,14 +146,14 @@ class ProcessFrameMario(gym.Wrapper):
         if args.autoshroom:
 
             if  self.timer % shroom_interval == 0:
-                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+                add_mushroom(self.env)
                 
         if args.weird:
             
             if self.fresh: 
                 
-                retro._retro.Memory.assign(self.env.data.memory, 8257561, "uint8", 22)
-                retro._retro.Memory.assign(self.env.data.memory, 8261058, "uint8", 1) 
+                add_mushroom(self.env)
+                set_powerup_state(self.env, CREAMSICLE_STATE)
 
                 self.fresh = False
         
@@ -154,13 +164,9 @@ class ProcessFrameMario(gym.Wrapper):
         if (info ['powerup'] != 22) and (info['powerup']>3):
             self.crashed = True
          
-       
-        if self.crashed:
-            info['crash'] = 1
-            
-        else:
-            info ['crash'] = 0
-         
+
+        info['crash'] = int(self.crashed)
+
         self.timer-=1
         
         reward = 0
@@ -199,7 +205,22 @@ class ProcessFrameMario(gym.Wrapper):
                 if word not in self.code_covered:  
                     self.code_covered.add(word)
                     reward+=1
-            reward*= 0.01 
+            reward*= 0.01
+
+        elif args.reward == 4:
+
+            trace = info['trace']
+            if len(trace) > args.rtrace_length:
+                trace = trace[:args.rtrace_length]
+            for step in trace:
+                addr = step[0]
+                if addr not in self.code_covered:
+                    self.code_covered.add(addr)
+                    reward += 1
+            reward *= 0.01
+
+        elif args.reward == 5:
+            reward = math.tanh(info["powerup"] / 10.0)
         
                  
                 
@@ -227,71 +248,45 @@ class ProcessFrameMario(gym.Wrapper):
         
         return obs, reward, done, info
   
-        
+
+LEVELS = [
+'YoshiIsland1.state',
+'YoshiIsland2.state',
+'YoshiIsland3.state',
+'YoshiIsland4.state',
+'Bridges1.state',
+'DonutPlains1.state',
+'DonutPlains2.state',
+'DonutPlains3.state',
+'DonutPlains4.state',
+'DonutPlains5.state',
+'Forest1.state',
+'Forest2.state',
+'Forest3.state',
+'Forest4.state',
+'Forest5.state',
+'VanillaDome1.state',
+'VanillaDome2.state',
+'VanillaDome3.state',
+'VanillaDome4.state',
+'VanillaDome5.state',
+'ChocolateIsland1.state',
+'ChocolateIsland2.state',
+'ChocolateIsland3.state',
+'Bridges2.state'
+]
+
 def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
         
         
         if args.level == 0:
-            mrank = rank % 24
+            mrank = rank % len(LEVELS)
         else:
-            mrank = args.level % 24
+            mrank = args.level % len(LEVELS)
 
-        if mrank  == 1:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 2:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland2.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 3:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland3.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 4:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'YoshiIsland4.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 5:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Bridges1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 6:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'DonutPlains1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 7:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'DonutPlains2.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 8:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'DonutPlains3.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 9:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'DonutPlains4.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 10:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'DonutPlains5.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 11:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Forest1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 12:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Forest2.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 13:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Forest3.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 14:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Forest4.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 15:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Forest5.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 16:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'VanillaDome1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 17:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'VanillaDome2.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 18:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'VanillaDome3.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 19:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'VanillaDome4.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 20:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'VanillaDome5.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 21:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'ChocolateIsland1.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 22:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'ChocolateIsland2.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 23:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'ChocolateIsland3.state', use_restricted_actions=retro.Actions.ALL)
-        if mrank  == 0:
-            env = retro.make( game='SuperMarioWorld-Snes', state= 'Bridges2.state', use_restricted_actions=retro.Actions.ALL)
+        env = retro.make(game='SuperMarioWorld-Snes', state=LEVELS[mrank])
 
-
-
-        #env = retro.make( game='SuperMarioWorld-Snes', use_restricted_actions=retro.Actions.ALL)
-
-      
-        
         env = SnesDiscretizer(env)
         env = WarpFrame (env)
         

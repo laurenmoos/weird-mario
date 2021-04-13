@@ -1,19 +1,20 @@
 import numpy as np
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 from a2c_ppo_acktr.distributions import Bernoulli, Categorical, DiagGaussian
 from a2c_ppo_acktr.utils import init
+
 device = torch.device("cuda:0")
 
 from a2c_ppo_acktr.arguments import get_args
 
 args = get_args()
 
+
 class LSTM(nn.Module):
 
-    def __init__(self, embedding_dim = 100, hidden_dim = 512, vocab_size = 50000):
+    def __init__(self, embedding_dim=100, hidden_dim=512, vocab_size=50000):
         super(LSTM, self).__init__()
         self.hidden_dim = hidden_dim
 
@@ -27,11 +28,11 @@ class LSTM(nn.Module):
 
     def forward(self, sentence):
         embeds = self.word_embeddings(sentence)
-        
+
         embeds = torch.transpose(embeds, 0, 1)
         lstm_out, h = self.lstm(embeds)
         return lstm_out[-1]
-    
+
 
 class Flatten(nn.Module):
     def forward(self, x):
@@ -91,7 +92,7 @@ class Policy(nn.Module):
 
         return value, action, action_log_probs, rnn_hxs
 
-    def get_value(self, inputs, trace,  rnn_hxs, masks):
+    def get_value(self, inputs, trace, rnn_hxs, masks):
         value, _, _ = self.base(inputs, trace, rnn_hxs, masks)
         return value
 
@@ -153,10 +154,10 @@ class NNBase(nn.Module):
             # Let's figure out which steps in the sequence have a zero for any agent
             # We will always assume t=0 has a zero in it as that makes the logic cleaner
             has_zeros = ((masks[1:] == 0.0) \
-                            .any(dim=-1)
-                            .nonzero()
-                            .squeeze()
-                            .cpu())
+                         .any(dim=-1)
+                         .nonzero()
+                         .squeeze()
+                         .cpu())
 
             # +1 to correct the masks[1:]
             if has_zeros.dim() == 0:
@@ -199,41 +200,37 @@ class CNNBase(NNBase):
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))
         if args.model != 0:
-            self.lstm = LSTM()    
-        
+            self.lstm = LSTM()
+
         if args.model != 1:
             self.main = nn.Sequential(
                 init_(nn.Conv2d(num_inputs, 32, 8, stride=4)), nn.ReLU(),
                 init_(nn.Conv2d(32, 64, 4, stride=2)), nn.ReLU(),
                 init_(nn.Conv2d(64, 32, 3, stride=1)), nn.ReLU(), Flatten(),
                 init_(nn.Linear(32 * 7 * 7, hidden_size)), nn.ReLU())
-     
+
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0))
         if args.model == 2:
-            self.blend = init_(nn.Linear(hidden_size*2, hidden_size))
+            self.blend = init_(nn.Linear(hidden_size * 2, hidden_size))
 
         self.critic_linear = init_(nn.Linear(hidden_size, 1))
 
         self.train()
 
     def forward(self, obs, trace, rnn_hxs, masks):
-        
+
         if args.model == 0:
-          
-            x = self.main(obs/ 255.0)
-           
-        
-        if args.model == 1:
-            x= torch.tensor((trace),dtype = torch.long)
-            x = self.lstm (x)
-        
-        if args.model == 2:
-            z= torch.tensor((trace),dtype = torch.long)
-            z = self.lstm (z)
-            x = self.main(obs/ 255.0)
-            x = torch.cat ((x,z),1)
-            x = self.blend (x)    
+            x = self.main(obs / 255.0)
+        elif args.model == 1:
+            x = torch.tensor(trace, dtype=torch.long)
+            x = self.lstm(x)
+        elif args.model == 2:
+            z = torch.tensor(trace, dtype=torch.long)
+            z = self.lstm(z)
+            x = self.main(obs / 255.0)
+            x = torch.cat((x, z), 1)
+            x = self.blend(x)
 
         if self.is_recurrent:
             x, rnn_hxs = self._forward_gru(x, rnn_hxs, masks)

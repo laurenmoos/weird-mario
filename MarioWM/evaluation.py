@@ -35,7 +35,7 @@ def evaluate(actor_critic, ob_rms, env_name, seed, num_processes, eval_log_dir,
 
         eval_masks = torch.tensor(
             [[0.0] if done_ else [1.0] for done_ in done],
-            dtype=torch.float32,
+            dtype=torch.long,
             device=device)
 
         for info in infos:
