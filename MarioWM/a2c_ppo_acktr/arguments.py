@@ -5,7 +5,7 @@ import torch
 def parse_config(args):
     config = toml.load(args.config)
     for k in config.keys():
-        args.__dict__[k] = config[k]
+        args.__dict__[k.replace('-', '_')] = config[k]
     return args
 
 def get_args():
