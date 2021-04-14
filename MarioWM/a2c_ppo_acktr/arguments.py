@@ -1,7 +1,12 @@
 import argparse
-
+import toml
 import torch
 
+def parse_config(args):
+    config = toml.load(args.config)
+    for k in config.keys():
+        args.__dict__[k] = config[k]
+    return args
 
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
@@ -205,7 +210,15 @@ def get_args():
         default=False,
         help='run without rendering graphics'
     )
+    parser.add_argument(
+        '--config',
+        default='',
+        help='toml file containing configuration for run'
+    )
     args = parser.parse_args()
+
+    if args.config:
+        parse_config(args)
 
     args.cuda = not args.no_cuda and torch.cuda.is_available()
 

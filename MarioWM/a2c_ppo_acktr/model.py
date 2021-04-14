@@ -223,10 +223,10 @@ class CNNBase(NNBase):
         if args.model == 0:
             x = self.main(obs / 255.0)
         elif args.model == 1:
-            x = torch.tensor(trace, dtype=torch.long)
+            x = trace.clone().detach().long()
             x = self.lstm(x)
         elif args.model == 2:
-            z = torch.tensor(trace, dtype=torch.long)
+            z = trace.clone().detach().long()
             z = self.lstm(z)
             x = self.main(obs / 255.0)
             x = torch.cat((x, z), 1)
