@@ -4,8 +4,10 @@ import torch.optim as optim
 
 from a2c_ppo_acktr.algo.kfac import KFACOptimizer
 
+from policy_gradient import  PolicyGradient
 
-class A2C_ACKTR():
+#TODO: replace these values with config wrapper
+class A2C_ACKTR(PolicyGradient):
     def __init__(self,
                  actor_critic,
                  value_loss_coef,
@@ -15,6 +17,7 @@ class A2C_ACKTR():
                  alpha=None,
                  max_grad_norm=None,
                  acktr=False):
+        super().__init__()
 
         self.actor_critic = actor_critic
         self.acktr = acktr

@@ -8,6 +8,19 @@ from torch import autograd
 
 from baselines.common.running_mean_std import RunningMeanStd
 
+#TODO: document the functions and replace with more semantic names
+#TODO: possibly move ExpertDataset
+'''
+Generative Adversarial Imitation Learning 
+
+Learns a policy from example expert behavior without interaction of expert or signal. 
+
+Recover the expert's cost function with inverse reinforcement learning and then extract a policy
+from that cost function.
+
+https://papers.nips.cc/paper/2016/file/cc7e2b878868cbae992d1fb743995d8f-Paper.pdf
+'''
+
 
 class Discriminator(nn.Module):
     def __init__(self, input_dim, hidden_dim, device):
@@ -27,12 +40,7 @@ class Discriminator(nn.Module):
         self.returns = None
         self.ret_rms = RunningMeanStd(shape=())
 
-    def compute_grad_pen(self,
-                         expert_state,
-                         expert_action,
-                         policy_state,
-                         policy_action,
-                         lambda_=10):
+    def compute_grad_pen(self, expert_state, expert_action, policy_state, policy_action, lambda_=10):
         alpha = torch.rand(expert_state.size(0), 1)
         expert_data = torch.cat([expert_state, expert_action], dim=1)
         policy_data = torch.cat([policy_state, policy_action], dim=1)
@@ -114,16 +122,16 @@ class Discriminator(nn.Module):
 class ExpertDataset(torch.utils.data.Dataset):
     def __init__(self, file_name, num_trajectories=4, subsample_frequency=20):
         all_trajectories = torch.load(file_name)
-        
+
         perm = torch.randperm(all_trajectories['states'].size(0))
         idx = perm[:num_trajectories]
 
         self.trajectories = {}
-        
+
         # See https://github.com/pytorch/pytorch/issues/14886
         # .long() for fixing bug in torch v0.4.1
         start_idx = torch.randint(
-            0, subsample_frequency, size=(num_trajectories, )).long()
+            0, subsample_frequency, size=(num_trajectories,)).long()
 
         for k, v in all_trajectories.items():
             data = v[idx]
@@ -138,16 +146,16 @@ class ExpertDataset(torch.utils.data.Dataset):
 
         self.i2traj_idx = {}
         self.i2i = {}
-        
+
         self.length = self.trajectories['lengths'].sum().item()
 
         traj_idx = 0
         i = 0
 
         self.get_idx = []
-        
+
         for j in range(self.length):
-            
+
             while self.trajectories['lengths'][traj_idx].item() <= i:
                 i -= self.trajectories['lengths'][traj_idx].item()
                 traj_idx += 1
@@ -155,8 +163,7 @@ class ExpertDataset(torch.utils.data.Dataset):
             self.get_idx.append((traj_idx, i))
 
             i += 1
-            
-            
+
     def __len__(self):
         return self.length
 

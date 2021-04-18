@@ -11,6 +11,7 @@ from a2c_ppo_acktr.utils import get_render_func, get_vec_normalize
 
 sys.path.append('a2c_ppo_acktr')
 
+#TODO: do we need this?
 parser = argparse.ArgumentParser(description='RL')
 parser.add_argument(
     '--seed', type=int, default=1, help='random seed (default: 1)')
@@ -25,8 +26,8 @@ parser.add_argument(
     help='environment to train on (default: PongNoFrameskip-v4)')
 parser.add_argument(
     '--load-dir',
-    default='./trained_models/',
-    help='directory to save agent logs (default: ./trained_models/)')
+    default='./pretrained_weights/',
+    help='directory to save agent logs (default: ./pretrained_weights/)')
 parser.add_argument(
     '--non-det',
     action='store_true',

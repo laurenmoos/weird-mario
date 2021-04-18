@@ -1,0 +1,33 @@
+
+{
+  "environment": {
+    "name": "exp",
+    "use_weird": "True",
+    "with_autoshroom": "True",
+    "level": "4"
+  },
+  "logging": {
+      "trace_size": "2000",
+      "trace_length": "1000",
+    "log_interval":  "5"
+  },
+  "hyper-parameters": {
+      "use_linear_lr_decay":  "True",
+      "learning_rate":  "2.5e-5 ",
+      "clipped_gradient":  "0.1",
+      "value_loss_coeff":  "0.5",
+      "entropy": "0.01",
+      "num_steps":  "40",
+      "num_mini_batch":  "5",
+      "epsiode_length": 90000,
+  },
+  "system": {
+    "timeout": "",
+    "num_processes":  ""
+  },
+  "reward": "2",
+  "algo":  "ppo",
+  "use_recurrent_policy": "True",
+  "use_skip": "True",
+  "use_gae": "True"
+}

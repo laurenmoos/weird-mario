@@ -5,7 +5,7 @@ import torch.nn as nn
 
 from a2c_ppo_acktr.envs import VecNormalize
 
-
+#TODO: a bit pedantic but this should be broken up into logging and other utils
 # Get a render function
 def get_render_func(venv):
     if hasattr(venv, 'envs'):
@@ -26,7 +26,7 @@ def get_vec_normalize(venv):
 
     return None
 
-
+#TODO: it seems like we're not using this?
 # Necessary for my KFAC implementation.
 class AddBias(nn.Module):
     def __init__(self, bias):
@@ -42,11 +42,7 @@ class AddBias(nn.Module):
         return x + bias
 
 
-def update_linear_schedule(optimizer, epoch, total_num_epochs, initial_lr):
-    """Decreases the learning rate linearly"""
-    lr = initial_lr - (initial_lr * (epoch / float(total_num_epochs)))
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
+
 
 
 def init(module, weight_init, bias_init, gain=1):

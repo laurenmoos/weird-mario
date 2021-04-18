@@ -3,12 +3,10 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-
+'''
+'''
 class PPO():
-    def __init__(self,
-                 actor_critic,
-                 clip_param,
-                 ppo_epoch,
+    def __init__(self,actor_critic, clip_param, ppo_epoch,
                  num_mini_batch,
                  value_loss_coef,
                  entropy_coef,
@@ -36,12 +34,9 @@ class PPO():
        
         #advantages = advantages + torch.abs(advantages)*0.2
 
-        advantages = (advantages - advantages.mean()) / (
-            advantages.std() + 1e-5) 
-        
+        #TODO: we should use a consistent epsilon
+        advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-5)
 
-        
-        
         value_loss_epoch = 0
         action_loss_epoch = 0
         dist_entropy_epoch = 0
@@ -100,3 +95,6 @@ class PPO():
         dist_entropy_epoch /= num_updates
 
         return value_loss_epoch, action_loss_epoch, dist_entropy_epoch
+
+
+

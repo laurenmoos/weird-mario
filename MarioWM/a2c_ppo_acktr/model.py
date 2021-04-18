@@ -18,16 +18,14 @@ class LSTM(nn.Module):
         super(LSTM, self).__init__()
         self.hidden_dim = hidden_dim
 
-        self.word_embeddings = nn.Embedding(vocab_size, embedding_dim)
+        self.embeddings = nn.Embedding(vocab_size, embedding_dim)
 
-        # The LSTM takes word embeddings as inputs, and outputs hidden states
-        # with dimensionality hidden_dim.
         self.lstm = nn.LSTM(embedding_dim, hidden_dim)
 
         # The linear layer that maps from hidden state space to tag space
 
     def forward(self, sentence):
-        embeds = self.word_embeddings(sentence)
+        embeds = self.embeddings(sentence)
 
         embeds = torch.transpose(embeds, 0, 1)
         lstm_out, h = self.lstm(embeds)
@@ -35,6 +33,7 @@ class LSTM(nn.Module):
 
 
 class Flatten(nn.Module):
+
     def forward(self, x):
         return x.view(x.size(0), -1)
 

@@ -2,11 +2,13 @@ import argparse
 import toml
 import torch
 
+
 def parse_config(args):
     config = toml.load(args.config)
     for k in config.keys():
         args.__dict__[k.replace('-', '_')] = config[k]
     return args
+
 
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
@@ -162,8 +164,8 @@ def get_args():
         help='directory to save agent logs (default: /tmp/gym)')
     parser.add_argument(
         '--save-dir',
-        default='./trained_models/',
-        help='directory to save agent logs (default: ./trained_models/)')
+        default='./pretrained_weights/',
+        help='directory to save agent logs (default: ./pretrained_weights/)')
     parser.add_argument(
         '--no-cuda',
         action='store_true',
