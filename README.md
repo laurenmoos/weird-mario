@@ -1,3 +1,6 @@
-# Framework for Weird Mario Machine Experimentation
+# MarioWM
+Mario RL for testing weird-state exploitation 
 
-Explanation to follow.
+
+
+
