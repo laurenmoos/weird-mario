@@ -8,8 +8,7 @@ from torch import autograd
 
 from baselines.common.running_mean_std import RunningMeanStd
 
-#TODO: document the functions and replace with more semantic names
-#TODO: possibly move ExpertDataset
+#TODO: document the functions
 '''
 Generative Adversarial Imitation Learning 
 
@@ -74,8 +73,7 @@ class Discriminator(nn.Module):
         for expert_batch, policy_batch in zip(expert_loader,
                                               policy_data_generator):
             policy_state, policy_action = policy_batch[0], policy_batch[2]
-            policy_d = self.trunk(
-                torch.cat([policy_state, policy_action], dim=1))
+            policy_d = self.trunk(torch.cat([policy_state, policy_action], dim=1))
 
             expert_state, expert_action = expert_batch
             expert_state = obsfilt(expert_state.numpy(), update=False)
@@ -92,8 +90,7 @@ class Discriminator(nn.Module):
                 torch.zeros(policy_d.size()).to(self.device))
 
             gail_loss = expert_loss + policy_loss
-            grad_pen = self.compute_grad_pen(expert_state, expert_action,
-                                             policy_state, policy_action)
+            grad_pen = self.compute_grad_pen(expert_state, expert_action, policy_state, policy_action)
 
             loss += (gail_loss + grad_pen).item()
             n += 1
@@ -170,5 +167,4 @@ class ExpertDataset(torch.utils.data.Dataset):
     def __getitem__(self, i):
         traj_idx, i = self.get_idx[i]
 
-        return self.trajectories['states'][traj_idx][i], self.trajectories[
-            'actions'][traj_idx][i]
+        return self.trajectories['states'][traj_idx][i], self.trajectories[ 'actions'][traj_idx][i]

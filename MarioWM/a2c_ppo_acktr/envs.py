@@ -79,9 +79,9 @@ class StochasticFrameSkip(gym.Wrapper):
             elif i == 1:
                 self.curac = ac
             if self.supports_want_render and i < self.n - 1:
-                ob, rew, done, info = self.env.step(self.curac, want_render=False)
+                ob, rew, done, info = self.env.step()
             else:
-                ob, rew, done, info = self.env.step(self.curac)
+                ob, rew, done, info = self.env.step()
             totrew += rew
             if done: break
         return ob, totrew, done, info
@@ -103,7 +103,7 @@ class MaxAndSkipEnv(gym.Wrapper):
         total_reward = 0.0
         done = None
         for i in range(self._skip):
-            obs, reward, done, info = self.env.step(action)
+            obs, reward, done, info = self.env.step()
             if i == self._skip - 2: self._obs_buffer[0] = obs
             if i == self._skip - 1: self._obs_buffer[1] = obs
             total_reward += reward
@@ -167,7 +167,7 @@ class ProcessFrameMario(gym.Wrapper):
                 self.fresh = False
 
         # action =  self.env.action_space.sample()
-        obs, _, done, info = self.env.step(action)
+        obs, _, done, info = self.env.step()
 
         if (info['powerup'] != 22) and (info['powerup'] > 3):
             self.crashed = True
@@ -423,7 +423,7 @@ class TimeLimit(gym.Wrapper):
         self._elapsed_steps = 0
 
     def step(self, ac):
-        observation, reward, done, info = self.env.step(ac)
+        observation, reward, done, info = self.env.step()
         self._elapsed_steps += 1
         if self._elapsed_steps >= self._max_episode_steps:
             done = True
@@ -454,8 +454,7 @@ class VecPyTorchFrameStack(VecEnvWrapper):
         self.stacked_obs = torch.zeros((venv.num_envs,) +
                                        low.shape).to(device)
 
-        observation_space = gym.spaces.Box(
-            low=low, high=high, dtype=venv.observation_space.dtype)
+        observation_space = gym.spaces.Box(low=low, high=high, dtype=venv.observation_space.dtype)
         VecEnvWrapper.__init__(self, venv, observation_space=observation_space)
 
     def step_wait(self):

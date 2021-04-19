@@ -13,7 +13,7 @@ def parse_config(args):
 def get_args():
     parser = argparse.ArgumentParser(description='RL')
     parser.add_argument(
-        '--algo', default='a2c', help='algorithm to use: a2c | ppo | acktr')
+        '--agents', default='a2c', help='algorithm to use: a2c | ppo | acktr')
     parser.add_argument(
         '--gail',
         action='store_true',

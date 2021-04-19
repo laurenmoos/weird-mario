@@ -1,9 +1,12 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
 
 '''
+Proximal Policy Optimization Algorithms: family of policy gradient methods that alternate sampling data from an 
+environment with optimizing a surrogate objective function using stochastic gradient ascent. 
+
+:paper https://arxiv.org/abs/1707.06347
 '''
 class PPO():
     def __init__(self,actor_critic, clip_param, ppo_epoch,
@@ -95,6 +98,10 @@ class PPO():
         dist_entropy_epoch /= num_updates
 
         return value_loss_epoch, action_loss_epoch, dist_entropy_epoch
+
+    #TODO: can this be the same as the actor critic training loop?
+    def train(self):
+        raise NotImplementedError
 
 
 

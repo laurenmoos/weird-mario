@@ -3,9 +3,10 @@ import os
 
 import torch.nn as nn
 
-from a2c_ppo_acktr.envs import VecNormalize
+from ...a2c_ppo_acktr.envs import VecNormalize
 
-#TODO: a bit pedantic but this should be broken up into logging and other utils
+
+# TODO: a bit pedantic but this should be broken up into logging and other utils
 # Get a render function
 def get_render_func(venv):
     if hasattr(venv, 'envs'):
@@ -25,30 +26,6 @@ def get_vec_normalize(venv):
         return get_vec_normalize(venv.venv)
 
     return None
-
-#TODO: it seems like we're not using this?
-# Necessary for my KFAC implementation.
-class AddBias(nn.Module):
-    def __init__(self, bias):
-        super(AddBias, self).__init__()
-        self._bias = nn.Parameter(bias.unsqueeze(1))
-
-    def forward(self, x):
-        if x.dim() == 2:
-            bias = self._bias.t().view(1, -1)
-        else:
-            bias = self._bias.t().view(1, -1, 1, 1)
-
-        return x + bias
-
-
-
-
-
-def init(module, weight_init, bias_init, gain=1):
-    weight_init(module.weight.data, gain=gain)
-    bias_init(module.bias.data)
-    return module
 
 
 def cleanup_log_dir(log_dir):

@@ -117,7 +117,7 @@ class Interactive(abc.ABC):
             act = self.keys_to_act(keys)
 
             if not self._sync or act is not None:
-                obs, rew, done, _info = self._env.step(act)
+                obs, rew, done, _info = self._env.step()
                 self._image = self.get_image(obs, self._env)
                 self._episode_returns += rew
                 self._steps += 1
