@@ -3,3 +3,5 @@ __pycache__
 a2c_ppo_acktr.egg-info
 RetroGym
 MarioWM/.*
+.eggs/
+.github/
