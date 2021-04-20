@@ -2,9 +2,9 @@ import torch.nn as nn
 
 import torch
 
-import LSTM
+from .LSTM import LSTM
 from ....utils.train_utils import init
-from nn_base import NNBase
+from .nn_base import NNBase
 
 
 class Flatten(nn.Module):

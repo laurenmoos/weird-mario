@@ -8,8 +8,9 @@ from a2c_ppo_acktr.envs import make_vec_envs
 from a2c_ppo_acktr.graphs.models.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 
-from a2c_ppo_acktr.utils.config import get_config_from_json
+from a2c_ppo_acktr.utils.config import parse_config
 from a2c_ppo_acktr.utils.system_utils import cleanup_log_dir
+from a2c_ppo_acktr.arguments import get_args
 
 import os
 
@@ -21,44 +22,37 @@ logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 logger = logging.getLogger("Agent")
 
 # TODO: replace
-args = None
+args = get_args()
 
 
-# TODO: pytorch lightning
 def main():
-    config = get_config_from_json(args.exp_name)
+    config = parse_config(args)
 
-    params = config.params
-    log = config.logging
+    env, policy, logging, agent = config.environment, config.policy, config.logging, config.agent
 
+    print(logging.keys())
     '''
     Setting up Environment
     '''
-    logger.log("Running experiment {} using Configuration file: {}".format(args.exp_name, config))
+    # default to hard-coded log dir if not present in config
+    if logging['log_dir']:
+        logdir = logging['log_dir']
 
-    logger.log("Logging to {}".format(logdir))
+    logger.info("Logging to {}".format(logdir))
     log_dir = os.path.expanduser(logdir)
     eval_log_dir = logdir + "_eval"
     cleanup_log_dir(log_dir)
     cleanup_log_dir(eval_log_dir)
 
-    logger.log("Spinning up {} thread(s)".format(1))
+    logger.info("Spinning up {} thread(s)".format(1))
     torch.set_num_threads(1)
-    device = torch.device("cuda:0" if config.cuda else "cpu")
+    device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
-    envs = make_vec_envs(
-        config.environment.name,
-        config.seed,
-        params.num_processes,
-        params.gamma,
-        log.log_dir,
-        device,
-        False
-    )
+    envs = make_vec_envs(log_dir, device, policy['use_skip'], env)
 
     # initialize actor-critic policy
     actor_critic = Policy(envs.observation_space.shape, envs.action_space,
-                          base_kwargs={'recurrent': config.recurrent_policy})
+                          base_kwargs={'recurrent': policy['use_recurrent_policy']})
     actor_critic.to(device)
 
     '''
@@ -67,7 +61,7 @@ def main():
     save_path = os.path.join(config.save_dir, config.algo)
 
     if config.load:
-        logger.log("Retrieving pre-trained network at: {)".format(save_path))
+        logger.info("Retrieving pre-trained network at: {)".format(save_path))
         actor_critic.load_state_dict = (os.path.join(save_path, config.env_name + ".pt"))
 
     logger.log("Spinning up agent: {)".format(config.algo))

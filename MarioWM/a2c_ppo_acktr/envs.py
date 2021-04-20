@@ -14,11 +14,9 @@ from baselines.common.vec_env.vec_normalize import VecNormalize as VecNormalize_
 import retro
 
 from baselines.common.atari_wrappers import WarpFrame
-from a2c_ppo_acktr.arguments import get_args
+from .arguments import get_args
 
 args = get_args()
-
-
 
 
 class SnesDiscretizer(gym.ActionWrapper):
@@ -281,13 +279,13 @@ LEVELS = [
 ]
 
 
-def make_env(env_id, seed, rank, log_dir, allow_early_resets):
+def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
 
-        if args.level == 0:
+        if level == 0:
             mrank = rank % len(LEVELS)
         else:
-            mrank = args.level % len(LEVELS)
+            mrank = level % len(LEVELS)
 
         env = retro.make(game='SuperMarioWorld-Snes', state=LEVELS[mrank])
 
@@ -295,12 +293,12 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
         env = WarpFrame(env)
 
         # Uncomment to repeat each action for 4 frame -- standard for normal play but not always good for 'exploitation'
-        if args.skip:
+        if skip:
             # env = MaxAndSkipEnv(env)
             env = StochasticFrameSkip(env, n=4, stickprob=0.25)
 
         env = TransposeImage(env, op=[2, 0, 1])
-        env = TimeLimit(env, max_episode_steps=args.episode_length)
+        env = TimeLimit(env, max_episode_steps=episode_length)
         env = ProcessFrameMario(env)
 
         if log_dir is not None:
@@ -316,11 +314,15 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     return _thunk
 
 
-def make_vec_envs(env_name, seed, num_processes, gamma, log_dir, device, allow_early_resets, num_frame_stack=4):
-    envs = [
-        make_env(env_name, seed, i, log_dir, allow_early_resets)
-        for i in range(num_processes)
-    ]
+def make_vec_envs(log_dir, device, use_skip, env, num_frame_stack=4):
+    allow_early_resets, num_processes = env['allow_early_resets'], env['num_processes'],
+
+    gamma, level, episode_length = env['gamma'], env['level'], env['episode_length']
+
+    for i in range(num_processes):
+        envs = [
+             make_env(level, use_skip, episode_length, env['name'], env['seed'], i, log_dir, allow_early_resets)
+        ]
 
     if len(envs) > 1:
         envs = ShmemVecEnv(envs, context='fork')

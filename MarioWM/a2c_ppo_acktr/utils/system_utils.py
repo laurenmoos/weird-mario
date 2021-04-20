@@ -1,7 +1,7 @@
 import glob
 import os
 
-from ...a2c_ppo_acktr.envs import VecNormalize
+from a2c_ppo_acktr.envs import VecNormalize
 
 
 def get_render_func(venv):

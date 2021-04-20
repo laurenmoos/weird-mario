@@ -15,6 +15,10 @@ def get_args():
         '--exp-name',
         help='Name for experiment used to retrieve cofngiuration file'
     )
+    parser.add_argument(
+        '--device',
+        help='Device used to run experiments {cpu, gpu}'
+    )
 
     parser.add_argument(
         '--config',

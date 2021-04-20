@@ -3,8 +3,8 @@ import torch
 import torch.nn as nn
 
 from ...agents.distributions import FixedBernoulli, FixedCategorical, FixedDiagGaussian
-from base.cnn_base import CNNBase
-from base.mlp_base import MLPBase
+from .base.cnn_base import CNNBase
+from .base.mlp_base import MLPBase
 
 device = torch.device("cuda:0")
 

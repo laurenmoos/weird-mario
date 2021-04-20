@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-from nn_base import NNBase
+from .nn_base import NNBase
 
 from ....utils.train_utils import init
 

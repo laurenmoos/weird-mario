@@ -1,17 +1,28 @@
-import json
+import toml
 from dataclasses import dataclass
+
+import logging
+import pathlib
+
 
 '''
 Load experiment configuration in a nested case class from statically configured directory below. 
 '''
 
-CONFIG_DIRECTORY = "MarioWM/configs/"
+CONFIG_DIRECTORY = "/configs/"
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("Config")
 
 
 # TODO: actually load the config
-def get_config_from_json(experiment_name):
-    return json.loads(CONFIG_DIRECTORY.join(experiment_name).join(".json"), object_hook=lambda d: Experiment(**d))
-
+def parse_config(args):
+    config = toml.load(str(pathlib.Path().absolute()) + CONFIG_DIRECTORY + args.exp_name + '.toml')
+    for k in config.keys():
+        args.__dict__[k.replace('-', '_')] = config[k]
+    print(f"Using arguments: {args}")
+    return args
 
 @dataclass(frozen=True)
 class Param:

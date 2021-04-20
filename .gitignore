@@ -1,2 +1,4 @@
-*-venv/
 .idea/
+__pycache__
+a2c_ppo_acktr.egg-info
+RetroGym

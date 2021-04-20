@@ -5,8 +5,8 @@ import sys
 
 import torch
 
-from a2c_ppo_acktr.envs import make_vec_envs
-from a2c_ppo_acktr.utils.system_utils import get_render_func, get_vec_normalize
+from MarioWM.a2c_ppo_acktr.envs import make_vec_envs
+from MarioWM.a2c_ppo_acktr.utils.system_utils import get_render_func, get_vec_normalize
 
 sys.path.append('a2c_ppo_acktr')
 

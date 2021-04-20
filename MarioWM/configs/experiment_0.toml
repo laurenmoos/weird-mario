@@ -1,0 +1,43 @@
+
+
+
+[environment]
+    name = 'experiment_0'
+    seed = 42
+    num_processes = 2
+    gamma=0.01
+    use_weird= true
+    with_authoshroom= true
+    level = 4
+    #once we eventually get to testing generalization
+    validation_level = 8
+    allow_early_resets = true
+    episode_length = 90000
+
+
+[policy]
+base_model = 0
+use_recurrent_policy = true
+use_skip = true
+use_vae = true
+
+[logging]
+    trace_size = 2000
+    trace_length = 1000
+    log_interval = 5
+    log_dir = '/tmp'
+    eval_log_dir = '/tmp'
+
+#can include nested section for agent specific parameters
+[agent]
+    algo = "ppo"
+    num_steps = 40
+    num_mini_batch = 5
+    use_acktr = true
+    value_loss = 0.5
+    entropy = 0.01
+    max_grad_norm = 0.1
+    use_linear_lr_decay = true
+    learning_rate = 2.5e-5
+    clipped_gradient = 0.1
+    value_loss_coeff = 0.01
