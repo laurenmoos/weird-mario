@@ -5,3 +5,6 @@ RetroGym
 MarioWM/.*
 .eggs/
 .github/
+MarioWM/.gdb_history
+MarioWM/.gitignore
+MarioWM/.travis.yml
