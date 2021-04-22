@@ -15,7 +15,7 @@ RUN sudo apt -y install -y tzdata
 # set your timezone
 RUN sudo ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 RUN sudo dpkg-reconfigure --frontend noninteractive tzdata
-RUN sudo apt-get -y install -y build-essential glibc cmake python3.8 python3.8-dev libbz2-dev pkg-config capnproto libcapnp-dev zlib1g-dev xvfb git curl python3-pip python3-opengl
+RUN sudo apt-get -y install -y build-essential cmake python3.8 python3.8-dev libbz2-dev pkg-config capnproto libcapnp-dev zlib1g-dev xvfb git curl python3-pip python3-opengl
 
 COPY prerequisite.sh .
 RUN sudo ./prerequisite.sh

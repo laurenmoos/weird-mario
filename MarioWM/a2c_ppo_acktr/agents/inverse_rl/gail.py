@@ -12,7 +12,7 @@ from baselines.common.running_mean_std import RunningMeanStd
 '''
 Generative Adversarial Imitation Learning 
 
-Learns a policy from example expert behavior without interaction of expert or signal. 
+Learns a policy from example 'expert behavior'  without interaction of expert or signal. 
 
 Recover the expert's cost function with inverse reinforcement learning and then extract a policy
 from that cost function.
