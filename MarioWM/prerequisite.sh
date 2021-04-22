@@ -51,3 +51,6 @@
   pushd baselines
   pip3 install -e .
   popd
+
+  CMD ["main.py", "--exp-name", "--device"]
+  ENTRYPOINT ["python3"]
