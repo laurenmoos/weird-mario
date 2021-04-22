@@ -31,7 +31,7 @@
   conda create --name retro-venv --yes python=3.8
   conda activate retro-venv
   echo "Installing dependencies with conda"
-  conda install -y torch pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch
+  conda install -y pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch
   conda install -y tensorflow numpy~=1.19.2
   echo "Cloning git repos"
   git clone https://github.com/oblivia-simplex/retro
@@ -39,6 +39,7 @@
   echo "Installing lucca's fork of retrogym"
   pushd retro
   pushd RetroGym
+  pip3 install torch
   pip3 install -e .
   python3 -m retro.import ./SMW
   popd
