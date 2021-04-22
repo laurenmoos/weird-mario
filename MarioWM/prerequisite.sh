@@ -51,6 +51,3 @@
   pushd baselines
   pip3 install -e .
   popd
-
-  CMD ["MarioWM/main.py", "--exp-name", "--device"]
-  ENTRYPOINT ["python3"]
