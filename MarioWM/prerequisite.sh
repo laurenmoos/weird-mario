@@ -37,7 +37,7 @@
   git clone https://github.com/laurenmoos/weird-mario
   git clone https://github.com/lejonet/baselines -b tf2
   echo "Installing lucca's fork of retrogym"
-  pushd retro
+  pushd weird-mario
   pushd RetroGym
   pip3 install torch
   pip3 install -e .
