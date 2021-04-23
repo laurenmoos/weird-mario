@@ -4,12 +4,13 @@
   }
   trap err ERR
 
+  pushd /tmp
   echo "Downloading and installing anaconda"
   curl https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh --output anaconda.sh
   chmod +x anaconda.sh
   ./anaconda.sh -b
   "${HOME}"/anaconda3/bin/conda init bash
-  popd
+  popd 
   !/usr/bin/env bash
   err () {
     exit 1
@@ -53,3 +54,4 @@
   echo "Installing baselines from own checkout"
   pushd baselines
   pip3 install -e .
+  popd
