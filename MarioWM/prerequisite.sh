@@ -10,12 +10,8 @@
   chmod +x anaconda.sh
   ./anaconda.sh -b
   "${HOME}"/anaconda3/bin/conda init bash
-  popd 
-  !/usr/bin/env bash
-  err () {
-    exit 1
-  }
-  trap err ERR
+  popd
+
   __conda_setup="$('/root/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
   if [ $? -eq 0 ]; then
       eval "$__conda_setup"
