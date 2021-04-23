@@ -20,6 +20,7 @@ RUN sudo apt-get -y install -y build-essential cmake python3.8 python3.8-dev lib
 COPY prerequisite.sh .
 RUN sudo ./prerequisite.sh
 
-COPY main.py .
-CMD ["MarioWM/main.py", "--exp-name", "--device"]
-ENTRYPOINT ["python3"]
+WORKDIR /tmp/weird-mario
+COPY MARIOWM .
+#CMD ["MarioWM/main.py", "--exp-name", "--device"]
+#ENTRYPOINT ["python3"]
