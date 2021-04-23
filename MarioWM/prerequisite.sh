@@ -34,7 +34,7 @@
   conda install -y pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch
   conda install -y tensorflow numpy~=1.19.2
   echo "Cloning git repos"
-  git clone https://github.com/oblivia-simplex/retro
+  git clone https://github.com/laurenmoos/weird-mario
   git clone https://github.com/lejonet/baselines -b tf2
   echo "Installing lucca's fork of retrogym"
   pushd retro
