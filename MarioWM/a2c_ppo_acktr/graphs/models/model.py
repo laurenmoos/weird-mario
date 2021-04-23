@@ -11,12 +11,12 @@ device = torch.device("cuda:0")
 
 class Policy(nn.Module):
 
-    # TODO: probably should just always pass base if we can
     def __init__(self, obs_shape, action_space, base=None, base_kwargs=None) -> object:
         super(Policy, self).__init__()
         if base_kwargs is None:
             base_kwargs = {}
         if base is None:
+            #TODO: we should do this in a more principled way
             if len(obs_shape) == 3:
                 base = CNNBase
             elif len(obs_shape) == 1:

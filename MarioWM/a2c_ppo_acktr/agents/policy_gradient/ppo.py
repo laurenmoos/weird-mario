@@ -15,7 +15,7 @@ class PPO():
 
         self.actor_critic = actor_critic
 
-        self.clip_param = config.clip_param
+        self.clip_param = config.clip
         self.ppo_epoch = config.ppo_epoch
         self.num_mini_batch = config.num_mini_batch
 

@@ -4,7 +4,7 @@ import torch.optim as optim
 
 from ..optim.kfac import KFACOptimizer
 
-from policy_gradient import PolicyGradient
+from .policy_gradient import PolicyGradient
 import numpy as np
 from ...utils.system_utils import get_vec_normalize
 from ...envs import make_vec_envs
@@ -21,22 +21,25 @@ value_loss_coef,
                  acktr=False
 '''
 class A2C_ACKTR(PolicyGradient):
-    def __init__(self, actor_critic, config):
+    def __init__(self, actor_critic, config, is_acktr):
         super().__init__()
 
         self.actor_critic = actor_critic
-        self.acktr = config.acktr
 
         self.value_loss_coef = config.value_loss_coef
         self.entropy_coef = config.entropy_coef
 
         self.max_grad_norm = config.max_grad_norm
 
-        if self.acktr:
+        self.alpha = config.alpha
+        self.lr = config.lr
+        #TODO: should standardize this
+        self.eps = 1.e-8
+
+        if acktr:
             self.optimizer = KFACOptimizer(actor_critic)
         else:
-            self.optimizer = optim.RMSprop(
-                actor_critic.parameters(), self.lr, eps=self.eps, alpha=self.alpha)
+            self.optimizer = optim.RMSprop(actor_critic.parameters(), self.lr, eps=self.eps, alpha=self.alpha)
 
     def update(self, rollouts):
         obs_shape = rollouts.obs.size()[2:]

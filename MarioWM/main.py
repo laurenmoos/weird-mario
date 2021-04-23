@@ -3,7 +3,7 @@ import torch
 import datetime
 import logging
 
-from a2c_ppo_acktr import agents
+from a2c_ppo_acktr.agents.policy_gradient import a2c_acktr, policy_gradient
 from a2c_ppo_acktr.envs import make_vec_envs
 from a2c_ppo_acktr.graphs.models.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
