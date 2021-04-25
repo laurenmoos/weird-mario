@@ -4,13 +4,12 @@
   }
   trap err ERR
 
-  pushd /tmp
   echo "Downloading and installing anaconda"
   curl https://repo.anaconda.com/archive/Anaconda3-2020.11-Linux-x86_64.sh --output anaconda.sh
   chmod +x anaconda.sh
   ./anaconda.sh -b
   "${HOME}"/anaconda3/bin/conda init bash
-  popd
+  # {/tmp}
 
   __conda_setup="$('/root/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
   if [ $? -eq 0 ]; then

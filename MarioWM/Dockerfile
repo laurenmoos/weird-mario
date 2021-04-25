@@ -17,12 +17,14 @@ RUN sudo ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 RUN sudo dpkg-reconfigure --frontend noninteractive tzdata
 RUN sudo apt-get -y install -y build-essential cmake python3.8 python3.8-dev libbz2-dev pkg-config capnproto libcapnp-dev zlib1g-dev xvfb git curl python3-pip python3-opengl
 
+RUN echo 'initial directory'
+RUN pwd
 COPY prerequisite.sh .
 RUN sudo ./prerequisite.sh
+RUN echo 'directory after run'
+RUN pwd
 
-WORKDIR weird_mario
-RUN ls
-COPY /weird-mario/MarioWM $HOME/MarioWM
+#COPY /weird-mario/MarioWM $HOME/MarioWM
 WORKDIR $HOME/MarioWM
 #CMD ["MarioWM/main.py", "--exp-name", "--device"]
 #ENTRYPOINT ["python3"]
