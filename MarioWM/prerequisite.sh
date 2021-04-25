@@ -28,6 +28,7 @@
   conda activate retro-venv
   echo "Installing dependencies with conda "
   conda install -y pytorch cudatoolkit=11.0 -c pytorch
+  pip3 install pybullet 
   pip3 install tensorflow
   pip3 install numpy==1.19.2
   echo "Cloning git repos"
