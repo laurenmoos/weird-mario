@@ -22,6 +22,7 @@ RUN sudo ./prerequisite.sh
 
 WORKDIR weird-mario
 RUN pwd
-COPY MarioWM .
+COPY /weird-mario/MarioWM $HOME/MarioWM
+WORKDIR $HOME/MarioWM
 #CMD ["MarioWM/main.py", "--exp-name", "--device"]
 #ENTRYPOINT ["python3"]
