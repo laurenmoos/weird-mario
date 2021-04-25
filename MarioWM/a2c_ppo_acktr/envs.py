@@ -314,10 +314,12 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
     return _thunk
 
 
-def make_vec_envs(log_dir, device, use_skip, env, num_frame_stack=4):
+def make_vec_envs(log_dir, device, env, num_frame_stack=4):
+
+    #unroll configurations
     allow_early_resets, num_processes = env['allow_early_resets'], env['num_processes'],
 
-    gamma, level, episode_length = env['gamma'], env['level'], env['episode_length']
+    gamma, level, episode_length, use_skip = env['gamma'], env['level'], env['episode_length'], env['use_skip']
 
     for i in range(num_processes):
         envs = [

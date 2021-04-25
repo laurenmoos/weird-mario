@@ -33,6 +33,7 @@
 # Model 2
 # linear layer
 
+    base_network_type = 'CNN'
     base_network_topology = 1
     #model the policy with a recurrent neural network which results in a continuous representation
     use_recurrent_policy = true
@@ -41,6 +42,7 @@
     log_interval = 5
     log_dir = '/tmp'
     eval_log_dir = '/tmp'
+    save_dir = '/tmp'
 
 #can include nested section for agent specific parameters
 [agent]

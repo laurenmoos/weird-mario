@@ -16,6 +16,11 @@ def get_args():
         help='Name for experiment used to retrieve cofngiuration file'
     )
     parser.add_argument(
+        '--load',
+        help='Load pre-trained model',
+        default=False
+    )
+    parser.add_argument(
         '--device',
         help='Device used to run experiments {cpu, gpu}'
     )

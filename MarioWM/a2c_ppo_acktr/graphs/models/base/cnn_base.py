@@ -18,14 +18,14 @@ class CNNBase(NNBase):
     def __init__(self, config, num_inputs, recurrent=False, hidden_size=512):
         super(CNNBase, self).__init__(recurrent, hidden_size, hidden_size)
 
-        self.model = config.base_model
+        self.model = config['base_network_topology']
 
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))
-        if self.model != 0:
+        if self.model == 0:
             self.lstm = LSTM()
 
-        if self.model != 1:
+        if self.model == 1:
             self.main = nn.Sequential(
                 init_(nn.Conv2d(num_inputs, 32, 8, stride=4)), nn.ReLU(),
                 init_(nn.Conv2d(32, 64, 4, stride=2)), nn.ReLU(),

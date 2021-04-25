@@ -26,11 +26,8 @@
   echo "Creating conda env 'retro-venv'"
   conda create --name retro-venv --yes python=3.8
   conda activate retro-venv
-  echo "Installing dependencies with pip instead of conda "
-  pip3 install torch
-  pip3 install torchvision
-  conda install torchaudio
-  conda install cudatoolkit==11.0
+  echo "Installing dependencies with conda "
+  conda install -y pytorch torchvision torchaudio cudatoolkit=11.0 -c pytorch
   pip3 install tensorflow
   pip3 install numpy==1.19.2
   echo "Cloning git repos"

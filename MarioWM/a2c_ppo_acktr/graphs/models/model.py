@@ -11,20 +11,22 @@ device = torch.device("cuda:0")
 
 class Policy(nn.Module):
 
-    def __init__(self, obs_shape, action_space, base=None, base_kwargs=None) -> object:
+    def __init__(self, policy, obs_shape, action_space, base=None, base_kwargs=None) -> object:
         super(Policy, self).__init__()
         if base_kwargs is None:
             base_kwargs = {}
-        if base is None:
-            #TODO: we should do this in a more principled way
-            if len(obs_shape) == 3:
-                base = CNNBase
-            elif len(obs_shape) == 1:
-                base = MLPBase
-            else:
-                raise NotImplementedError
 
-        self.base = base(obs_shape[0], **base_kwargs)
+        if policy['base_network_type']  == 'CNN':
+            assert len(obs_shape) == 3
+            base = CNNBase
+        elif policy['base_network_type'] == 'MLP':
+            assert len(obs_shape) == 1
+            base = MLPBase
+        else:
+            raise NotImplementedError
+
+        #TODO: should we do this with kwargs?
+        self.base = base(config, obs_shape[0], **base_kwargs)
 
         if action_space.__class__.__name__ == "Discrete":
             num_outputs = action_space.n
