@@ -46,7 +46,7 @@ class MoreDeterministicRetroState(gym.Wrapper):
     def step(self, act):
         if self._reset_on_step:
             self.reset(state=self.get_state())
-        self._last_obs, rew, self._done, info = self.env.step(act)
+        self._last_obs, rew, self._done, info = self.env.step()
         return self._last_obs, rew, self._done, info
 
     def get_state(self):
@@ -57,7 +57,7 @@ class MoreDeterministicRetroState(gym.Wrapper):
 def rollout(env, acts):
     total_rew = 0.0
     for act in acts:
-        _obs, rew, done, _info = env.step(act)
+        _obs, rew, done, _info = env.step()
         total_rew += rew
         if done:
             break
@@ -87,7 +87,7 @@ def check_env_helper(make_env, all_acts, verbose, out_success):
     # truncate actions to end before done
     valid_acts = []
     for act in all_acts:
-        _obs, _rew, done, _info = env.step(act)
+        _obs, _rew, done, _info = env.step()
         if done:
             break
         valid_acts.append(act)

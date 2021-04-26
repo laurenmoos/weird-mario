@@ -118,7 +118,7 @@ def playback_movie(emulator, movie, monitor_csv=None, video_file=None, info_file
             keys = [0] * emulator.num_buttons
         else:
             break
-        display, reward, done, info = emulator.step(keys)
+        display, reward, done, info = emulator.step()
         if info_file:
             info_steps.append(info)
         if movie.players > 1:

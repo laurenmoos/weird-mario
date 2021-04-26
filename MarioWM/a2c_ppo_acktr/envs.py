@@ -9,20 +9,14 @@ from baselines import bench
 from baselines.common.vec_env import VecEnvWrapper
 from baselines.common.vec_env.dummy_vec_env import DummyVecEnv
 from baselines.common.vec_env.shmem_vec_env import ShmemVecEnv
-from baselines.common.vec_env.vec_normalize import \
-    VecNormalize as VecNormalize_
+from baselines.common.vec_env.vec_normalize import VecNormalize as VecNormalize_
 
 import retro
 
 from baselines.common.atari_wrappers import WarpFrame
-from a2c_ppo_acktr.arguments import get_args
+from .arguments import get_args
 
 args = get_args()
-
-if args.skip:
-    shroom_interval = 50
-else:
-    shroom_interval = 200
 
 
 class SnesDiscretizer(gym.ActionWrapper):
@@ -46,6 +40,11 @@ class SnesDiscretizer(gym.ActionWrapper):
                 arr[buttons.index(button)] = True
             self._actions.append(arr)
         self.action_space = gym.spaces.Discrete(len(self._actions))
+
+        if args.skip:
+            self.shroom_interval = 50
+        else:
+            self.shroom_interval = 200
 
     def action(self, a):  # pylint: disable=W0221
         return self._actions[a].copy()
@@ -79,9 +78,9 @@ class StochasticFrameSkip(gym.Wrapper):
             elif i == 1:
                 self.curac = ac
             if self.supports_want_render and i < self.n - 1:
-                ob, rew, done, info = self.env.step(self.curac, want_render=False)
+                ob, rew, done, info = self.env.step()
             else:
-                ob, rew, done, info = self.env.step(self.curac)
+                ob, rew, done, info = self.env.step()
             totrew += rew
             if done: break
         return ob, totrew, done, info
@@ -98,12 +97,12 @@ class MaxAndSkipEnv(gym.Wrapper):
         self._obs_buffer = np.zeros((2,) + env.observation_space.shape, dtype=np.uint8)
         self._skip = skip
 
-    def step(self, action):
+    def step(self):
         """Repeat action, sum reward, and max over last observations."""
         total_reward = 0.0
         done = None
         for i in range(self._skip):
-            obs, reward, done, info = self.env.step(action)
+            obs, reward, done, info = self.env.step()
             if i == self._skip - 2: self._obs_buffer[0] = obs
             if i == self._skip - 1: self._obs_buffer[1] = obs
             total_reward += reward
@@ -134,7 +133,7 @@ def set_powerup_state(env, state):
 
 
 class ProcessFrameMario(gym.Wrapper):
-    def __init__(self, env=None, reward_type=None, dim=84):
+    def __init__(self, env=None, dim=84):
         super(ProcessFrameMario, self).__init__(env)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(1, dim, dim), dtype=np.uint8)
 
@@ -147,7 +146,7 @@ class ProcessFrameMario(gym.Wrapper):
         self.code_covered = set()
         self.crashed = False
 
-    def step(self, action):  # pylint: disable=method-hidden
+    def step(self):  # pylint: disable=method-hidden
 
         if args.autoshroom:
 
@@ -167,7 +166,7 @@ class ProcessFrameMario(gym.Wrapper):
                 self.fresh = False
 
         # action =  self.env.action_space.sample()
-        obs, _, done, info = self.env.step(action)
+        obs, _, done, info = self.env.step()
 
         if (info['powerup'] != 22) and (info['powerup'] > 3):
             self.crashed = True
@@ -280,13 +279,13 @@ LEVELS = [
 ]
 
 
-def make_env(env_id, seed, rank, log_dir, allow_early_resets):
+def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_early_resets):
     def _thunk():
 
-        if args.level == 0:
+        if level == 0:
             mrank = rank % len(LEVELS)
         else:
-            mrank = args.level % len(LEVELS)
+            mrank = level % len(LEVELS)
 
         env = retro.make(game='SuperMarioWorld-Snes', state=LEVELS[mrank])
 
@@ -294,12 +293,12 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
         env = WarpFrame(env)
 
         # Uncomment to repeat each action for 4 frame -- standard for normal play but not always good for 'exploitation'
-        if args.skip:
+        if skip:
             # env = MaxAndSkipEnv(env)
             env = StochasticFrameSkip(env, n=4, stickprob=0.25)
 
         env = TransposeImage(env, op=[2, 0, 1])
-        env = TimeLimit(env, max_episode_steps=args.episode_length)
+        env = TimeLimit(env, max_episode_steps=episode_length)
         env = ProcessFrameMario(env)
 
         if log_dir is not None:
@@ -315,18 +314,17 @@ def make_env(env_id, seed, rank, log_dir, allow_early_resets):
     return _thunk
 
 
-def make_vec_envs(env_name,
-                  seed,
-                  num_processes,
-                  gamma,
-                  log_dir,
-                  device,
-                  allow_early_resets,
-                  num_frame_stack=4):
-    envs = [
-        make_env(env_name, seed, i, log_dir, allow_early_resets)
-        for i in range(num_processes)
-    ]
+def make_vec_envs(log_dir, device, env, num_frame_stack=4):
+
+    #unroll configurations
+    allow_early_resets, num_processes = env['allow_early_resets'], env['num_processes'],
+
+    gamma, level, episode_length, use_skip = env['gamma'], env['level'], env['episode_length'], env['use_skip']
+
+    for i in range(num_processes):
+        envs = [
+             make_env(level, use_skip, episode_length, env['name'], env['seed'], i, log_dir, allow_early_resets)
+        ]
 
     if len(envs) > 1:
         envs = ShmemVecEnv(envs, context='fork')
@@ -430,7 +428,7 @@ class TimeLimit(gym.Wrapper):
         self._elapsed_steps = 0
 
     def step(self, ac):
-        observation, reward, done, info = self.env.step(ac)
+        observation, reward, done, info = self.env.step()
         self._elapsed_steps += 1
         if self._elapsed_steps >= self._max_episode_steps:
             done = True
@@ -461,8 +459,7 @@ class VecPyTorchFrameStack(VecEnvWrapper):
         self.stacked_obs = torch.zeros((venv.num_envs,) +
                                        low.shape).to(device)
 
-        observation_space = gym.spaces.Box(
-            low=low, high=high, dtype=venv.observation_space.dtype)
+        observation_space = gym.spaces.Box(low=low, high=high, dtype=venv.observation_space.dtype)
         VecEnvWrapper.__init__(self, venv, observation_space=observation_space)
 
     def step_wait(self):

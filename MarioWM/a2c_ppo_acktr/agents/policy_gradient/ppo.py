@@ -1,47 +1,40 @@
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 import torch.optim as optim
+
+'''
+Proximal Policy Optimization Algorithms: family of policy gradient methods that alternate sampling data from an 
+environment with optimizing a surrogate objective function using stochastic gradient ascent. 
+
+:paper https://arxiv.org/abs/1707.06347
+'''
 
 
 class PPO():
-    def __init__(self,
-                 actor_critic,
-                 clip_param,
-                 ppo_epoch,
-                 num_mini_batch,
-                 value_loss_coef,
-                 entropy_coef,
-                 lr=None,
-                 eps=None,
-                 max_grad_norm=None,
-                 use_clipped_value_loss=True):
+    def __init__(self, actor_critic, config):
 
         self.actor_critic = actor_critic
 
-        self.clip_param = clip_param
-        self.ppo_epoch = ppo_epoch
-        self.num_mini_batch = num_mini_batch
+        self.clip_param = config.clip
+        self.ppo_epoch = config.ppo_epoch
+        self.num_mini_batch = config.num_mini_batch
 
-        self.value_loss_coef = value_loss_coef
-        self.entropy_coef = entropy_coef
+        self.value_loss_coef = config.value_loss_coef
+        self.entropy_coef = config.entropy_coef
 
-        self.max_grad_norm = max_grad_norm
-        self.use_clipped_value_loss = use_clipped_value_loss
+        self.max_grad_norm = config.max_grad_norm
+        self.use_clipped_value_loss = config.use_clipped_value_loss
 
-        self.optimizer = optim.Adam(actor_critic.parameters(), lr=lr, eps=eps)
+        self.optimizer = optim.Adam(actor_critic.parameters(), lr=config.lr, eps=config.eps)
 
     def update(self, rollouts):
-        advantages = rollouts.returns[:-1] - rollouts.value_preds[:-1] 
-       
-        #advantages = advantages + torch.abs(advantages)*0.2
+        advantages = rollouts.returns[:-1] - rollouts.value_preds[:-1]
 
-        advantages = (advantages - advantages.mean()) / (
-            advantages.std() + 1e-5) 
-        
+        # advantages = advantages + torch.abs(advantages)*0.2
 
-        
-        
+        # TODO: we should use a consistent epsilon
+        advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-5)
+
         value_loss_epoch = 0
         action_loss_epoch = 0
         dist_entropy_epoch = 0
@@ -56,8 +49,8 @@ class PPO():
 
             for sample in data_generator:
                 obs_batch, tobs_batch, recurrent_hidden_states_batch, actions_batch, \
-                   value_preds_batch, return_batch, masks_batch, old_action_log_probs_batch, \
-                        adv_targ = sample
+                value_preds_batch, return_batch, masks_batch, old_action_log_probs_batch, \
+                adv_targ = sample
 
                 # Reshape to do in a single forward pass for all steps
                 values, action_log_probs, dist_entropy, _ = self.actor_critic.evaluate_actions(
@@ -73,10 +66,10 @@ class PPO():
 
                 if self.use_clipped_value_loss:
                     value_pred_clipped = value_preds_batch + \
-                        (values - value_preds_batch).clamp(-self.clip_param, self.clip_param)
+                                         (values - value_preds_batch).clamp(-self.clip_param, self.clip_param)
                     value_losses = (values - return_batch).pow(2)
                     value_losses_clipped = (
-                        value_pred_clipped - return_batch).pow(2)
+                            value_pred_clipped - return_batch).pow(2)
                     value_loss = 0.5 * torch.max(value_losses,
                                                  value_losses_clipped).mean()
                 else:

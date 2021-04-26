@@ -32,7 +32,7 @@ class Frameskip(gym.Wrapper):
         total_rew = 0.0
         done = None
         for i in range(self._skip):
-            obs, rew, done, info = self.env.step(act)
+            obs, rew, done, info = self.env.step()
             total_rew += rew
             if done:
                 break
@@ -47,7 +47,7 @@ class TimeLimit(gym.Wrapper):
         self._elapsed_steps = 0
 
     def step(self, ac):
-        observation, reward, done, info = self.env.step(ac)
+        observation, reward, done, info = self.env.step()
         self._elapsed_steps += 1
         if self._elapsed_steps >= self._max_episode_steps:
             done = True
@@ -132,7 +132,7 @@ def rollout(env, acts):
     env.reset()
     steps = 0
     for act in acts:
-        _obs, rew, done, _info = env.step(act)
+        _obs, rew, done, _info = env.step()
         steps += 1
         total_rew += rew
         if done:

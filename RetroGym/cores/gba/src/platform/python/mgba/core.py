@@ -213,7 +213,7 @@ class Core(object):
 
     @needsReset
     def step(self):
-        self._core.step(self._core)
+        self._core.step()
 
     @staticmethod
     def _keysToInt(*args, **kwargs):

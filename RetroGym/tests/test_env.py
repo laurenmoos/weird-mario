@@ -17,7 +17,7 @@ def test_env_basic(obs_type, testenv):
     env = testenv(info=json_path, scenario=json_path, obs_type=obs_type)
     obs = env.reset()
     assert obs.shape == env.observation_space.shape
-    obs, rew, done, info = env.step(env.action_space.sample())
+    obs, rew, done, info = env.step()
     assert obs.shape == env.observation_space.shape
     assert isinstance(rew, float)
     assert rew == 0
