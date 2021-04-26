@@ -56,5 +56,6 @@ RUN python3 -m retro.import ./SMW
 
 WORKDIR $HOME/MarioWM
 RUN pip3 install toml
+COPY $HOME/MarioWM/main.py .
 CMD ["main.py", "--exp-name", "--device"]
 ENTRYPOINT ["python3"]
