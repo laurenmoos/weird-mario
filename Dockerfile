@@ -32,13 +32,13 @@ RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
 && /bin/bash ~/anaconda.sh -b -p /opt/conda \
 && rm ~/anaconda.sh
 
-echo "Creating conda env 'retro-venv'"
-conda create --name retro-venv --yes python=3.8
-conda activate retro-venv
-echo "Installing dependencies with conda "
-conda install -y pytorch cudatoolkit=11.0 -c pytorch
-pip3 install pybullet
-pip3 install numpy==1.19.2
+RUN echo "Creating conda env 'retro-venv'"
+RUN conda create --name retro-venv --yes python=3.8
+RUN conda activate retro-venv
+RUN echo "Installing dependencies with conda "
+RUN conda install -y pytorch cudatoolkit=11.0 -c pytorch
+RUN pip3 install pybullet
+RUN pip3 install numpy==1.19.2
 
 RUN echo "Cloning Baselines"
 WORKDIR $HOME
