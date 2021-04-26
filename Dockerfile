@@ -1,4 +1,5 @@
-FROM ubuntu:latest
+
+FROM tensorflow/tensorflow:1.8.0-py3
 ARG USER
 ARG HOME
 
