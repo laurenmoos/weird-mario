@@ -31,18 +31,11 @@
   pip3 install tensorflow
   pip3 install numpy==1.19.2
   echo "Cloning git repos"
-  git clone https://github.com/laurenmoos/weird-mario
   git clone https://github.com/lejonet/baselines -b tf2
   echo "Installing lucca's fork of retrogym"
-  pushd weird-mario
   pushd RetroGym
   pip3 install -e .
   python3 -m retro.import ./SMW
-  popd
-  echo "Installing a2c_ppo_acktr from MarioWM directory"
-  pushd MarioWM
-  pip3 install -e .
-  popd
   popd
   echo "Installing baselines from own checkout"
   pushd baselines
