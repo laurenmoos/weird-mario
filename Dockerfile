@@ -1,5 +1,5 @@
 
-FROM tensorflow/tensorflow:1.8.0-py3
+FROM pytorch/pytorch
 ARG USER
 ARG HOME
 
@@ -27,7 +27,18 @@ RUN sudo ln -fs /usr/share/zoneinfo/America/New_York /etc/localtime
 RUN sudo dpkg-reconfigure --frontend noninteractive tzdata
 RUN sudo apt-get -y install -y build-essential cmake python3.8 python3.8-dev libbz2-dev pkg-config capnproto libcapnp-dev zlib1g-dev xvfb git curl python3-pip python3-opengl
 
-RUN sudo ./prerequisite.sh
+RUN echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh \
+&& wget --quiet https://repo.continuum.io/archive/Anaconda3-5.1.0-Linux-x86_64.sh -O ~/anaconda.sh \
+&& /bin/bash ~/anaconda.sh -b -p /opt/conda \
+&& rm ~/anaconda.sh
+
+echo "Creating conda env 'retro-venv'"
+conda create --name retro-venv --yes python=3.8
+conda activate retro-venv
+echo "Installing dependencies with conda "
+conda install -y pytorch cudatoolkit=11.0 -c pytorch
+pip3 install pybullet
+pip3 install numpy==1.19.2
 
 RUN echo "Cloning Baselines"
 WORKDIR $HOME
