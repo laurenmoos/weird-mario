@@ -1,7 +1,7 @@
 
 FROM pytorch/pytorch
-ARG USER
-ARG HOME
+ENV USER=lauren
+ENV HOME=/home/lauren
 
 RUN mkdir -p $HOME
 WORKDIR $HOME
@@ -15,9 +15,9 @@ RUN adduser --disabled-password --gecos '' docker
 RUN adduser docker sudo
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
-COPY ./MarioWM/ /MarioWM
+COPY ./MarioWM/ $HOME/MarioWM
 
-COPY ./RetroGym/ /RetroGym
+COPY ./RetroGym/ $HOME/RetroGym
 
 #RUN echo "Installing dependencies available from distro repositories"
 ##install tzdata package
@@ -50,12 +50,11 @@ RUN pip3 install -e ./baselines/
 
 WORKDIR $HOME
 RUN echo "Installing lucca's fork of retrogym"
-RUN pip3 install -e /RetroGym/
+RUN pip3 install -e ./RetroGym/
 RUN python3 -m retro.import ./SMW
 
 
 WORKDIR $HOME/MarioWM
 RUN pip3 install toml
-COPY $HOME/MarioWM/main.py .
 CMD ["main.py", "--exp-name", "--device"]
 ENTRYPOINT ["python3"]
