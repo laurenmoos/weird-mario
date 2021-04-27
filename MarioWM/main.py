@@ -19,7 +19,8 @@ logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 # default `log_dir` is "runs" - we'll be more specific here
 
 # vanilla logger
-logger = logging.getLogger("Agent", level=logging.INFO)
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger("Agent")
 
 args = get_args()
 
