@@ -31,6 +31,7 @@ RUN pip3 install -e ./baselines/
 WORKDIR $HOME
 RUN echo "Installing lucca's fork of retrogym"
 RUN pip3 install -e ./RetroGym/
+WORKDIR $HOME/RetroGym
 RUN python3 -m retro.import ./SMW
 
 
