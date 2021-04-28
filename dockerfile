@@ -1,4 +1,4 @@
-
+# syntax=docker/dockerfile:1
 FROM pytorch/pytorch
 ENV USER=lauren
 ENV HOME=/home/lauren
@@ -37,5 +37,4 @@ RUN python3 -m retro.import ./SMW
 
 WORKDIR $HOME/MarioWM
 RUN pip3 install toml
-CMD ["main.py", "--exp-name", "--device"]
-ENTRYPOINT ["python3"]
+

@@ -15,10 +15,13 @@ import retro
 
 from baselines.common.atari_wrappers import WarpFrame
 from .arguments import get_args
+from a2c_ppo_acktr.utils.config import parse_config
 
 args = get_args()
 
-env  = args.environment
+config = parse_config(args)
+
+env  = config.environment
 
 class SnesDiscretizer(gym.ActionWrapper):
     """

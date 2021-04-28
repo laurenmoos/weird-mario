@@ -26,13 +26,13 @@ class A2C_ACKTR(PolicyGradient):
 
         self.actor_critic = actor_critic
 
-        self.value_loss_coef = config.value_loss_coef
-        self.entropy_coef = config.entropy_coef
+        self.value_loss_coef = config['value_loss_coef']
+        self.entropy_coef = config['entropy_coef']
 
-        self.max_grad_norm = config.max_grad_norm
+        self.max_grad_norm = config['max_grad_norm']
 
-        self.alpha = config.alpha
-        self.lr = config.lr
+        self.alpha = config['alpha']
+        self.lr = config['learning_rate']
         #TODO: should standardize this
         self.eps = 1.e-8
 

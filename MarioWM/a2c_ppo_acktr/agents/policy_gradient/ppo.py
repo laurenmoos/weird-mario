@@ -15,17 +15,19 @@ class PPO():
 
         self.actor_critic = actor_critic
 
-        self.clip_param = config.clip
-        self.ppo_epoch = config.ppo_epoch
-        self.num_mini_batch = config.num_mini_batch
+        self.clip_param = config['clip']
+        self.ppo_epoch = config['epoch']
+        self.num_mini_batch = config['num_mini_batch']
 
-        self.value_loss_coef = config.value_loss_coef
-        self.entropy_coef = config.entropy_coef
+        self.value_loss_coef = config['value_loss_coeff']
+        self.entropy_coef = config['entropy']
 
-        self.max_grad_norm = config.max_grad_norm
-        self.use_clipped_value_loss = config.use_clipped_value_loss
+        self.max_grad_norm = config['max_grad_norm']
+        self.use_clipped_value_loss = config['use_clipped_value_loss ']
 
-        self.optimizer = optim.Adam(actor_critic.parameters(), lr=config.lr, eps=config.eps)
+        self.eps = 1.e-8
+
+        self.optimizer = optim.Adam(actor_critic.parameters(), lr=config['learning_rate'], eps=self.eps)
 
     def update(self, rollouts):
         advantages = rollouts.returns[:-1] - rollouts.value_preds[:-1]
@@ -78,8 +80,7 @@ class PPO():
                 self.optimizer.zero_grad()
                 (value_loss * self.value_loss_coef + action_loss -
                  dist_entropy * self.entropy_coef).backward()
-                nn.utils.clip_grad_norm_(self.actor_critic.parameters(),
-                                         self.max_grad_norm)
+                nn.utils.clip_grad_norm_(self.actor_critic.parameters(), self.max_grad_norm)
                 self.optimizer.step()
 
                 value_loss_epoch += value_loss.item()

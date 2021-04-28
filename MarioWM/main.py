@@ -3,7 +3,7 @@ import torch
 import datetime
 import logging
 
-from a2c_ppo_acktr.agents.policy_gradient import a2c_acktr, policy_gradient
+from a2c_ppo_acktr.agents.policy_gradient import a2c_acktr, ppo
 from a2c_ppo_acktr.envs import make_vec_envs
 from a2c_ppo_acktr.graphs.models.model import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
@@ -71,11 +71,11 @@ def main():
 
     logger.log("Spinning up agent: {)".format(agent))
     if config.algo == 'a2c':
-        agent = agents.A2C_ACKTR(actor_critic, agent.a2c)
+        agent = a2c_acktr(actor_critic, agent.a2c, False)
     elif config.algo == 'ppo':
-        agent = agents.PPO(actor_critic, agent.ppo)
+        agent = ppo(actor_critic, agent.ppo)
     elif config.algo == 'acktr':
-        agent = agents.A2C_ACKTR(actor_critic, agent.a2c)
+        agent = a2c_acktr(actor_critic, agent.a2c, False)
 
     '''
     Create Rollout Storage Object - this vectorizes the previously configured environment in 

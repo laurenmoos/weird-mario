@@ -71,7 +71,7 @@
         epoch = 1000
         num_mini_batch = 5
         #mean loss of the value function update, corresponds to the accuracy of algorithhm predicting reward
-        value_loss = 0.5
+        value_loss_coeff = 0.5
         #The entropy coefficient is a regularizer. A policy has maximum entropy when all policies are equally
         #likely and minimum when the one action probability of the policy is dominant. The entropy coefficient
         #is multiplied by the maximum possible entropy and added to loss. This helps prevent premature convergence
@@ -81,3 +81,5 @@
         max_grad_norm = 0.1
         #restrict rewards to a constrained value, see https://arxiv.org/pdf/1602.07714.pdf
         use_clipped_value_loss = true
+
+        learning_rate = 2.5e-5
