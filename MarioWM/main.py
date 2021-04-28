@@ -48,7 +48,7 @@ def main():
     device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
     logger.info("Setting up environment {} on device {} logging to {}".format(env, device, log_dir))
-    envs = make_vec_envs(log_dir, device, env)
+    envs = make_vec_envs(log_dir, device)
 
     logger.info("Intiialized environment has {} dim observation space and {} dim action space "
                 .format(envs.observation_space.shape, envs.action_space.shape))

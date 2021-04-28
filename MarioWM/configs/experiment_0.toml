@@ -18,6 +18,8 @@
     #has been shown to be a powerful hyperparameter for RL performance in Atari games
     #http://nn.cs.utexas.edu/downloads/papers/braylan.aaai15.pdf
     use_skip = true
+    reward = 0
+    reward_trace = 200
 
 
 [policy]

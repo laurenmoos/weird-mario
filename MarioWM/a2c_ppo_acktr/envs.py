@@ -18,6 +18,7 @@ from .arguments import get_args
 
 args = get_args()
 
+env  = args.environment
 
 class SnesDiscretizer(gym.ActionWrapper):
     """
@@ -41,7 +42,7 @@ class SnesDiscretizer(gym.ActionWrapper):
             self._actions.append(arr)
         self.action_space = gym.spaces.Discrete(len(self._actions))
 
-        if args.skip:
+        if env['use_skip']:
             self.shroom_interval = 50
         else:
             self.shroom_interval = 200
@@ -137,7 +138,7 @@ class ProcessFrameMario(gym.Wrapper):
         super(ProcessFrameMario, self).__init__(env)
         self.observation_space = gym.spaces.Box(low=0, high=255, shape=(1, dim, dim), dtype=np.uint8)
 
-        self.timer = args.episode_length
+        self.timer = env['episode_length']
         self.countdown = 0
         self.multiplier = 0
         self.fresh = True
@@ -148,12 +149,12 @@ class ProcessFrameMario(gym.Wrapper):
 
     def step(self):  # pylint: disable=method-hidden
 
-        if args.autoshroom:
+        if env['with_authoshroom']:
 
             if self.timer % shroom_interval == 0:
                 add_mushroom(self.env)
 
-        if args.weird:
+        if env['use_weird']:
 
             if self.fresh:
                 add_mushroom(self.env)
@@ -177,23 +178,24 @@ class ProcessFrameMario(gym.Wrapper):
 
         reward = 0
 
-        if args.reward == 0:
+
+        if env['reward'] == 0:
 
             if info['yoshiCoins'] > self.s:
                 reward = 1
                 self.s = info['yoshiCoins']
 
 
-        elif args.reward == 1:
+        elif env['reward'] == 1:
 
             reward = info['yoshiCoins'] - self.s
             reward *= 0.01
             self.s = info['yoshiCoins']
 
 
-        elif args.reward == 2:
+        elif env['reward'] == 2:
 
-            trace = info['trace'][:args.rtrace_length]
+            trace = info['trace'][:env['reward_trace']]
             line = [x[2] for x in trace]
             for word in line:
                 if word not in self.code_covered:
@@ -201,9 +203,9 @@ class ProcessFrameMario(gym.Wrapper):
                     reward = 1
 
 
-        elif args.reward == 3:
+        elif env['reward'] == 3:
 
-            trace = info['trace'][:args.rtrace_length]
+            trace = info['trace'][:env['reward_trace']]
             line = [x[2] for x in trace]
             for word in line:
                 if word not in self.code_covered:
@@ -211,11 +213,11 @@ class ProcessFrameMario(gym.Wrapper):
                     reward += 1
             reward *= 0.01
 
-        elif args.reward == 4:
+        elif env['reward'] == 4:
 
             trace = info['trace']
-            if len(trace) > args.rtrace_length:
-                trace = trace[:args.rtrace_length]
+            if len(trace) > env['reward_trace']:
+                trace = trace[:env['reward_trace']]
             for step in trace:
                 addr = step[0]
                 if addr not in self.code_covered:
@@ -223,15 +225,15 @@ class ProcessFrameMario(gym.Wrapper):
                     reward += 1
             reward *= 0.01
 
-        elif args.reward == 5:
+        elif env['reward'] == 5:
             reward = math.tanh(info["powerup"] / 10.0)
 
-        elif args.reward == 6:
+        elif env['reward'] == 6:
             reward = info["coins"] - self.s
             self.s = info["coins"]
             reward *= 0.01
 
-        if reward == 0:
+        if env['reward'] == 0:
             self.countdown += 1
         else:
             self.countdown = 0
@@ -240,7 +242,7 @@ class ProcessFrameMario(gym.Wrapper):
             done = True
 
         if done:
-            self.timer = args.episode_length
+            self.timer = env['episode_length']
             self.fresh = True
             self.x = 0
             self.s = 0
@@ -314,7 +316,7 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
     return _thunk
 
 
-def make_vec_envs(log_dir, device, env, num_frame_stack=4):
+def make_vec_envs(log_dir, device, num_frame_stack=4):
 
     #unroll configurations
     allow_early_resets, num_processes = env['allow_early_resets'], env['num_processes'],
