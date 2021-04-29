@@ -1,10 +1,10 @@
 
+version: '0'
 services:
   example:
-    build:
-      context: .
+    image: test
     volumes:
       - "retro:/home/lauren/retro/MarioWM"
     command: python3 main.py --exp-name experiment_0 --device cpu
-volumes:
-  retro:
+    #volumes:
+     #retro:
