@@ -2,7 +2,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 
-from ...agents.distributions import FixedBernoulli, FixedCategorical, FixedDiagGaussian
+from ...agents.distributions import Bernoulli, Categorical, DiagGaussian
 from .base.cnn_base import CNNBase
 from .base.mlp_base import MLPBase
 
