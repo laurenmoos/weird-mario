@@ -77,7 +77,7 @@ class DiagGaussian(nn.Module):
 
         action_logstd = self.logstd(zeros)
         return FixedNormal(action_mean, action_logstd.exp())
-    
+
 class FixedDiagGaussian(nn.Module):
     def __init__(self, num_inputs, num_outputs):
         super(FixedDiagGaussian, self).__init__()
