@@ -69,7 +69,7 @@ def main():
         logger.info("Retrieving pre-trained network at: {)".format(save_path))
         actor_critic.load_state_dict = (os.path.join(save_path, env['name'] + ".pt"))
 
-    logger.log("Spinning up agent: {}".format(agent))
+    logger.info("Spinning up agent: {}".format(agent))
     if config.algo == 'a2c':
         agent = a2c_acktr(actor_critic, agent.a2c, False)
     elif config.algo == 'ppo':
