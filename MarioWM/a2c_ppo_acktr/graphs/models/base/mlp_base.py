@@ -10,7 +10,7 @@ import numpy as np
 Optionally recurrent actor-critic architecture.
 '''
 class MLPBase(NNBase):
-    def __init__(self, num_inputs, recurrent=False, hidden_size=64):
+    def __init__(self, policy, num_inputs, recurrent=False, hidden_size=64):
         super(MLPBase, self).__init__(recurrent, num_inputs, hidden_size)
 
         if recurrent:

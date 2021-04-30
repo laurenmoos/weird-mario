@@ -15,10 +15,10 @@ class Flatten(nn.Module):
 
 class CNNBase(NNBase):
 
-    def __init__(self, config, num_inputs, recurrent=False, hidden_size=512):
+    def __init__(self, policy, num_inputs, recurrent=False, hidden_size=512):
         super(CNNBase, self).__init__(recurrent, hidden_size, hidden_size)
 
-        self.model = config['base_network_topology']
+        self.model = policy['base_network_topology']
 
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))

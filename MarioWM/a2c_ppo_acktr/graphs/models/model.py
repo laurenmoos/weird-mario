@@ -26,7 +26,7 @@ class Policy(nn.Module):
             raise NotImplementedError
 
         #TODO: should we do this with kwargs?
-        self.base = base(config, obs_shape[0], **base_kwargs)
+        self.base = base(policy, obs_shape[0])
 
         if action_space.__class__.__name__ == "Discrete":
             num_outputs = action_space.n
