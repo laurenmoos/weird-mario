@@ -70,19 +70,19 @@ def main():
         actor_critic.load_state_dict = (os.path.join(save_path, env['name'] + ".pt"))
 
     logger.info("Spinning up agent: {}".format(agent))
-    if config.algo == 'a2c':
-        agent = a2c_acktr(actor_critic, agent.a2c, False)
-    elif config.algo == 'ppo':
-        agent = ppo(actor_critic, agent.ppo)
-    elif config.algo == 'acktr':
-        agent = a2c_acktr(actor_critic, agent.a2c, False)
+    if agent.algo == 'a2c':
+        agent_x = a2c_acktr(actor_critic, agent.a2c, False)
+    elif agent.algo == 'ppo':
+        agent_x = ppo(actor_critic, agent.ppo)
+    elif agent.algo == 'acktr':
+        agent_x = a2c_acktr(actor_critic, agent.a2c, False)
 
     '''
     Create Rollout Storage Object - this vectorizes the previously configured environment in 
     a way bound to the configured agent 
     '''
     #TODO: i believe this is a2c speciifc?
-    logger.log("Vectorizing environment {} for agent {}".format(env, agent))
+    logger.log("Vectorizing environment {} for agent {}".format(env, agent_x))
     rollouts = RolloutStorage(agent['num_steps'], env['num_processes'],
                               envs.observation_space.shape, envs.action_space,
                               actor_critic.recurrent_hidden_state_size)
@@ -100,7 +100,7 @@ def main():
     '''
     Train
     '''
-    agent.train(config, rollouts)
+    agent_x.train(config, rollouts)
 
 
 if __name__ == "__main__":
