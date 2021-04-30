@@ -3,8 +3,8 @@ version: '0'
 services:
   example:
     image: test
-    volumes:
-      - "retro:/home/lauren/retro/MarioWM"
-    command: python3 main.py --exp-name experiment_0 --device cpu
-    #volumes:
-     #retro:
+#    volumes:
+#      - "retro:/home/lauren/retro/MarioWM"
+#    command: python3 main.py --exp-name experiment_0 --device cpu
+volumes:
+  retro:

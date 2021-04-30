@@ -31,5 +31,5 @@ RUN pip3 install -e ./RetroGym/
 WORKDIR $HOME/RetroGym
 RUN python3 -m retro.import ./SMW
 
-
-
+ENTRYPOINT ["python3", "--exp-name", "--device" ]
+CMD ["main.py"]
