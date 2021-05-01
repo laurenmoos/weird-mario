@@ -22,6 +22,15 @@ args = get_args()
 config = parse_config(args)
 
 config  = config.environment
+if config['use_skip']:
+    shroom_interval = 50
+else:
+    shroom_interval = 200
+
+import logging
+
+log = logging.getLogger('Environment')
+
 
 class SnesDiscretizer(gym.ActionWrapper):
     """
@@ -45,10 +54,7 @@ class SnesDiscretizer(gym.ActionWrapper):
             self._actions.append(arr)
         self.action_space = gym.spaces.Discrete(len(self._actions))
 
-        if config['use_skip']:
-            self.shroom_interval = 50
-        else:
-            self.shroom_interval = 200
+
 
     def action(self, a):  # pylint: disable=W0221
         return self._actions[a].copy()
@@ -82,9 +88,9 @@ class StochasticFrameSkip(gym.Wrapper):
             elif i == 1:
                 self.curac = ac
             if self.supports_want_render and i < self.n - 1:
-                ob, rew, done, info = self.env.step()
+                ob, rew, done, info = self.env.step(self.curac, want_render=False)
             else:
-                ob, rew, done, info = self.env.step()
+                ob, rew, done, info = self.env.step(self.curac)
             totrew += rew
             if done: break
         return ob, totrew, done, info
@@ -150,7 +156,7 @@ class ProcessFrameMario(gym.Wrapper):
         self.code_covered = set()
         self.crashed = False
 
-    def step(self):  # pylint: disable=method-hidden
+    def step(self, action):  # pylint: disable=method-hidden
 
         if config['with_authoshroom']:
 
@@ -170,7 +176,7 @@ class ProcessFrameMario(gym.Wrapper):
                 self.fresh = False
 
         # action =  self.env.action_space.sample()
-        obs, _, done, info = self.env.step()
+        obs, _, done, info = self.env.step(action)
 
         if (info['powerup'] != 22) and (info['powerup'] > 3):
             self.crashed = True
@@ -197,7 +203,6 @@ class ProcessFrameMario(gym.Wrapper):
 
 
         elif config['reward'] == 2:
-
             trace = info['trace'][:config['reward_trace']]
             line = [x[2] for x in trace]
             for word in line:
@@ -283,8 +288,7 @@ LEVELS = [
     'Bridges2.state'
 ]
 
-
-def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_early_resets):
+def make_env(level, skip, episode_length, env_id, seed, log_dir, allow_early_resets, rank):
     def _thunk():
 
         if level == 0:
@@ -293,6 +297,7 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
             mrank = level % len(LEVELS)
 
         env = retro.make(game='SuperMarioWorld-Snes', state=LEVELS[mrank])
+
 
         env = SnesDiscretizer(env)
         env = WarpFrame(env)
@@ -305,12 +310,15 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
         env = TransposeImage(env, op=[2, 0, 1])
         env = TimeLimit(env, max_episode_steps=episode_length)
         env = ProcessFrameMario(env)
+        log.info("Making environment with observation shape {} and action space shape "
+                 .format(env.observation_space.shape, env.action_space.shape))
 
-        if log_dir is not None:
-            env = bench.Monitor(
-                env,
-                os.path.join(log_dir, str(rank)),
-                allow_early_resets=True)
+        #TODO: there seems to be a mismatch between the environment passed to monitor and StochasticFrameSkip
+        # if log_dir is not None:
+        #     env = bench.Monitor(
+        #         env,
+        #         os.path.join(log_dir, str(rank)),
+        #         allow_early_resets=True)
 
         # env = TransposeImage(env, op=[2, 0, 1])
 
@@ -319,16 +327,16 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
     return _thunk
 
 
-def make_vec_envs(log_dir, device, num_frame_stack=4):
+def make_vec_envs(config, log_dir, device, num_frame_stack=4):
 
     #unroll configurations
     allow_early_resets, num_processes = config['allow_early_resets'], config['num_processes'],
 
     gamma, level, episode_length, use_skip = config['gamma'], config['level'], config['episode_length'], config['use_skip']
-
     for i in range(num_processes):
         envs = [
-             make_env(level, use_skip, episode_length, config['name'], config['seed'], i, log_dir, allow_early_resets)
+            make_env(level, use_skip, episode_length, config['name'], config['seed'], log_dir, allow_early_resets, rank=i )
+            for i in range(num_processes)
         ]
 
     if len(envs) > 1:
@@ -340,13 +348,14 @@ def make_vec_envs(log_dir, device, num_frame_stack=4):
         if gamma is None:
             envs = VecNormalize(envs, ret=False)
         else:
+            log.info("Wrap VecNormalize with environmental discount")
             envs = VecNormalize(envs, gamma=gamma)
 
+    log.info("Wrap Pytorch")
     envs = VecPyTorch(envs, device)
 
-    if num_frame_stack is not None:
-        envs = VecPyTorchFrameStack(envs, 4, device)
-    elif len(envs.observation_space.shape) == 3:
+    if num_frame_stack is not None or len(envs.observation_space.shape) == 3 :
+        log.info("Wrap Pytorch Frame Stack")
         envs = VecPyTorchFrameStack(envs, 4, device)
 
     return envs
@@ -433,7 +442,7 @@ class TimeLimit(gym.Wrapper):
         self._elapsed_steps = 0
 
     def step(self, ac):
-        observation, reward, done, info = self.env.step()
+        observation, reward, done, info = self.env.step(ac)
         self._elapsed_steps += 1
         if self._elapsed_steps >= self._max_episode_steps:
             done = True

@@ -22,8 +22,8 @@ class CNNBase(NNBase):
 
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))
-        if self.model == 0:
-            self.lstm = LSTM()
+
+        self.lstm = LSTM()
 
         if self.model == 1:
             self.main = nn.Sequential(

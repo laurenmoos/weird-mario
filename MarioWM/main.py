@@ -43,12 +43,20 @@ def main():
     cleanup_log_dir(log_dir)
     cleanup_log_dir(eval_log_dir)
 
+    torch.manual_seed(env['seed'])
+    torch.cuda.manual_seed_all(env['seed'])
+
+    if config.device == 'gpu' and torch.cuda.is_available() and True:
+        torch.backends.cudnn.benchmark = False
+        torch.backends.cudnn.deterministic = True
+
+
     logger.info("Spinning up {} thread(s)".format(1))
     torch.set_num_threads(1)
     device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
     logger.info("Setting up environment {} on device {} logging to {}".format(env, device, log_dir))
-    envs = make_vec_envs(log_dir, device)
+    envs = make_vec_envs(env, log_dir, device)
 
     logger.info("Intiialized environment has {} dim observation space and {} dim action space "
                 .format(envs.observation_space.shape, envs.action_space.shape))
@@ -63,33 +71,34 @@ def main():
     '''
     Initialize Agent and maybe retrieve pre-trained network.
     '''
-    save_path = os.path.join(logging['save_dir'], agent['algo'])
+    save_path = os.path.join(agent['save_dir'], agent['algo'])
 
     if config.load:
         logger.info("Retrieving pre-trained network at: {)".format(save_path))
         actor_critic.load_state_dict = (os.path.join(save_path, env['name'] + ".pt"))
 
     logger.info("Spinning up agent: {}".format(agent))
-    if agent.algo == 'a2c':
-        agent_x = a2c_acktr(actor_critic, agent.a2c, False)
-    elif agent.algo == 'ppo':
-        agent_x = ppo(actor_critic, agent.ppo)
-    elif agent.algo == 'acktr':
-        agent_x = a2c_acktr(actor_critic, agent.a2c, False)
+    if agent['algo'] == 'a2c':
+        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, agent, False)
+    elif agent['algo'] == 'ppo':
+        agent_x = ppo.PPO(actor_critic, agent)
+    elif agent['algo'] == 'acktr':
+        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, agent, False)
 
     '''
     Create Rollout Storage Object - this vectorizes the previously configured environment in 
     a way bound to the configured agent 
     '''
     #TODO: i believe this is a2c speciifc?
-    logger.log("Vectorizing environment {} for agent {}".format(env, agent_x))
+    logger.info("Vectorizing environment {} for agent {}".format(env, agent_x))
     rollouts = RolloutStorage(agent['num_steps'], env['num_processes'],
                               envs.observation_space.shape, envs.action_space,
-                              actor_critic.recurrent_hidden_state_size)
+                              actor_critic.recurrent_hidden_state_size, agent['trace_size'])
     '''
     Reset Observations 
     '''
     #TODO: this could be moved to inside rollout storage
+    logger.info("Resetting environment {}".format(env))
     obs = envs.reset()
     tobs = torch.zeros((env['num_processes'], agent['trace_size']), dtype=torch.long)
     rollouts.obs[0].copy_(obs)
@@ -100,7 +109,8 @@ def main():
     '''
     Train
     '''
-    agent_x.train(config, rollouts)
+    logger.info("Training agent {} with environment {}".format(agent, env))
+    agent_x.train(agent, env, logging, actor_critic, rollouts, envs, log_dir, device)
 
 
 if __name__ == "__main__":

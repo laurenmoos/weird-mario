@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from .policy_gradient import PolicyGradient
 
 '''
 Proximal Policy Optimization Algorithms: family of policy gradient methods that alternate sampling data from an 
@@ -10,24 +11,25 @@ environment with optimizing a surrogate objective function using stochastic grad
 '''
 
 
-class PPO():
-    def __init__(self, actor_critic, config):
+class PPO(PolicyGradient):
+    def __init__(self, actor_critic, agent):
 
         self.actor_critic = actor_critic
 
-        self.clip_param = config['clip']
-        self.ppo_epoch = config['epoch']
-        self.num_mini_batch = config['num_mini_batch']
+        self.clip_param = agent['clip']
+        self.ppo_epoch = agent['epoch']
+        self.num_mini_batch = agent['num_mini_batch']
 
-        self.value_loss_coef = config['value_loss_coeff']
-        self.entropy_coef = config['entropy']
+        self.value_loss_coef = agent['value_loss_coeff']
+        self.entropy_coef = agent['entropy_coef']
 
-        self.max_grad_norm = config['max_grad_norm']
-        self.use_clipped_value_loss = config['use_clipped_value_loss ']
+        self.max_grad_norm = agent['max_grad_norm']
+        self.use_clipped_value_loss = agent['use_clipped_value_loss']
 
         self.eps = 1.e-8
+        self.acktr = None
 
-        self.optimizer = optim.Adam(actor_critic.parameters(), lr=config['learning_rate'], eps=self.eps)
+        self.optimizer = optim.Adam(actor_critic.parameters(), lr=agent['learning_rate'], eps=self.eps)
 
     def update(self, rollouts):
         advantages = rollouts.returns[:-1] - rollouts.value_preds[:-1]

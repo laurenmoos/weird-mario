@@ -10,16 +10,7 @@ from ...utils.system_utils import get_vec_normalize
 from ...envs import make_vec_envs
 
 
-# TODO: replace these values with config wrapper
-'''
-value_loss_coef,
-                 entropy_coef,
-                 lr=None,
-                 eps=None,
-                 alpha=None,
-                 max_grad_norm=None,
-                 acktr=False
-'''
+
 class A2C_ACKTR(PolicyGradient):
     def __init__(self, actor_critic, config, is_acktr):
         super().__init__()

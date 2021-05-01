@@ -12,7 +12,7 @@ def _flatten_helper(T, N, _tensor):
 
 class RolloutStorage(object):
 
-    def __init__(self, num_steps, num_processes, obs_shape, action_space, recurrent_hidden_state_size):
+    def __init__(self, num_steps, num_processes, obs_shape, action_space, recurrent_hidden_state_size, trace_size):
 
         """Initialize Observations"""
 
@@ -52,7 +52,7 @@ class RolloutStorage(object):
         self.tobs = self.tobs.to(device)
 
         self.recurrent_hidden_states = self.recurrent_hidden_states.to(device)
-        self.rewards = self.rewards.toe(device)
+        self.rewards = self.rewards.to(device)
         self.value_preds = self.value_preds.to(device)
         self.returns = self.returns.to(device)
         self.action_log_probs = self.action_log_probs.to(device)
