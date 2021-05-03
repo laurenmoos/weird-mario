@@ -8,29 +8,40 @@ from .policy_gradient import PolicyGradient
 import numpy as np
 from ...utils.system_utils import get_vec_normalize
 from ...envs import make_vec_envs
+from ...utils.train_utils import update_linear_schedule
 
 
+from arguments import Config, Agent
+
+def get_config():
+    return Config.instance()
 
 class A2C_ACKTR(PolicyGradient):
-    def __init__(self, actor_critic, config, is_acktr):
+    def __init__(self, actor_critic,  is_acktr):
         super().__init__()
+
+        config = get_config()
+        agent_config = config.agent
 
         self.actor_critic = actor_critic
 
-        self.value_loss_coef = config['value_loss_coef']
-        self.entropy_coef = config['entropy_coef']
+        self.value_loss_coef = agent_config[Agent.VALUE_LOSS_COEFF]
+        self.entropy_coef = agent_config[Agent.ENTROPY_COEF]
 
-        self.max_grad_norm = config['max_grad_norm']
+        self.max_grad_norm = agent_config[Agent.MAX_GRAD_NORM]
 
-        self.alpha = config['alpha']
-        self.lr = config['learning_rate']
+        self.alpha = agent_config[Agent.ALPHA]
+        self.lr = agent_config[Agent.LEARNING_RATE]
         #TODO: should standardize this
         self.eps = 1.e-8
 
-        if acktr:
+        if is_acktr:
             self.optimizer = KFACOptimizer(actor_critic)
         else:
             self.optimizer = optim.RMSprop(actor_critic.parameters(), self.lr, eps=self.eps, alpha=self.alpha)
+
+    def update_linear_schedule(self, j, num_updates, lr):
+        return update_linear_schedule(self.optimizer, j, num_updates, lr)
 
     def update(self, rollouts):
         obs_shape = rollouts.obs.size()[2:]

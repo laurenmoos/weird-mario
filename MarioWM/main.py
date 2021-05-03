@@ -1,20 +1,16 @@
 #! /usr/bin/env python
 import torch
-import datetime
 import logging
 
 from a2c_ppo_acktr.agents.policy_gradient import a2c_acktr, ppo
 from a2c_ppo_acktr.envs import make_vec_envs
-from a2c_ppo_acktr.graphs.models.model import Policy
+from a2c_ppo_acktr.graphs.models.policy import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 
-from a2c_ppo_acktr.utils.config import parse_config
 from a2c_ppo_acktr.utils.system_utils import cleanup_log_dir
-from a2c_ppo_acktr.arguments import get_args
-
+from arguments import get_args, Config, Environment, Agent, PolicyConfig, Logging
+from mlflow import mlflow, log_params
 import os
-
-logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 
 # default `log_dir` is "runs" - we'll be more specific here
 
@@ -22,85 +18,80 @@ logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Agent")
 
-args = get_args()
-
-
 def main():
-    config = parse_config(args)
+    #initialize config
+    args = get_args()
+    config = Config.instance(args)
 
-    env, policy, logging, agent = config.environment, config.policy, config.logging, config.agent
+    env, policy, logging, agent_config = config.environment, config.policy, config.logging, config.agent
+
+    #log params
+
+    with mlflow.start_run():
+        log_params(env)
+        log_params(policy)
+        log_params(agent_config)
 
     '''
     Setting up Environment
     '''
-    # default to hard-coded log dir if not present in config
-    if logging['log_dir']:
-        logdir = logging['log_dir']
 
-    logger.info("Logging to {}".format(logdir))
-    log_dir = os.path.expanduser(logdir)
-    eval_log_dir = logdir + "_eval"
-    cleanup_log_dir(log_dir)
-    cleanup_log_dir(eval_log_dir)
-
-    torch.manual_seed(env['seed'])
-    torch.cuda.manual_seed_all(env['seed'])
+    torch.manual_seed(env[Environment.SEED])
+    torch.cuda.manual_seed_all(env[Environment.SEED])
 
     if config.device == 'gpu' and torch.cuda.is_available() and True:
         torch.backends.cudnn.benchmark = False
         torch.backends.cudnn.deterministic = True
 
-
-    logger.info("Spinning up {} thread(s)".format(1))
-    torch.set_num_threads(1)
+    torch.set_num_threads(env[Environment.NUM_PROCESSES])
     device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
-    logger.info("Setting up environment {} on device {} logging to {}".format(env, device, log_dir))
-    envs = make_vec_envs(env, log_dir, device)
+    logger.info("Setting up environment {} on device {}".format(env, device))
+    envs = make_vec_envs(device)
 
-    logger.info("Intiialized environment has {} dim observation space and {} dim action space "
-                .format(envs.observation_space.shape, envs.action_space.shape))
+    observation_space_shape, action_space = envs.observation_space.shape, envs.action_space
 
+    logger.info("{} dim observation space".format(observation_space_shape))
 
     # initialize actor-critic policy
     logger.info("Initializing policy {}".format(policy))
-    actor_critic = Policy(policy, envs.observation_space.shape, envs.action_space,
-                          base_kwargs={'recurrent': policy['use_recurrent_policy']})
+    actor_critic = Policy(observation_space_shape, action_space,
+                                base_kwargs={'recurrent': policy[PolicyConfig.USE_RECURRENT_POLICY]})
     actor_critic.to(device)
 
     '''
     Initialize Agent and maybe retrieve pre-trained network.
     '''
-    save_path = os.path.join(agent['save_dir'], agent['algo'])
+    save_path = os.path.join(agent_config[Agent.SAVE_DIR], agent_config[Agent.ALGO])
 
     if config.load:
         logger.info("Retrieving pre-trained network at: {)".format(save_path))
-        actor_critic.load_state_dict = (os.path.join(save_path, env['name'] + ".pt"))
+        actor_critic.load_state_dict = (os.path.join(save_path, env[Environment.NAME] + ".pt"))
 
-    logger.info("Spinning up agent: {}".format(agent))
-    if agent['algo'] == 'a2c':
-        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, agent, False)
-    elif agent['algo'] == 'ppo':
-        agent_x = ppo.PPO(actor_critic, agent)
-    elif agent['algo'] == 'acktr':
-        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, agent, False)
+    logger.info("Spinning up agent: {}".format(agent_config))
+    agent_x = None
+    if agent_config[Agent.ALGO] == 'a2c':
+        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, False)
+    elif agent_config[Agent.ALGO] == 'ppo':
+        agent_x = ppo.PPO(actor_critic)
+    elif agent_config[Agent.ALGO] == 'acktr':
+        agent_x = a2c_acktr.A2C_ACKTR(actor_critic, False)
 
     '''
     Create Rollout Storage Object - this vectorizes the previously configured environment in 
     a way bound to the configured agent 
     '''
-    #TODO: i believe this is a2c speciifc?
     logger.info("Vectorizing environment {} for agent {}".format(env, agent_x))
-    rollouts = RolloutStorage(agent['num_steps'], env['num_processes'],
-                              envs.observation_space.shape, envs.action_space,
-                              actor_critic.recurrent_hidden_state_size, agent['trace_size'])
+    rollouts = RolloutStorage(agent_config[Agent.NUM_STEPS], env[Environment.NUM_PROCESSES],
+                              observation_space_shape, action_space,
+                              actor_critic.recurrent_hidden_state_size, agent_config[Agent.TRACE_SIZE])
     '''
     Reset Observations 
     '''
     #TODO: this could be moved to inside rollout storage
     logger.info("Resetting environment {}".format(env))
     obs = envs.reset()
-    tobs = torch.zeros((env['num_processes'], agent['trace_size']), dtype=torch.long)
+    tobs = torch.zeros((env[Environment.NUM_PROCESSES], agent_config[Agent.TRACE_SIZE]), dtype=torch.long)
     rollouts.obs[0].copy_(obs)
     rollouts.tobs[0].copy_(tobs)
 
@@ -109,8 +100,8 @@ def main():
     '''
     Train
     '''
-    logger.info("Training agent {} with environment {}".format(agent, env))
-    agent_x.train(agent, env, logging, actor_critic, rollouts, envs, log_dir, device)
+    logger.info("Training agent {} with environment {}".format(agent_config, env))
+    agent_x.train(actor_critic, rollouts, envs)
 
 
 if __name__ == "__main__":

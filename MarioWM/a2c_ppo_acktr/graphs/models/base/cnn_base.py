@@ -6,6 +6,10 @@ from .LSTM import LSTM
 from ....utils.train_utils import init
 from .nn_base import NNBase
 
+from arguments import Config, PolicyConfig
+
+def get_config():
+    return Config.instance()
 
 class Flatten(nn.Module):
 
@@ -15,10 +19,12 @@ class Flatten(nn.Module):
 
 class CNNBase(NNBase):
 
-    def __init__(self, policy, num_inputs, recurrent=False, hidden_size=512):
+    def __init__(self, num_inputs, recurrent=False, hidden_size=512):
         super(CNNBase, self).__init__(recurrent, hidden_size, hidden_size)
 
-        self.model = policy['base_network_topology']
+        policy_config = get_config().policy
+
+        self.model = policy_config[PolicyConfig.BASE_NETWORK_TOPOLOGY]
 
         init_ = lambda m: init(m, nn.init.orthogonal_, lambda x: nn.init.
                                constant_(x, 0), nn.init.calculate_gain('relu'))

@@ -1,4 +1,3 @@
-import numpy as np
 import torch
 import torch.nn as nn
 
@@ -7,26 +6,27 @@ from .base.cnn_base import CNNBase
 from .base.mlp_base import MLPBase
 
 device = torch.device("cuda:0")
+from arguments import Config, PolicyConfig
 
+def get_config():
+    return Config.instance()
 
 class Policy(nn.Module):
 
-    def __init__(self, policy, obs_shape, action_space, base=None, base_kwargs=None) -> object:
+    def __init__(self, obs_shape, action_space, base_kwargs=None) -> object:
         super(Policy, self).__init__()
-        if base_kwargs is None:
-            base_kwargs = {}
+        policy_config = get_config().policy
 
-        if policy['base_network_type']  == 'CNN':
+        if policy_config[PolicyConfig.BASE_NETWORK_TYPE]  == 'CNN':
             assert len(obs_shape) == 3
             base = CNNBase
-        elif policy['base_network_type'] == 'MLP':
+        elif policy_config[PolicyConfig.BASE_NETWORK_TYPE]  == 'MLP':
             assert len(obs_shape) == 1
             base = MLPBase
         else:
             raise NotImplementedError
 
-        #TODO: should we do this with kwargs?
-        self.base = base(policy, obs_shape[0])
+        self.base = base(obs_shape[0])
 
         if action_space.__class__.__name__ == "Discrete":
             num_outputs = action_space.n

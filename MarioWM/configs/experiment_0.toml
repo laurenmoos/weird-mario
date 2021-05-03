@@ -4,22 +4,22 @@
 [environment]
     name = 'experiment_0'
     seed = 1
-    num_processes = 2
+    num_processes = 20
     #discount factor to apply to future rewards
     gamma=0.99
     use_weird= true
-    with_authoshroom= true
-    level = 2
+    with_autoshroom= true
+    level = 3
     #once we eventually get to testing generalization
-    validation_level = 8
+    validation_level = 3
     allow_early_resets = true
-    episode_length = 200
+    episode_length = 10
     #'frame skip' is the number of frames an action is repeated before a new action is selected and its rate
     #has been shown to be a powerful hyperparameter for RL performance in Atari games
     #http://nn.cs.utexas.edu/downloads/papers/braylan.aaai15.pdf
     use_skip = true
     reward = 2
-    reward_trace = 100
+    reward_trace = 1000
     env_steps = 10e6
     use_proper_time_limits = true
 
@@ -51,12 +51,12 @@
 #can include nested section for agent specific parameters
 [agent]
     trace_size = 100
-    eval_interval = 100
-    save_interval = 100
+    eval_interval = 2
+    save_interval = 2
     save_dir = '/tmp'
     algo = "ppo"
     num_updates = 100
-    num_steps = 5
+    num_steps = 2
     use_acktr = true
     #a2c
     #value function (algorithm predicting reward) coefficient for the loss
@@ -78,5 +78,5 @@
     num_mini_batch = 5
     #restrict rewards to a constrained value, see https://arxiv.org/pdf/1602.07714.pdf
     use_clipped_value_loss = true
-    use_linear_lr_decay = true
+    use_linear_lr_decay = false
 
