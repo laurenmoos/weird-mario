@@ -8,8 +8,10 @@ from .base.mlp_base import MLPBase
 device = torch.device("cuda:0")
 from arguments import Config, PolicyConfig
 
+
 def get_config():
     return Config.instance()
+
 
 class Policy(nn.Module):
 
@@ -17,10 +19,10 @@ class Policy(nn.Module):
         super(Policy, self).__init__()
         policy_config = get_config().policy
 
-        if policy_config[PolicyConfig.BASE_NETWORK_TYPE]  == 'CNN':
+        if policy_config[PolicyConfig.BASE_NETWORK_TYPE] == 'CNN':
             assert len(obs_shape) == 3
             base = CNNBase
-        elif policy_config[PolicyConfig.BASE_NETWORK_TYPE]  == 'MLP':
+        elif policy_config[PolicyConfig.BASE_NETWORK_TYPE] == 'MLP':
             assert len(obs_shape) == 1
             base = MLPBase
         else:
@@ -79,7 +81,9 @@ class Policy(nn.Module):
         return value, action_log_probs, dist_entropy, rnn_hxs
 
 
-class Flatten(nn.Module):
+def forward(x):
+    return x.view(x.size(0), -1)
 
-    def forward(self, x):
-        return x.view(x.size(0), -1)
+
+class Flatten(nn.Module):
+    pass

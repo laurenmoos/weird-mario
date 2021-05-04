@@ -31,5 +31,6 @@ RUN pip3 install -e ./RetroGym/
 WORKDIR $HOME/RetroGym
 RUN python3 -m retro.import ./SMW
 
+COPY ./MarioWM/ $HOME/MarioWM
 ENTRYPOINT ["python3", "--exp-name", "--device" ]
 CMD ["main.py"]

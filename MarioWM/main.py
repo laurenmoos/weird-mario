@@ -7,7 +7,6 @@ from a2c_ppo_acktr.envs import make_vec_envs
 from a2c_ppo_acktr.graphs.models.policy import Policy
 from a2c_ppo_acktr.storage import RolloutStorage
 
-from a2c_ppo_acktr.utils.system_utils import cleanup_log_dir
 from arguments import get_args, Config, Environment, Agent, PolicyConfig, Logging
 from mlflow import mlflow, log_params
 import os
@@ -18,14 +17,15 @@ import os
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("Agent")
 
+
 def main():
-    #initialize config
+    # initialize config
     args = get_args()
     config = Config.instance(args)
 
     env, policy, logging, agent_config = config.environment, config.policy, config.logging, config.agent
 
-    #log params
+    # log params
 
     with mlflow.start_run():
         log_params(env)
@@ -56,7 +56,7 @@ def main():
     # initialize actor-critic policy
     logger.info("Initializing policy {}".format(policy))
     actor_critic = Policy(observation_space_shape, action_space,
-                                base_kwargs={'recurrent': policy[PolicyConfig.USE_RECURRENT_POLICY]})
+                          base_kwargs={'recurrent': policy[PolicyConfig.USE_RECURRENT_POLICY]})
     actor_critic.to(device)
 
     '''
@@ -88,7 +88,7 @@ def main():
     '''
     Reset Observations 
     '''
-    #TODO: this could be moved to inside rollout storage
+    # TODO: this could be moved to inside rollout storage
     logger.info("Resetting environment {}".format(env))
     obs = envs.reset()
     tobs = torch.zeros((env[Environment.NUM_PROCESSES], agent_config[Agent.TRACE_SIZE]), dtype=torch.long)
@@ -101,7 +101,7 @@ def main():
     Train
     '''
     logger.info("Training agent {} with environment {}".format(agent_config, env))
-    agent_x.train(actor_critic, rollouts, envs)
+    agent_x.train(actor_critic, rollouts, envs, device)
 
 
 if __name__ == "__main__":

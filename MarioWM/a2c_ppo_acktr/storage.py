@@ -106,8 +106,8 @@ class RolloutStorage(object):
             else:
                 self.returns[-1] = next_value
                 for step in reversed(range(self.rewards.size(0))):
-                    self.returns[step] = (self.returns[step + 1] * \
-                                          gamma * self.masks[step + 1] + self.rewards[step]) * self.bad_masks[step + 1] \
+                    self.returns[step] = (self.returns[step + 1] * gamma * self.masks[step + 1] +
+                                          self.rewards[step]) * self.bad_masks[step + 1] \
                                          + (1 - self.bad_masks[step + 1]) * self.value_preds[step]
         else:
             if use_gae:

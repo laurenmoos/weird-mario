@@ -57,10 +57,9 @@ def prepare_sequence(line, to_ix):
     return torch.tensor(idxs, dtype=torch.long)
 
 
-def _validate(actor_critic, ob_rms):
+def _validate(actor_critic, ob_rms, device):
     config = get_config()
     env_config = config.environment
-    device = config.device
 
     eval_envs = make_vec_envs(device)
     vec_norm = get_vec_normalize(eval_envs)
@@ -81,7 +80,7 @@ def _validate(actor_critic, ob_rms):
             _, action, _, eval_recurrent_hidden_states = actor_critic.act(
                 obs,
                 eval_recurrent_hidden_states,
-                eval_masks,
+                masks=eval_masks,
                 deterministic=True)
 
         # Obser reward and next obs
@@ -122,9 +121,9 @@ def _log(start, total_num_steps, episode_rewards, episode_crash, crash_rewards):
     with mlflow.start_run():
         # TODO: add dist entropy
         log_metric(key='fps', value=int(total_num_steps / (end - start)))
-        # log_metrics(episode_rewards)
-        # log_metrics(episode_crash)
-        # log_metrics(crash_rewards)
+        log_metrics(episode_rewards)
+        log_metrics(episode_crash)
+        log_metrics(crash_rewards)
 
 
 class PolicyGradient:
@@ -140,7 +139,7 @@ class PolicyGradient:
     def update_linear_schedule(self, j, num_updates, lr):
         raise NotImplementedError
 
-    def train(self, actor_critic, rollouts, envs):
+    def train(self, actor_critic, rollouts, envs, device):
         config = get_config()
         agent_config, env_config, logging_config = config.agent, config.environment, config.logging
 
@@ -159,12 +158,14 @@ class PolicyGradient:
 
         toke = tokenizer()
 
+        '''Environment Step'''
         for j in range(num_updates):
 
             if agent_config[Agent.USE_LINEAR_LR_DECAY]:
                 # decrease learning rate linearly
                 self.update_linear_schedule(j, num_updates, agent_config[Agent.LEARNING_RATE])
 
+            '''Agent Step'''
             for step in range(agent_steps):
                 self.train_one_epoch(step, rollouts, envs, episode_rewards, episode_crash, crash_rewards, toke)
 
@@ -173,7 +174,7 @@ class PolicyGradient:
                     rollouts.obs[-1], rollouts.tobs[-1], rollouts.recurrent_hidden_states[-1],
                     rollouts.masks[-1]).detach()
 
-            rollouts.compute_returns(next_value, False, env_config[Environment.GAMMA], None,
+            rollouts.compute_returns(next_value, True, env_config[Environment.GAMMA], 0.95,
                                      env_config[Environment.USE_PROPER_TIME_LIMITS])
 
             value_loss, action_loss, dist_entropy = self.update(rollouts)
@@ -190,8 +191,11 @@ class PolicyGradient:
                 _checkpoint(actor_critic, envs, toke, env_config[Environment.NAME])
 
             if j % agent_config[Agent.EVAL_INTERVAL] == 0:
-                ob_rms = get_vec_normalize(envs).ob_rms
-                _validate(actor_critic, ob_rms)
+                normalized = get_vec_normalize(envs)
+                ob_rms = None
+                if normalized:
+                    ob_rms = normalized.ob_rms
+                _validate(actor_critic, ob_rms, device)
 
             # At configured log interval step, log rewards and reward metadata from the episode
             if j % logging_config[Logging.LOG_INTERVAL] == 0:
