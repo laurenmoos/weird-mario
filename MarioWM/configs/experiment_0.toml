@@ -7,21 +7,21 @@
     num_processes = 20
     #discount factor to apply to future rewards
     gamma=0.99
-    use_weird= true
-    with_autoshroom= true
-    level = 3
+    use_weird= false
+    with_autoshroom= false
+    level = 2
     #once we eventually get to testing generalization
     validation_level = 3
     allow_early_resets = true
-    episode_length = 10
+    episode_length = 200
     #'frame skip' is the number of frames an action is repeated before a new action is selected and its rate
     #has been shown to be a powerful hyperparameter for RL performance in Atari games
     #http://nn.cs.utexas.edu/downloads/papers/braylan.aaai15.pdf
-    use_skip = true
+    use_skip = false
     reward = 2
-    reward_trace = 1000
+    reward_trace = 100
     env_steps = 10e6
-    use_proper_time_limits = true
+    use_proper_time_limits = false
 
 
 [policy]
@@ -56,26 +56,26 @@
     save_dir = '/tmp'
     algo = "ppo"
     num_updates = 100
-    num_steps = 2
+    num_steps = 5
     use_acktr = true
     #a2c
     #value function (algorithm predicting reward) coefficient for the loss
-    value_loss_coeff = 0.01
+    value_loss_coeff = 0.5
     #The entropy coefficient is a regularizer. A policy has maximum entropy when all policies are equally
     #likely and minimum when the one action probability of the policy is dominant. The entropy coefficient
     #is multiplied by the maximum possible entropy and added to loss. This helps prevent premature convergence
     #of one action probability dominating the policy and preventing exploration
     entropy_coef = 0.01
     #gradient clipping ensures the gradient vector g has norm at most equal to configured threshold
-    max_grad_norm = 0.1
+    max_grad_norm = 0.5
     #RMS prop decay parameter
     alpha = 0.99
     learning_rate = 7e-4
     #ppo
     is_headless = true
-    clip = 0.1
-    epoch = 1000
-    num_mini_batch = 5
+    clip = 0.2
+    epoch = 4
+    num_mini_batch =32
     #restrict rewards to a constrained value, see https://arxiv.org/pdf/1602.07714.pdf
     use_clipped_value_loss = true
     use_linear_lr_decay = false

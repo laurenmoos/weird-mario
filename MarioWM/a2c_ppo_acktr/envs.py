@@ -86,7 +86,6 @@ def make_vec_envs(device, num_frame_stack=4):
 
     if len(envs.observation_space.shape) == 1:
         if config[Environment.GAMMA]:
-            log.info("Using VecNormalize")
             envs = VecNormalize(envs, gamma=config[Environment.GAMMA])
         else:
             envs = VecNormalize(envs, ret=False)
@@ -94,7 +93,6 @@ def make_vec_envs(device, num_frame_stack=4):
     envs = VecPyTorch(envs, device)
 
     if num_frame_stack or len(envs.observation_space.shape) == 3:
-        log.info("Using VecPytorch")
         envs = VecPyTorchFrameStack(envs, 4, device)
 
     return envs

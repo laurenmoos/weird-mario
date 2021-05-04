@@ -9,7 +9,6 @@ from ...utils.system_utils import get_vec_normalize
 
 from collections import deque
 import os, time
-from ...utils.train_utils import update_linear_schedule
 import datetime
 
 import pickle
@@ -139,7 +138,7 @@ class PolicyGradient:
     def update_linear_schedule(self, j, num_updates, lr):
         raise NotImplementedError
 
-    def train(self, actor_critic, rollouts, envs, device):
+    def train(self, actor_critic, rollouts, envs):
         config = get_config()
         agent_config, env_config, logging_config = config.agent, config.environment, config.logging
 
@@ -174,8 +173,8 @@ class PolicyGradient:
                     rollouts.obs[-1], rollouts.tobs[-1], rollouts.recurrent_hidden_states[-1],
                     rollouts.masks[-1]).detach()
 
-            rollouts.compute_returns(next_value, True, env_config[Environment.GAMMA], 0.95,
-                                     env_config[Environment.USE_PROPER_TIME_LIMITS])
+            rollouts.compute_returns(next_value, True, env_config[Environment.GAMMA], gae_lambda=0.95,
+                                     use_proper_time_limits=env_config[Environment.USE_PROPER_TIME_LIMITS])
 
             value_loss, action_loss, dist_entropy = self.update(rollouts)
 
@@ -190,22 +189,23 @@ class PolicyGradient:
             if j % agent_config[Agent.SAVE_INTERVAL] == 0 or j == num_updates - 1 and agent_config[Agent.SAVE_DIR]:
                 _checkpoint(actor_critic, envs, toke, env_config[Environment.NAME])
 
-            if j % agent_config[Agent.EVAL_INTERVAL] == 0:
-                normalized = get_vec_normalize(envs)
-                ob_rms = None
-                if normalized:
-                    ob_rms = normalized.ob_rms
-                _validate(actor_critic, ob_rms, device)
+            # TODO: we have an existing ticket for validation but for now skip this as it wasn't correctly implemented for ppo
+            # if j % agent_config[Agent.EVAL_INTERVAL] == 0:
+            # normalized = get_vec_normalize(envs)
+            # ob_rms = None
+            # if normalized:
+            #     ob_rms = normalized.ob_rms
+            # _validate(actor_critic, ob_rms, device)
 
             # At configured log interval step, log rewards and reward metadata from the episode
-            if j % logging_config[Logging.LOG_INTERVAL] == 0:
-                log.info("Meta-Logging")
+            if j % logging_config[Logging.LOG_INTERVAL] == 0 and episode_rewards:
                 total_num_steps = (j + 1) * num_processes * agent_steps
                 _log(start, total_num_steps, episode_rewards, episode_crash, crash_rewards)
 
     def train_one_epoch(self, step, rollouts, envs, episode_rewards, episode_crash, crash_rewards, toke):
         agent_config = get_config().agent
 
+        #sample actions
         with torch.no_grad():
             value, action, action_log_prob, recurrent_hidden_states = self.actor_critic.act(
                 rollouts.obs[step], rollouts.tobs[step], rollouts.recurrent_hidden_states[step],
@@ -216,8 +216,9 @@ class PolicyGradient:
         if not agent_config[Agent.IS_HEADLESS]:
             envs.render()
         for info in infos:
+            print(f"keys: {info.keys()}")
+
             if 'episode' in info.keys():
-                log.info("episode is present in info keys")
                 episode_rewards.append(info['episode']['r'])
                 episode_crash.append(info['crash'])
                 if info['crash'] == 1:

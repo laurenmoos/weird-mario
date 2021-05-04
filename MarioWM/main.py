@@ -43,7 +43,7 @@ def main():
         torch.backends.cudnn.benchmark = False
         torch.backends.cudnn.deterministic = True
 
-    torch.set_num_threads(env[Environment.NUM_PROCESSES])
+    torch.set_num_threads(1)
     device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
     logger.info("Setting up environment {} on device {}".format(env, device))
@@ -101,7 +101,7 @@ def main():
     Train
     '''
     logger.info("Training agent {} with environment {}".format(agent_config, env))
-    agent_x.train(actor_critic, rollouts, envs, device)
+    agent_x.train(actor_critic, rollouts, envs)
 
 
 if __name__ == "__main__":
