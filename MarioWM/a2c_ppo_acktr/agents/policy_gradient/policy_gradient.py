@@ -17,6 +17,8 @@ import logging
 import mlflow
 from mlflow import log_metric, log_metrics
 
+from tqdm import tqdm
+
 logging.basicConfig(level=logging.INFO)
 log = logging.getLogger('PolicyGradient')
 logdir = 'runs/' + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
@@ -158,14 +160,14 @@ class PolicyGradient:
         toke = tokenizer()
 
         '''Environment Step'''
-        for j in range(num_updates):
+        for j in tqdm(range(num_updates), desc='Environment steps'):
 
             if agent_config[Agent.USE_LINEAR_LR_DECAY]:
                 # decrease learning rate linearly
                 self.update_linear_schedule(j, num_updates, agent_config[Agent.LEARNING_RATE])
 
             '''Agent Step'''
-            for step in range(agent_steps):
+            for step in tqdm(range(agent_steps), desc='Agent steps', leave=False):
                 self.train_one_epoch(step, rollouts, envs, episode_rewards, episode_crash, crash_rewards, toke)
 
             with torch.no_grad():
@@ -216,8 +218,6 @@ class PolicyGradient:
         if not agent_config[Agent.IS_HEADLESS]:
             envs.render()
         for info in infos:
-            print(f"keys: {info.keys()}")
-
             if 'episode' in info.keys():
                 episode_rewards.append(info['episode']['r'])
                 episode_crash.append(info['crash'])
