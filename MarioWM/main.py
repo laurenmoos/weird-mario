@@ -43,7 +43,7 @@ def main():
         torch.backends.cudnn.benchmark = False
         torch.backends.cudnn.deterministic = True
 
-    torch.set_num_threads(1)
+    torch.set_num_threads(os.cpu_count() * 2 - 1)
     device = torch.device("cuda:0" if config.device == 'gpu' else "cpu")
 
     logger.info("Setting up environment {} on device {}".format(env, device))
