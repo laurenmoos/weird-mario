@@ -176,22 +176,23 @@ class ProcessFrameMario(gym.Wrapper):
         self.timer -= 1
 
         reward = 0
+        reward_type = args.reward
 
-        if args.reward == 0:
+        if reward_type == 0:
 
             if info['yoshiCoins'] > self.s:
                 reward = 1
                 self.s = info['yoshiCoins']
 
 
-        elif args.reward == 1:
+        elif reward_type == 1:
 
             reward = info['yoshiCoins'] - self.s
             reward *= 0.01
             self.s = info['yoshiCoins']
 
 
-        elif args.reward == 2:
+        elif reward_type == 2:
 
             trace = info['trace'][:args.rtrace_length]
             line = [x[2] for x in trace]
@@ -201,7 +202,7 @@ class ProcessFrameMario(gym.Wrapper):
                     reward = 1
 
 
-        elif args.reward == 3:
+        elif reward_type == 3:
 
             trace = info['trace'][:args.rtrace_length]
             line = [x[2] for x in trace]
@@ -211,7 +212,7 @@ class ProcessFrameMario(gym.Wrapper):
                     reward += 1
             reward *= 0.01
 
-        elif args.reward == 4:
+        elif reward_type == 4:
 
             trace = info['trace']
             if len(trace) > args.rtrace_length:
@@ -223,10 +224,10 @@ class ProcessFrameMario(gym.Wrapper):
                     reward += 1
             reward *= 0.01
 
-        elif args.reward == 5:
+        elif reward_type == 5:
             reward = math.tanh(info["powerup"] / 10.0)
 
-        elif args.reward == 6:
+        elif reward_type == 6:
             reward = info["coins"] - self.s
             self.s = info["coins"]
             reward *= 0.01
