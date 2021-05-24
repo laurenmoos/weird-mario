@@ -8,6 +8,18 @@ from torch import autograd
 
 from baselines.common.running_mean_std import RunningMeanStd
 
+#TODO: document the functions
+'''
+Generative Adversarial Imitation Learning 
+
+Learns a policy from example 'expert behavior'  without interaction of expert or signal. 
+
+Recover the expert's cost function with inverse reinforcement learning and then extract a policy
+from that cost function.
+
+https://papers.nips.cc/paper/2016/file/cc7e2b878868cbae992d1fb743995d8f-Paper.pdf
+'''
+
 
 class Discriminator(nn.Module):
     def __init__(self, input_dim, hidden_dim, device):
@@ -27,12 +39,7 @@ class Discriminator(nn.Module):
         self.returns = None
         self.ret_rms = RunningMeanStd(shape=())
 
-    def compute_grad_pen(self,
-                         expert_state,
-                         expert_action,
-                         policy_state,
-                         policy_action,
-                         lambda_=10):
+    def compute_grad_pen(self, expert_state, expert_action, policy_state, policy_action, lambda_=10):
         alpha = torch.rand(expert_state.size(0), 1)
         expert_data = torch.cat([expert_state, expert_action], dim=1)
         policy_data = torch.cat([policy_state, policy_action], dim=1)
@@ -66,8 +73,7 @@ class Discriminator(nn.Module):
         for expert_batch, policy_batch in zip(expert_loader,
                                               policy_data_generator):
             policy_state, policy_action = policy_batch[0], policy_batch[2]
-            policy_d = self.trunk(
-                torch.cat([policy_state, policy_action], dim=1))
+            policy_d = self.trunk(torch.cat([policy_state, policy_action], dim=1))
 
             expert_state, expert_action = expert_batch
             expert_state = obsfilt(expert_state.numpy(), update=False)
@@ -84,8 +90,7 @@ class Discriminator(nn.Module):
                 torch.zeros(policy_d.size()).to(self.device))
 
             gail_loss = expert_loss + policy_loss
-            grad_pen = self.compute_grad_pen(expert_state, expert_action,
-                                             policy_state, policy_action)
+            grad_pen = self.compute_grad_pen(expert_state, expert_action, policy_state, policy_action)
 
             loss += (gail_loss + grad_pen).item()
             n += 1
@@ -114,16 +119,16 @@ class Discriminator(nn.Module):
 class ExpertDataset(torch.utils.data.Dataset):
     def __init__(self, file_name, num_trajectories=4, subsample_frequency=20):
         all_trajectories = torch.load(file_name)
-        
+
         perm = torch.randperm(all_trajectories['states'].size(0))
         idx = perm[:num_trajectories]
 
         self.trajectories = {}
-        
+
         # See https://github.com/pytorch/pytorch/issues/14886
         # .long() for fixing bug in torch v0.4.1
         start_idx = torch.randint(
-            0, subsample_frequency, size=(num_trajectories, )).long()
+            0, subsample_frequency, size=(num_trajectories,)).long()
 
         for k, v in all_trajectories.items():
             data = v[idx]
@@ -138,16 +143,16 @@ class ExpertDataset(torch.utils.data.Dataset):
 
         self.i2traj_idx = {}
         self.i2i = {}
-        
+
         self.length = self.trajectories['lengths'].sum().item()
 
         traj_idx = 0
         i = 0
 
         self.get_idx = []
-        
+
         for j in range(self.length):
-            
+
             while self.trajectories['lengths'][traj_idx].item() <= i:
                 i -= self.trajectories['lengths'][traj_idx].item()
                 traj_idx += 1
@@ -155,13 +160,11 @@ class ExpertDataset(torch.utils.data.Dataset):
             self.get_idx.append((traj_idx, i))
 
             i += 1
-            
-            
+
     def __len__(self):
         return self.length
 
     def __getitem__(self, i):
         traj_idx, i = self.get_idx[i]
 
-        return self.trajectories['states'][traj_idx][i], self.trajectories[
-            'actions'][traj_idx][i]
+        return self.trajectories['states'][traj_idx][i], self.trajectories[ 'actions'][traj_idx][i]

@@ -39,7 +39,7 @@ def setup_env(game):
 def step(env):
     if POKES:
         random_poke(env)
-    obs, rew, done, info = env.step(env.action_space.sample())
+    obs, rew, done, info = env.step()
     if done:
         env.reset()
     return info

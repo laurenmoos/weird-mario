@@ -1,5 +1,5 @@
 #!/bin/bash
-# Top-level build script called from Dockerfile
+# Top-level build script called from dockerfile
 
 # Stop at any error, show all commands
 set -ex
@@ -36,7 +36,7 @@ echo "multilib_policy=best" >> /etc/yum.conf
 # media are also offered. These images DO NOT recieve updates as they are
 # intended to match installation iso contents. If you choose to use these
 # images it is highly recommended that you include RUN yum -y update && yum
-# clean all in your Dockerfile, or otherwise address any potential security
+# clean all in your dockerfile, or otherwise address any potential security
 # concerns."
 # Decided not to clean at this point: https://github.com/pypa/manylinux/pull/129
 yum -y update

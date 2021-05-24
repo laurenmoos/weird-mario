@@ -22,7 +22,7 @@ try:
         totrew = [0] * args.players
         while True:
             ac = env.action_space.sample()
-            ob, rew, done, info = env.step(ac)
+            ob, rew, done, info = env.step()
             t += 1
             if t % 10 == 0:
                 if verbosity > 1:

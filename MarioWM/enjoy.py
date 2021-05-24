@@ -3,11 +3,10 @@ import os
 # workaround to unpickle olf model files
 import sys
 
-import numpy as np
 import torch
 
-from a2c_ppo_acktr.envs import VecPyTorch, make_vec_envs
-from a2c_ppo_acktr.utils import get_render_func, get_vec_normalize
+from MarioWM.a2c_ppo_acktr.envs import make_vec_envs
+from MarioWM.a2c_ppo_acktr.utils.system_utils import get_render_func, get_vec_normalize
 
 sys.path.append('a2c_ppo_acktr')
 
@@ -25,8 +24,8 @@ parser.add_argument(
     help='environment to train on (default: PongNoFrameskip-v4)')
 parser.add_argument(
     '--load-dir',
-    default='./trained_models/',
-    help='directory to save agent logs (default: ./trained_models/)')
+    default='./pretrained_weights/',
+    help='directory to save agent logs (default: ./pretrained_weights/)')
 parser.add_argument(
     '--non-det',
     action='store_true',
@@ -80,7 +79,7 @@ while True:
             obs, recurrent_hidden_states, masks, deterministic=args.det)
 
     # Obser reward and next obs
-    obs, reward, done, _ = env.step(action)
+    obs, reward, done, _ = env.step()
 
     masks.fill_(0.0 if done else 1.0)
 
