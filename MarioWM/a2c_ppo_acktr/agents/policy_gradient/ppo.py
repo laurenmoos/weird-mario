@@ -10,8 +10,8 @@ environment with optimizing a surrogate objective function using stochastic grad
 '''
 
 
-class PPO():
-    def __init__(self, actor_critic, config):
+class PPO:
+    def __init__(self, actor_critic, clip=0.1, epoch=1000, n_batch=5, loss=0.5,  entropy=0.01, max_grad_norm=0.1):
 
         self.actor_critic = actor_critic
 
@@ -32,7 +32,6 @@ class PPO():
 
         # advantages = advantages + torch.abs(advantages)*0.2
 
-        # TODO: we should use a consistent epsilon
         advantages = (advantages - advantages.mean()) / (advantages.std() + 1e-5)
 
         value_loss_epoch = 0
@@ -64,16 +63,15 @@ class PPO():
                                     1.0 + self.clip_param) * adv_targ
                 action_loss = -torch.min(surr1, surr2).mean()
 
-                if self.use_clipped_value_loss:
-                    value_pred_clipped = value_preds_batch + \
-                                         (values - value_preds_batch).clamp(-self.clip_param, self.clip_param)
-                    value_losses = (values - return_batch).pow(2)
-                    value_losses_clipped = (
-                            value_pred_clipped - return_batch).pow(2)
-                    value_loss = 0.5 * torch.max(value_losses,
-                                                 value_losses_clipped).mean()
-                else:
-                    value_loss = 0.5 * (return_batch - values).pow(2).mean()
+
+                value_pred_clipped = value_preds_batch + \
+                                     (values - value_preds_batch).clamp(-self.clip_param, self.clip_param)
+                value_losses = (values - return_batch).pow(2)
+                value_losses_clipped = (
+                        value_pred_clipped - return_batch).pow(2)
+                value_loss = 0.5 * torch.max(value_losses,
+                                             value_losses_clipped).mean()
+
 
                 self.optimizer.zero_grad()
                 (value_loss * self.value_loss_coef + action_loss -

@@ -53,8 +53,7 @@ def main():
                 .format(envs.observation_space.shape, envs.action_space.shape))
 
 
-    # initialize actor-critic policy
-    logger.info("Initializing policy {}".format(policy))
+
     actor_critic = Policy(policy, envs.observation_space.shape, envs.action_space,
                           base_kwargs={'recurrent': policy['use_recurrent_policy']})
     actor_critic.to(device)
@@ -68,13 +67,8 @@ def main():
         logger.info("Retrieving pre-trained network at: {)".format(save_path))
         actor_critic.load_state_dict = (os.path.join(save_path, env['name'] + ".pt"))
 
-    logger.log("Spinning up agent: {)".format(agent))
-    if config.algo == 'a2c':
-        agent = agents.A2C_ACKTR(actor_critic, agent.a2c)
-    elif config.algo == 'ppo':
-        agent = agents.PPO(actor_critic, agent.ppo)
-    elif config.algo == 'acktr':
-        agent = agents.A2C_ACKTR(actor_critic, agent.a2c)
+    agent = agents.PPO(actor_critic)
+
 
     '''
     Create Rollout Storage Object - this vectorizes the previously configured environment in 

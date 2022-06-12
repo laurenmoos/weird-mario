@@ -314,7 +314,7 @@ def make_env(level, skip, episode_length, env_id, seed, rank, log_dir, allow_ear
     return _thunk
 
 
-def make_vec_envs(log_dir, device, env, num_frame_stack=4):
+def  make_vec_envs(log_dir, device, env, num_frame_stack=4):
 
     #unroll configurations
     allow_early_resets, num_processes = env['allow_early_resets'], env['num_processes'],
