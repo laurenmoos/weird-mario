@@ -2,9 +2,9 @@
 __pycache__
 a2c_ppo_acktr.egg-info
 RetroGym
-MarioWM/.*
+src/.*
 .eggs/
 .github/
-MarioWM/.gdb_history
-MarioWM/.gitignore
-MarioWM/.travis.yml
+src/.gdb_history
+src/.gitignore
+src/.travis.yml

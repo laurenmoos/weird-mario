@@ -1,0 +1,10 @@
+name: its_a_me
+channels:
+  - conda-forge
+dependencies:
+  - pytorch cudatoolkit=11.0 -c pytorch
+  - pybullet
+#might have to change pytorch version dependening on platform / M1 problems :(
+  - numpy==1.19.2
+  - tensorflow
+prefix: /Users/lauren/mambaforge/envs/its_a_me
